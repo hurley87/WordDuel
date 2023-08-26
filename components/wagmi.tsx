@@ -9,12 +9,14 @@ import { baseGoerli, base } from 'wagmi/chains';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 
+const http = process.env.NEXT_PUBLIC_RPC_URL as string;
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [process.env.NEXT_PUBLIC_NODE_ENV === 'dev' ? baseGoerli : base],
   [
     jsonRpcProvider({
       rpc: () => ({
-        http: `https://powerful-nameless-hill.base-goerli.quiknode.pro/${process.env.NEXT_PUBLIC_QUICK_NODE}/`,
+        http,
       }),
     }),
   ]
@@ -32,7 +34,7 @@ const wagmiClient = createConfig({
         isDarkMode: true,
         magicSdkConfiguration: {
           network: {
-            rpcUrl: `https://powerful-nameless-hill.base-goerli.quiknode.pro/${process.env.NEXT_PUBLIC_QUICK_NODE}/`,
+            rpcUrl: http,
             chainId: parseInt(process.env.NEXT_PUBLIC_DUELS_CHAIN_ID as string),
           },
         },
@@ -40,6 +42,7 @@ const wagmiClient = createConfig({
     }),
   ],
 });
+
 function Wagmi({ children }) {
   const [user, setUser] = useState<any | null>();
 

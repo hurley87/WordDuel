@@ -1,7 +1,7 @@
 import { Magic } from 'magic-sdk';
 
 const network = {
-  rpcUrl: `https://powerful-nameless-hill.base-goerli.quiknode.pro/${process.env.NEXT_PUBLIC_QUICK_NODE}/`,
+  rpcUrl: process.env.NEXT_PUBLIC_RPC_URL as string,
   chainId: parseInt(process.env.NEXT_PUBLIC_DUELS_CHAIN_ID as string),
 };
 
