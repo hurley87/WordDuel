@@ -69,6 +69,6 @@ Here's how you can get involved:
 
 - **Submit a Pull Request:** If you see any potential improvement, go for it. Any contributions are welcome.
 
-- **Sponsor me** I'm looking for at least $2,000 in sponsorship so that I go full-time into building this project.
+- **Sponsor me** I'm looking for at least $10,000 in sponsorship so that I go full-time into building this project.
 
 **Email me at dhurls99@gmail.com and we can play heads up!**
