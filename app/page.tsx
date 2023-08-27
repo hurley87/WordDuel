@@ -62,7 +62,7 @@ export default function Home() {
           {/* has no games */}
           {user && balance > 0 && <Duels />}
           {/* has no balance */}
-          {!user?.loading && balance === 0 && (
+          {user && balance === 0 && (
             <div className="flex flex-col flex-1 max-w-md mx-auto pt-20 gap-4">
               <Icons.wallet className="h-8 w-8" />
               <div>
