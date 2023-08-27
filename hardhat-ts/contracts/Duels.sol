@@ -77,7 +77,7 @@ contract Duels is Ownable {
 
     function acceptDuel(uint256 _duelId) public payable {
         require(duels[_duelId].state == DuelState.Created, "Duel must not be accepted yet");
-        require(msg.value == duels[_duelId].moveAmount, "Amount must be equal to the challenger's move amount");
+        // require(msg.value == duels[_duelId].moveAmount, "Amount must be equal to the challenger's move amount");
 
         duels[_duelId].opponent = msg.sender;
         duels[_duelId].potAmount += msg.value;

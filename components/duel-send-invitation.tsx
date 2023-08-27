@@ -45,6 +45,7 @@ export const DuelSendInvitation = ({ duel }: { duel: any }) => {
       title: 'Invitation sent!',
       description: 'Your opponent will receive an email shortly.',
     });
+    setIsSending(false);
   }
 
   return (

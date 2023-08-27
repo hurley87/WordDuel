@@ -16,7 +16,7 @@ export async function POST(req: Request) {
       text: string;
     };
     await resend.emails.send({
-      from: 'WordDuel <dhurls99@gmail.com>',
+      from: 'WordDuel <dh@wordduel.xyz>',
       to: [email],
       subject,
       react: EmailTemplate({ text }),
