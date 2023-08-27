@@ -6,13 +6,13 @@
 
 WordDuel is a turn-based game meant to be played with two players in real-time. Each player takes a turn guessing the right word and hints are given along the way. You can learn more about the hints [here](https://www.nytimes.com/games/wordle/index.html).
 
-You start by signing up with your email and depositing ETH into a wallet that's created on your behalf. To create a game or "duel", you'll declare your opponent's email and the cost for each guess. The only person who can accept the duel is the owner of the email you declared. Let's say teh cost of each guess is 0.01 ETH. Each time a player makes a guess they'll have to spend 0.01 ETH. Whoever guesses the right word first, wins all the ETH that has been spent during the duel.
+You start by signing up with your email and depositing ETH into a wallet that's created on your behalf. To create a game or "duel", you'll declare your opponent's email and the cost for each guess. The only person who can accept the duel is the owner of the email you declared. Let's say the cost of each guess is 0.01 ETH. Each time a player makes a guess they'll have to spend 0.01 ETH. Whoever guesses the right word first, wins all the ETH that has been spent during the duel.
 
-Follow me on [twitter](https://twitter.com/davidhurley87) or sign up at [WordDuel](https://www.wordduel.xyz/)!
+Follow me on [twitter](https://twitter.com/davidhurley87) for all the latest updates.
 
 ## Who am I?
 
-My name is [David Hurley](https://twitter.com/davidhurley87). I'm an onchain developer at [Seed Club](https://www.seedclub.xyz/), the lead consumer crypto accelerator. I've also built [Mojo](https://www.mojo.club/) and [LFTG](https://www.lftg.xyz/) in my spare time.
+My name is [David Hurley](https://twitter.com/davidhurley87). I'm an onchain developer at [Seed Club](https://www.seedclub.xyz/), the leading consumer crypto accelerator. I've built [Mojo](https://www.mojo.club/) and [LFTG](https://www.lftg.xyz/) in my spare time.
 
 ## Install
 
@@ -48,11 +48,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 Copy the .env.example file and create your .env.local file.
 
 ```bash
-NEXT_PUBLIC_RPC_URL - I recommend using QuickNode.
-NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY - create an account at [Magic](https://magic.link/) and start dedicated wallet project.
-RESEND_API_KEY - [Resend](https://resend.com/) for sending transactional emails
-SECRET_KEY - create a secret key using this [method](https://chat.openai.com/c/e63fb1d7-4fb1-4b05-8cb8-f830fbd85e3c)
-NEXT_PUBLIC_DUELS_CONTRACT_ADDRESS - You'll need to be familiar with [Hardhat and Base](https://docs.base.org/guides/deploy-smart-contracts/).
+NEXT_PUBLIC_RPC_URL - https://www.quicknode.com/
+NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY - https://magic.link
+RESEND_API_KEY - https://resend.com/
+SECRET_KEY - https://chat.openai.com/c/e63fb1d7-4fb1-4b05-8cb8-f830fbd85e3c
+NEXT_PUBLIC_DUELS_CONTRACT_ADDRESS - https://docs.base.org/guides/deploy-smart-contracts
 ```
 
 ## Deploy on Vercel
