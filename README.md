@@ -1,20 +1,18 @@
-# An onchain game that's easy to play
+# WordDuel
 
-[WordDuel](https://www.wordduel.xyz/) is a fully onchain game built on Base. This is a P2P, turn-based game based on a popular New York Times game called [Wordle](https://en.wikipedia.org/wiki/Wordle). The difference is that you play a friend and if you win, you'll earn some Base ETH.
+[WordDuel](https://www.wordduel.xyz/) is a P2P, fully onchain game built on [Base](https://base.org/) and inspired by a popular New York Times game called [Wordle](https://en.wikipedia.org/wiki/Wordle). The difference is that you play a friend and if you win, you'll earn some ETH.
 
 ## How do you play ?
 
-WordDuel is an onchain, turn-based game meant to be played with two players in real-time. Each player takes a turn guessing the right word. You can learn how to play [here](https://www.nytimes.com/games/wordle/index.html).
+WordDuel is a turn-based game meant to be played with two players in real-time. Each player takes a turn guessing the right word and hints are given along the way. You can learn more about the hints [here](https://www.nytimes.com/games/wordle/index.html).
 
-Start by signing up with your email and depositing ETH into a wallet that's created on your behalf. To create a game or "duel", you'll declare your opponent's email and the cost for each guess. The only person who can accept the duel is the owner of the email you declared. Let's say you set this guess cost to 0.01 ETH. Each time a player makes a guess they'll have to spend 0.01 ETH. Whoever guesses the right word first, wins all the ETH that has been spent during the duel.
+You start by signing up with your email and depositing ETH into a wallet that's created on your behalf. To create a game or "duel", you'll declare your opponent's email and the cost for each guess. The only person who can accept the duel is the owner of the email you declared. Let's say teh cost of each guess is 0.01 ETH. Each time a player makes a guess they'll have to spend 0.01 ETH. Whoever guesses the right word first, wins all the ETH that has been spent during the duel.
 
-More details coming soon! Follow me on [twitter](https://twitter.com/davidhurley87) or sign up at [WordDuel](https://www.wordduel.xyz/)!
+Follow me on [twitter](https://twitter.com/davidhurley87) or sign up at [WordDuel](https://www.wordduel.xyz/)!
 
 ## Who am I?
 
-My name is [David Hurley](https://twitter.com/davidhurley87).
-
-I'm an onchain developer at [Seed Club](https://www.seedclub.xyz/), the lead consumer crypto accelerator. I've also built [Mojo](https://www.mojo.club/) and [LFTG](https://www.lftg.xyz/) in my spare time.
+My name is [David Hurley](https://twitter.com/davidhurley87). I'm an onchain developer at [Seed Club](https://www.seedclub.xyz/), the lead consumer crypto accelerator. I've also built [Mojo](https://www.mojo.club/) and [LFTG](https://www.lftg.xyz/) in my spare time.
 
 ## Install
 
@@ -49,11 +47,13 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 Copy the .env.example file and create your .env.local file.
 
+```bash
 NEXT_PUBLIC_RPC_URL - I recommend using QuickNode.
 NEXT_PUBLIC_MAGIC_PUBLISHABLE_KEY - create an account at [Magic](https://magic.link/) and start dedicated wallet project.
 RESEND_API_KEY - [Resend](https://resend.com/) for sending transactional emails
 SECRET_KEY - create a secret key using this [method](https://chat.openai.com/c/e63fb1d7-4fb1-4b05-8cb8-f830fbd85e3c)
-NEXT_PUBLIC_DUELS_CONTRACT_ADDRESS - contract deploy on base. You'll need to be familiar with [Hardhat and Base](https://docs.base.org/guides/deploy-smart-contracts/).
+NEXT_PUBLIC_DUELS_CONTRACT_ADDRESS - You'll need to be familiar with [Hardhat and Base](https://docs.base.org/guides/deploy-smart-contracts/).
+```
 
 ## Deploy on Vercel
 
@@ -71,4 +71,4 @@ Here's how you can get involved:
 
 - **Sponsor me** I'm looking for at least $2,000 in sponsorship so that I go full-time into building this project.
 
-**Let's have fun onchain!**
+**Email me at dhurls99@gmail.com and we can play heads up!**
