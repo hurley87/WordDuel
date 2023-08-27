@@ -1,17 +1,18 @@
-import { useContractEvent } from 'wagmi';
+import { useContractRead } from 'wagmi';
 import Duels from '@/hooks/abis/Duels.json';
 
-export const useSubscribe = ({ eventName, listener }: any) => {
+export const useRead = ({ functionName, watch, args }: any) => {
   const chainId = parseInt(process.env.NEXT_PUBLIC_DUELS_CHAIN_ID as string);
   const address = process.env
     .NEXT_PUBLIC_DUELS_CONTRACT_ADDRESS as `0x${string}`;
   const abi = Duels.abi;
 
-  return useContractEvent({
+  return useContractRead({
     chainId,
-    eventName,
+    functionName,
     address,
     abi,
-    listener: listener as (...args: unknown[]) => void,
-  });
+    watch,
+    args,
+  }) as any;
 };

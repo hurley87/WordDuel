@@ -1,15 +1,16 @@
 'use client';
 
 import { Icons } from '@/components/icons';
-import { buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { UserAccountNav } from '@/components/user-account-nav';
 import { UserContext } from '@/lib/UserContext';
-import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useContext } from 'react';
 import { useBalance } from 'wagmi';
 import { toast } from '@/components/ui/use-toast';
 import Wordle from '@/components/wordle';
+import Duels from '@/components/duels';
+import Loading from '@/components/loading';
 
 export default function Home() {
   const [user, setUser]: any = useContext(UserContext);
@@ -26,7 +27,7 @@ export default function Home() {
     });
   }
 
-  console.log('balance', balance);
+  console.log(user);
 
   return (
     <div className="flex flex-col">
@@ -47,31 +48,23 @@ export default function Home() {
               }}
             />
           ) : (
-            <Link
-              href="/login"
-              className={cn(
-                buttonVariants({ variant: 'outline', size: 'sm' }),
-                'px-4'
-              )}
-            >
-              Login
+            <Link href="/login">
+              <Button variant="outline">Login</Button>
             </Link>
           )}
         </div>
       </header>
       {user?.loading || isLoading ? (
-        <Icons.spinner className="mt-20 h-10 w-10 animate-spin mx-auto" />
+        <Loading />
       ) : (
         <div className="pt-10">
           {!user && <Wordle />}
           {/* has no games */}
-          {user && balance > 0 && <div>ok cool</div>}
-          {/* has games */}
-          {!user && balance > 0 && <div>wordle game get started</div>}
+          {user && balance > 0 && <Duels />}
           {/* has no balance */}
-          {user?.loading && balance === 0 && (
+          {!user?.loading && balance === 0 && (
             <div className="flex flex-col flex-1 max-w-md mx-auto pt-20 gap-4">
-              <Icons.wallet className="h-12 w-12" />
+              <Icons.wallet className="h-8 w-8" />
               <div>
                 <h2 className="text-xl font-bold">Get some ETH on Base</h2>
                 <p>
@@ -81,16 +74,16 @@ export default function Home() {
                 </p>
               </div>
 
-              <div className="flex items-center w-full rounded-md border shadow p-6">
+              <div
+                onClick={handleCopyToClipBoard}
+                className="flex items-center w-full rounded-md border shadow p-6 cursor-pointer"
+              >
                 <Icons.copy className="h-9 w-9" />
                 <div className="ml-4 space-y-1 w-full">
                   <p className="text-sm font-medium leading-none">
                     Copy Your Wallet Address
                   </p>
-                  <p
-                    onClick={handleCopyToClipBoard}
-                    className="text-sm text-muted-foreground text-blue-500 cursor-pointer"
-                  >
+                  <p className="text-sm text-muted-foreground text-blue-500">
                     {user?.publicAddress}
                   </p>
                 </div>

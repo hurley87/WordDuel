@@ -12,7 +12,7 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 const http = process.env.NEXT_PUBLIC_RPC_URL as string;
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [process.env.NEXT_PUBLIC_NODE_ENV === 'dev' ? baseGoerli : base],
+  [process.env.NODE_ENV === 'development' ? baseGoerli : base],
   [
     jsonRpcProvider({
       rpc: () => ({

@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { userAuthSchema } from '@/lib/validations/auth';
 import { useForm } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
@@ -71,13 +71,10 @@ export function UserAuthForm() {
             <p className="px-1 text-xs text-red-600">{errors.email.message}</p>
           )}
         </div>
-        <button
-          className={cn(buttonVariants({ size: 'lg' }))}
-          disabled={isLoading}
-        >
+        <Button variant="secondary" size="lg">
           {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Log In
-        </button>
+        </Button>
       </div>
     </form>
   );

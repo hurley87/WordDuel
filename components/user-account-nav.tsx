@@ -61,13 +61,17 @@ export function UserAccountNav({ user, setUser }: any) {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link
-            href={`https://base-goerli.blockscout.com/address/${user.publicAddress}`}
+            target="_blank"
+            className="cursor-pointer"
+            href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${user.publicAddress}`}
           >
             Transactions
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/dashboard/settings">Settings</Link>
+          <Link className="cursor-pointer" href="/new">
+            New Duel
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem

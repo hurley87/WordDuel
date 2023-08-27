@@ -15,9 +15,9 @@ import { toast } from '@/components/ui/use-toast';
 import { Icons } from '@/components/icons';
 import { useRouter } from 'next/navigation';
 import { UserContext } from '@/lib/UserContext';
-import { useContractEvent, useContractWrite } from 'wagmi';
-import Duels from '@/hooks/abis/Duels.json';
 import { parseEther } from 'viem';
+import { useSubscribe } from '@/hooks/useSubscribe';
+import { useWrite } from '@/hooks/useWrite';
 
 type FormData = z.infer<typeof newDuelSchema>;
 
@@ -35,9 +35,7 @@ export function NewDuelForm() {
   const address = process.env
     .NEXT_PUBLIC_DUELS_CONTRACT_ADDRESS as `0x${string}`;
 
-  useContractEvent({
-    address,
-    abi: Duels.abi,
+  useSubscribe({
     eventName: 'DuelCreated',
     listener(logs: any) {
       const duelId = logs[0]?.args?.id?.toString();
@@ -51,9 +49,7 @@ export function NewDuelForm() {
     },
   });
 
-  const { writeAsync: createDuel } = useContractWrite({
-    address,
-    abi: Duels.abi,
+  const { writeAsync: createDuel } = useWrite({
     functionName: 'createDuel',
   });
 

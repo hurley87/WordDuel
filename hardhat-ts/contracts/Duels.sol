@@ -59,6 +59,8 @@ contract Duels is Ownable {
 
         duels.push(newDuel);
 
+        myDuels[msg.sender].push(duelCounter);
+        
         emit DuelCreated(duelCounter);
     }
 
@@ -114,8 +116,8 @@ contract Duels is Ownable {
         return duels.length;
     }
 
-    function getMyDuelsCount() public view returns (uint256) {
-        return myDuels[msg.sender].length;
+    function getMyDuelsCount(address _wallet) public view returns (uint256) {
+        return myDuels[_wallet].length;
     }
 
     function getDuel(uint256 _duelId) public view returns (Duel memory) {
@@ -134,17 +136,10 @@ contract Duels is Ownable {
         return address(this).balance;
     }
 
-    function getMyDuels() public view returns (Duel[] memory) {
-        uint256 myDuelsCount = getMyDuelsCount();
-        Duel[] memory _myDuels = new Duel[](myDuelsCount);
-
-        for(uint256 i = 0; i < myDuelsCount; i++) {
-            _myDuels[i] = duels[myDuels[msg.sender][i]];
-        }
-
-        return _myDuels;
+    function getMyDuels(address _wallet) public view returns (uint[] memory) {
+        return myDuels[_wallet];
     }
-
+    
     function getDuels() public view returns (Duel[] memory) {
         return duels;
     }

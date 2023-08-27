@@ -103,7 +103,7 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
               <div key={`empty-${j}`} className="w-2" />
             ) : (
               <Button
-                className="bg-pink-700 font-bold hover:bg-pink-500 active:opacity-60 md:p-3 p-2 py-6 rounded-md md:text-xl sm:text-sm text-md font-bold transition-all w-full shadow-2xl h-[58px]"
+                className="font-bold active:opacity-60 md:p-3 p-2 py-6 rounded-md md:text-xl sm:text-sm text-md font-bold transition-all w-full shadow-2xl h-[58px]"
                 disabled={disabled}
                 key={key}
                 onClick={onKeyPress.bind(null, key.toLowerCase())}

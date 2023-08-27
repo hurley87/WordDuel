@@ -8,18 +8,24 @@ const apiKey = process.env.RESEND_API_KEY as string;
 
 const resend = new Resend(apiKey);
 
-export async function POST() {
+export async function POST(req: Request) {
   try {
-    const data = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
-      to: ['dhurls99@gmail.com'],
-      subject: 'Hello world',
-      react: EmailTemplate({ firstName: 'John' }),
-      text: 'Welcome to Acme!',
+    const { email, subject, text } = (await req.json()) as {
+      email: string;
+      subject: string;
+      text: string;
+    };
+    await resend.emails.send({
+      from: 'WordDuel <dhurls99@gmail.com>',
+      to: [email],
+      subject,
+      react: EmailTemplate({ text }),
+      text,
     });
 
-    return NextResponse.json(data);
+    return new NextResponse(JSON.stringify({ success: true }));
   } catch (error) {
-    return NextResponse.json({ error });
+    console.log(error);
+    return new NextResponse(JSON.stringify({ error }));
   }
 }
