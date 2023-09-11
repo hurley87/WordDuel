@@ -3,7 +3,6 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-
 contract Duels is Ownable {
     
     enum DuelState { Created, Accepted, Finished, Cancelled }
@@ -21,7 +20,7 @@ contract Duels is Ownable {
         uint256 moveAmount;
         uint256 potAmount;
         uint256 createdAt;
-        uint256 finishedAt;
+        uint256 moveCount;
         DuelState state;
     }
     
@@ -32,7 +31,7 @@ contract Duels is Ownable {
     event DuelCreated(uint256 id);
     event DuelAccepted(uint256 id);
     event DuelCancelled(uint256 id);
-    event DuelMove(uint256 id, address currentPlayer, string words);
+    event DuelMove(uint256 id, address currentPlayer, string words, uint256 moveCount);
 
     function createDuel(string memory _email, string memory _targetWord) public payable {
         require(msg.value > FEE, "Amount must be greater than 0.00093 ETH");
@@ -51,7 +50,7 @@ contract Duels is Ownable {
             moveAmount: msg.value,
             potAmount: msg.value - FEE,
             createdAt: block.timestamp,
-            finishedAt: 0,
+            moveCount: 0,
             state: DuelState.Created
         });
 
@@ -94,22 +93,32 @@ contract Duels is Ownable {
         require(msg.value == duels[_duelId].moveAmount, "Amount must be equal to the challenger's move amount");
         
         duels[_duelId].potAmount += msg.value;
+
+        duels[_duelId].words = string(abi.encodePacked(duels[_duelId].words, ",", _word));
         
         if(keccak256(abi.encodePacked(_word)) == keccak256(abi.encodePacked(duels[_duelId].targetWord))) {
             duels[_duelId].state = DuelState.Finished;
-            duels[_duelId].finishedAt = block.timestamp;
             payable(duels[_duelId].currentPlayer).transfer(duels[_duelId].potAmount);
 
         } else {
-            duels[_duelId].words = string(abi.encodePacked(duels[_duelId].words, ",", _word));
-
+            
             if(duels[_duelId].currentPlayer == duels[_duelId].challenger) {
                 duels[_duelId].currentPlayer = duels[_duelId].opponent;
             } else {
                 duels[_duelId].currentPlayer = duels[_duelId].challenger;
             }
 
-            emit DuelMove(_duelId, duels[_duelId].currentPlayer, duels[_duelId].words);
+            duels[_duelId].moveCount++;
+
+            if(duels[_duelId].moveCount == 6) {
+                duels[_duelId].state = DuelState.Finished;
+                payable(duels[_duelId].challenger).transfer(duels[_duelId].potAmount / 2);
+                payable(duels[_duelId].opponent).transfer(duels[_duelId].potAmount / 2);
+            } else {
+                emit DuelMove(_duelId, duels[_duelId].currentPlayer, duels[_duelId].words, duels[_duelId].moveCount);
+            }
+
+            
         }
 
     }

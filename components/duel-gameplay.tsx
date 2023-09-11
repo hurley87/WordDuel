@@ -17,10 +17,8 @@ import { flatten } from 'ramda';
 import { words } from '@/lib/wordle';
 import { useSubscribe } from '@/hooks/useSubscribe';
 
-export const DuelGamePlay = ({ duel }) => {
+export const DuelGamePlay = ({ duel, yourTurn }) => {
   const [user, _]: any = useContext(UserContext);
-  const yourTurn =
-    duel?.currentPlayer.toLowerCase() === user?.publicAddress.toLowerCase();
   const emptyGrid = makeEmptyGrid();
   const [grid, setGrid] = useState(emptyGrid);
   const [cursor, setCursor] = useState({ y: 0, x: 0 });
@@ -34,6 +32,7 @@ export const DuelGamePlay = ({ duel }) => {
   const setGame = useCallback(
     async (targetWord, duelWords) => {
       const secret = await decryptWord(targetWord);
+      console.log(secret);
       const words = await decryptWords(duelWords);
       const newGrid = emptyGrid;
 
@@ -65,12 +64,15 @@ export const DuelGamePlay = ({ duel }) => {
     eventName: 'DuelMove',
     listener(logs: any) {
       const words = logs[0]?.args?.words;
+      const moveCount = logs[0]?.args?.moveCount;
+      console.log(words, moveCount);
       setGame(duel.targetWord, words);
       setIsLoading(false);
-      const description = !yourTurn ? 'Your turn' : `Opponent's turn`;
+      const title = !yourTurn ? 'Now Your Turn' : `Now Opponent's Turn`;
+      // description of moves remaining
       return toast({
-        title: 'Word picked!',
-        description,
+        title,
+        description: `${6 - parseInt(moveCount)} moves remaining.`,
       });
     },
   });
@@ -199,21 +201,18 @@ export const DuelGamePlay = ({ duel }) => {
         title: 'You won!',
         description: 'Now claim your prize.',
       });
-      // TODO: handle win
     } else {
       if (isLastRow) {
         toast({
-          title: 'You lost.',
-          description: 'Please try again.',
+          title: 'Game over!',
+          description: 'Pot is split between players.',
           variant: 'destructive',
         });
-        // TODO: handle loss
       }
     }
 
     let word = await encryptWord(guessWord);
 
-    //
     if (won) word = duel.targetWord;
 
     await makeMove?.({
@@ -239,7 +238,7 @@ export const DuelGamePlay = ({ duel }) => {
     <>
       <Badge variant="secondary">{Number(duel.potAmount) / 10 ** 18} ETH</Badge>
       <div className="fixed bottom-5">
-        <Badge>{yourTurn ? 'Your turn' : `Opponent's turn`}</Badge>
+        <Badge>{yourTurn ? 'Your Turn' : `Opponent's Turn`}</Badge>
       </div>
       <div className="flex flex-col gap-6 py-4">
         <Grid data={grid} />

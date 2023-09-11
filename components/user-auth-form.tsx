@@ -15,7 +15,7 @@ import { toast } from '@/components/ui/use-toast';
 import { Icons } from '@/components/icons';
 import { magic } from '@/lib/magic';
 import { useRouter } from 'next/navigation';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '@/lib/UserContext';
 
 type FormData = z.infer<typeof userAuthSchema>;
@@ -28,9 +28,20 @@ export function UserAuthForm() {
   } = useForm<FormData>({
     resolver: zodResolver(userAuthSchema),
   });
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const [_, setUser]: any = useContext(UserContext);
+  const [redirect, setRedirect] = useState<string>('/');
+
+  useEffect(() => {
+    // get the r param from the url
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // if the r param is present, set it in local storage
+    if (urlParams.get('r')) {
+      setRedirect(`/duel/${urlParams.get('r')}`);
+    }
+  }, []);
 
   async function onSubmit(data: FormData) {
     setIsLoading(true);
@@ -58,7 +69,7 @@ export function UserAuthForm() {
       if (res.ok) {
         const userMetadata = await magic.user.getMetadata();
         setUser(userMetadata);
-        router.push('/');
+        router.push(redirect);
       }
 
       setIsLoading(false);

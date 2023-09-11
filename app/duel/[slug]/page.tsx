@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
+import GetStarted from '@/components/get-started';
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [user, _]: any = useContext(UserContext);
@@ -21,6 +22,8 @@ export default function Page({ params }: { params: { slug: string } }) {
     watch: true,
     args: [parseInt(params.slug)],
   });
+  const yourTurn =
+    duel?.currentPlayer?.toLowerCase() === user?.publicAddress?.toLowerCase();
 
   const isChallenger =
     duel?.challenger.toLowerCase() === user?.publicAddress?.toLowerCase();
@@ -45,15 +48,27 @@ export default function Page({ params }: { params: { slug: string } }) {
           Back
         </>
       </Link>
-      {(isLoading || (user && user.loading) || !user) && <Loading />}
-      {user && !user.loading && notOpponentOrChallenger && (
-        <div>you are not a part of this duel</div>
+      {isLoading || (user && user.loading) ? (
+        <Loading />
+      ) : (
+        <>
+          {(isLoading || (user && user.loading) || !user) && (
+            <GetStarted r={duel.id} />
+          )}
+          {user && !user.loading && notOpponentOrChallenger && (
+            <div>you are not a part of this duel</div>
+          )}
+          {isCreated && isChallenger && <DuelCreatedChallenger duel={duel} />}
+          {isCreated && isOpponent && <DuelCreatedOpponent duel={duel} />}
+          {isCancelled && <DuelCancelled />}
+          {user && isFinished && (
+            <DuelFinished duel={duel} yourTurn={yourTurn} />
+          )}
+          {user && !user.loading && isAccepted && (
+            <DuelGamePlay duel={duel} yourTurn={yourTurn} />
+          )}
+        </>
       )}
-      {isCreated && isChallenger && <DuelCreatedChallenger duel={duel} />}
-      {isCreated && isOpponent && <DuelCreatedOpponent duel={duel} />}
-      {isCancelled && <DuelCancelled />}
-      {isFinished && <DuelFinished duel={duel} />}
-      {user && !user.loading && isAccepted && <DuelGamePlay duel={duel} />}
     </div>
   );
 }
