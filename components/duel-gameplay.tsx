@@ -5,9 +5,11 @@ import {
   getNextRow,
   getRowWord,
   makeEmptyGrid,
+  decryptWord,
+  decryptWords,
 } from '@/lib/wordle';
 import { Badge } from '@/components/ui/badge';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useCallback } from 'react';
 import Keyboard, { isMappableKey } from './wordle/keyboard';
 import { toast } from './ui/use-toast';
 import Grid from './wordle/grid';
@@ -27,82 +29,55 @@ export const DuelGamePlay = ({ duel }) => {
   const { writeAsync: makeMove } = useWrite({
     functionName: 'makeMove',
   });
+  const [isGameSet, setIsGameSet] = useState(false);
 
-  async function decryptWord(ciphertext) {
-    const result = await fetch('/api/decrypt', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ciphertext,
-      }),
-    });
-    const { decryptedText } = await result.json();
-    return decryptedText;
-  }
+  const setGame = useCallback(
+    async (targetWord, duelWords) => {
+      const secret = await decryptWord(targetWord);
+      const words = await decryptWords(duelWords);
+      const newGrid = emptyGrid;
 
-  // This function decrypts an array of words
-  async function decryptWords(words) {
-    const wordArr = words.split(',');
-    wordArr.shift();
-    for (let i = 0; i < wordArr.length; i++) {
-      wordArr[i] = await decryptWord(wordArr[i]);
-    }
-    return wordArr;
-  }
+      for (let i = 0; i < words.length; i++) {
+        for (let j = 0; j < words[i].length; j++) {
+          const children = words[i][j];
+          let variant = 'absent' as 'present' | 'empty' | 'correct' | 'absent';
+          if (secret.includes(children)) variant = 'present';
+          if (secret[j] === children) variant = 'correct';
 
-  async function setGame(duelWords) {
-    setIsLoading(true);
-    const secret = await decryptWord(duel.targetWord);
-    const words = await decryptWords(duelWords);
-    const newGrid = emptyGrid;
-    console.log(secret);
-    console.log(words);
-    console.log(duel.targetWord);
-
-    for (let i = 0; i < words.length; i++) {
-      for (let j = 0; j < words[i].length; j++) {
-        // console.log(words[i][j]);
-        const children = words[i][j];
-        let variant = 'absent' as 'present' | 'empty' | 'correct' | 'absent';
-        if (secret.includes(children)) variant = 'present';
-        // check if "children" has the same index as "secret"
-        if (secret[j] === children) variant = 'correct';
-
-        newGrid[i][j] = {
-          cursor: { y: i, x: j },
-          children: words[i][j],
-          variant,
-        };
+          newGrid[i][j] = {
+            cursor: { y: i, x: j },
+            children: words[i][j],
+            variant,
+          };
+        }
       }
-    }
 
-    console.log(newGrid);
-    console.log('SET GAME');
-    setGrid(newGrid);
-    setCursor({ y: words.length, x: 0 });
-    setSecret(secret);
-    setIsLoading(false);
-  }
+      setGrid(newGrid);
+      setCursor({ y: words.length, x: 0 });
+      setSecret(secret);
+      setIsLoading(false);
+      setIsGameSet(true);
+    },
+    [emptyGrid]
+  );
 
   useSubscribe({
     eventName: 'DuelMove',
     listener(logs: any) {
       const words = logs[0]?.args?.words;
-      setGame(words);
+      setGame(duel.targetWord, words);
       setIsLoading(false);
       const description = !yourTurn ? 'Your turn' : `Opponent's turn`;
       return toast({
-        title: 'Word guessed!',
+        title: 'Word picked!',
         description,
       });
     },
   });
 
   useEffect(() => {
-    setGame(duel.words);
-  }, [duel.targetWord]);
+    if (!isGameSet) setGame(duel.targetWord, duel.words);
+  }, [duel.targetWord, duel.words, isGameSet, setGame]);
 
   function insert(key: string) {
     const newGrid = grid;

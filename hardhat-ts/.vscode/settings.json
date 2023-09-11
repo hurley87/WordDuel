@@ -7,5 +7,6 @@
     "source.fixAll.format": true
   },
   "prettier.configPath": ".prettierrc.js",
-  "solidity.remappingsUnix": ["@openzeppelin/=node_modules/@openzeppelin/"]
+  "solidity.remappingsUnix": ["@openzeppelin/=node_modules/@openzeppelin/"],
+  "solidity.packageDefaultDependenciesDirectory": "node_modules"
 }

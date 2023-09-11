@@ -1,6 +1,29 @@
 import { without } from 'ramda';
 import { GameTile } from '@/interfaces';
 
+export async function decryptWord(ciphertext) {
+  const result = await fetch('/api/decrypt', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      ciphertext,
+    }),
+  });
+  const { decryptedText } = await result.json();
+  return decryptedText;
+}
+
+export async function decryptWords(words) {
+  const wordArr = words.split(',');
+  wordArr.shift();
+  for (let i = 0; i < wordArr.length; i++) {
+    wordArr[i] = await decryptWord(wordArr[i]);
+  }
+  return wordArr;
+}
+
 export function getNextTile(tile: GameTile, secret: string): GameTile {
   const key = tile.children.trim().toLowerCase();
 

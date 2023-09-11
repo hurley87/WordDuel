@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-// Uncomment this line to use console.log
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "hardhat/console.sol";
 
 
 contract Duels is Ownable {

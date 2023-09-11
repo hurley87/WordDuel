@@ -14,8 +14,6 @@ export async function POST(req: Request) {
       process.env.SECRET_KEY
     ).toString();
 
-    console.log('Ciphertext:', ciphertext);
-
     return new NextResponse(JSON.stringify({ ciphertext }));
   } catch (error) {
     console.log(error);
