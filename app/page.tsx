@@ -27,8 +27,6 @@ export default function Home() {
     });
   }
 
-  console.log(user);
-
   return (
     <div className="flex flex-col">
       <header className="sticky top-0 z-40 border-b bg-background">
@@ -49,7 +47,7 @@ export default function Home() {
             />
           ) : (
             <Link href="/login">
-              <Button variant="outline">Login</Button>
+              <Button>Get Started</Button>
             </Link>
           )}
         </div>

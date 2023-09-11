@@ -15,6 +15,8 @@ import { toast } from '@/components/ui/use-toast';
 import { Icons } from '@/components/icons';
 import { magic } from '@/lib/magic';
 import { useRouter } from 'next/navigation';
+import { useContext } from 'react';
+import { UserContext } from '@/lib/UserContext';
 
 type FormData = z.infer<typeof userAuthSchema>;
 
@@ -28,6 +30,7 @@ export function UserAuthForm() {
   });
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();
+  const [_, setUser]: any = useContext(UserContext);
 
   async function onSubmit(data: FormData) {
     setIsLoading(true);
@@ -35,10 +38,29 @@ export function UserAuthForm() {
     try {
       const email = data.email.toLowerCase();
 
-      await magic.auth.loginWithEmailOTP({
+      // Log in using our email with Magic and store the returned DID token in a variable
+      const didToken = await magic.auth.loginWithMagicLink({
         email,
       });
-      router.push('/');
+
+      console.log(didToken);
+
+      // Send this token to our validation endpoint
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${didToken}`,
+        },
+      });
+
+      // If successful, update our user state with their metadata and route to the dashboard
+      if (res.ok) {
+        const userMetadata = await magic.user.getMetadata();
+        setUser(userMetadata);
+        router.push('/');
+      }
+
       setIsLoading(false);
     } catch {
       setIsLoading(false);

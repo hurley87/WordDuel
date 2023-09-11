@@ -39,7 +39,7 @@ function Duels() {
               <CardHeader>
                 <CardTitle>New Duel</CardTitle>
                 <CardDescription>
-                  Challenge a friend to a duel. The winner takes all.
+                  Challenge a friend to a duel where the winner takes all.
                 </CardDescription>
               </CardHeader>
               <CardFooter>
@@ -52,7 +52,7 @@ function Duels() {
           <Container>
             <Card>
               <CardHeader>
-                <CardTitle>New Duel</CardTitle>
+                <CardTitle>Current Duels</CardTitle>
                 <CardDescription>
                   Challenge a friend to a duel. The winner takes all.
                 </CardDescription>

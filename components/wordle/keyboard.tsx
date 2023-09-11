@@ -92,10 +92,10 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
   );
 
   return (
-    <div className="grid h-min select-none gap-2 w-full m-0 pt-8 p-1">
+    <div className="grid h-min select-none gap-2 w-full m-0">
       {KEYS.map((row, i) => (
         <div
-          className="flex touch-manipulation justify-evenly gap-2"
+          className="flex touch-manipulation justify-evenly gap-1"
           key={`row-${i}`}
         >
           {row.map((key, j) =>
@@ -103,7 +103,7 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
               <div key={`empty-${j}`} className="w-2" />
             ) : (
               <Button
-                className="font-bold active:opacity-60 md:p-3 p-2 py-6 rounded-md md:text-xl sm:text-sm text-md font-bold transition-all w-full shadow-2xl h-[58px]"
+                className="font-bold active:opacity-60 md:p-3 p-2 py-4 rounded-md md:text-xl sm:text-sm text-md font-bold transition-all w-full shadow-2xl h-[58px]"
                 disabled={disabled}
                 key={key}
                 onClick={onKeyPress.bind(null, key.toLowerCase())}

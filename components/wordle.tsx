@@ -190,7 +190,7 @@ export default function Wordle() {
   console.log(secret);
 
   return (
-    <main className="m-auto flex max-w-lg flex-1 flex-col justify-between px-1 py-4 md:py-0">
+    <main className="m-auto flex max-w-lg flex-1 flex-col gap-4 justify-between px-1 py-4 md:py-0">
       <Grid data={grid} />
       <Keyboard
         usedKeys={usedKeys}

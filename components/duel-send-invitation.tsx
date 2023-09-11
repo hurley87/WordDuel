@@ -83,7 +83,7 @@ export const DuelSendInvitation = ({ duel }: { duel: any }) => {
           className="w-full"
         >
           {isSending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-          Send Email to {duel.email}
+          Email {duel.email}
         </Button>
       </CardFooter>
     </Card>

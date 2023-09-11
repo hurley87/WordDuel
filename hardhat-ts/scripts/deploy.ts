@@ -1,12 +1,12 @@
 const hre = require('hardhat');
 
 async function main() {
-  const NFT = await hre.ethers.getContractFactory('Duels');
-  const nft = await NFT.deploy();
+  const Duels = await hre.ethers.getContractFactory('Duels');
+  const duels = await Duels.deploy();
 
-  await nft.waitForDeployment();
+  await duels.waitForDeployment();
 
-  console.log('NFT Contract Deployed at ' + nft.target);
+  console.log('Contract Deployed at ' + duels.target);
 }
 
 main().catch((error) => {

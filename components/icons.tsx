@@ -27,6 +27,7 @@ import {
   Swords,
   RefreshCcw,
   Delete,
+  Gem,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -61,4 +62,5 @@ export const Icons = {
   refresh: RefreshCcw,
   swords: Swords,
   delete: Delete,
+  gem: Gem,
 };

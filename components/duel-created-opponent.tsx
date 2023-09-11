@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Button } from './ui/button';
 import {
   Card,
@@ -10,23 +10,21 @@ import {
 import { useWrite } from '@/hooks/useWrite';
 import { Icons } from './icons';
 import { Container } from './container';
-import { parseEther } from 'viem';
 
 export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   const { writeAsync: acceptDuel } = useWrite({
     functionName: 'acceptDuel',
   });
   const [isAccepting, setIsAccepting] = useState<boolean>(false);
-  const amount = Number(duel.moveAmount) / 10 ** 18;
+  const amount = (Number(duel.moveAmount) / 10 ** 18).toString();
 
   async function handleCancellation() {
     setIsAccepting(true);
-    console.log(amount.toString());
-    console.log(duel.id.toString());
+
     try {
       await acceptDuel?.({
         args: [duel.id.toString()],
-        value: parseEther(amount.toString()),
+        value: duel.moveAmount,
       });
     } catch (e) {
       console.log(e);

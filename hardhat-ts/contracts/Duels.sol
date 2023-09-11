@@ -16,9 +16,9 @@ contract Duels is Ownable {
         uint id;
         address challenger;
         address opponent;
+        address currentPlayer;
         string email;
         string targetWord;
-        address currentPlayer;
         string words;
         uint256 moveAmount;
         uint256 potAmount;
@@ -38,7 +38,7 @@ contract Duels is Ownable {
     event DuelMove(uint256 id, address currentPlayer);
 
     function createDuel(string memory _email, string memory _targetWord) public payable {
-        require(msg.value > 0, "Amount must be greater than 0");
+        require(msg.value > FEE, "Amount must be greater than 0.00093 ETH");
 
         uint duelCounter = duels.length;
 
@@ -49,8 +49,9 @@ contract Duels is Ownable {
             email: _email,
             targetWord: _targetWord,
             currentPlayer: msg.sender,
+
             words: "",
-            moveAmount: msg.value - FEE,
+            moveAmount: msg.value,
             potAmount: msg.value - FEE,
             createdAt: block.timestamp,
             finishedAt: 0,
@@ -60,6 +61,8 @@ contract Duels is Ownable {
         duels.push(newDuel);
 
         myDuels[msg.sender].push(duelCounter);
+
+        payable(owner()).transfer(FEE);
         
         emit DuelCreated(duelCounter);
     }
@@ -77,7 +80,7 @@ contract Duels is Ownable {
 
     function acceptDuel(uint256 _duelId) public payable {
         require(duels[_duelId].state == DuelState.Created, "Duel must not be accepted yet");
-        // require(msg.value == duels[_duelId].moveAmount, "Amount must be equal to the challenger's move amount");
+        require(msg.value == duels[_duelId].moveAmount, "Amount must be equal to the challenger's move amount");
 
         duels[_duelId].opponent = msg.sender;
         duels[_duelId].potAmount += msg.value;
@@ -88,10 +91,13 @@ contract Duels is Ownable {
         emit DuelAccepted(_duelId);
     }
 
-    function makeMove(uint256 _duelId, string memory _word) public {
+    function makeMove(uint256 _duelId, string memory _word) public payable {
         require(duels[_duelId].state == DuelState.Accepted, "Duel must be accepted");
         require(duels[_duelId].currentPlayer == msg.sender, "Only the current player can make a move");
-
+        require(msg.value == duels[_duelId].moveAmount, "Amount must be equal to the challenger's move amount");
+        
+        duels[_duelId].potAmount += msg.value;
+        
         if(keccak256(abi.encodePacked(_word)) == keccak256(abi.encodePacked(duels[_duelId].targetWord))) {
             duels[_duelId].state = DuelState.Finished;
             duels[_duelId].finishedAt = block.timestamp;
@@ -124,14 +130,6 @@ contract Duels is Ownable {
         return duels[_duelId];
     }
 
-    function withdraw() public onlyOwner {
-        payable(msg.sender).transfer(address(this).balance);
-    }
-    
-    function withdrawPortion(uint256 _amount) public onlyOwner {
-        payable(msg.sender).transfer(_amount);
-    }
-
     function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
@@ -144,4 +142,23 @@ contract Duels is Ownable {
         return duels;
     }
 
+    function getDuelsByEmail(string memory _email) public view returns (Duel[] memory) {
+        uint256 count = 0;
+        for(uint256 i = 0; i < duels.length; i++) {
+            if(keccak256(abi.encodePacked(duels[i].email)) == keccak256(abi.encodePacked(_email))) {
+                count++;
+            }
+        }
+
+        Duel[] memory result = new Duel[](count);
+        uint256 index = 0;
+        for(uint256 i = 0; i < duels.length; i++) {
+            if(keccak256(abi.encodePacked(duels[i].email)) == keccak256(abi.encodePacked(_email))) {
+                result[index] = duels[i];
+                index++;
+            }
+        }
+
+        return result;
+    }
 }

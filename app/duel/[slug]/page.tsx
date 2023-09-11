@@ -22,10 +22,6 @@ export default function Page({ params }: { params: { slug: string } }) {
     args: [parseInt(params.slug)],
   });
 
-  console.log(user);
-  console.log(duel);
-  console.log(isLoading);
-
   const isChallenger =
     duel?.challenger.toLowerCase() === user?.publicAddress?.toLowerCase();
   const isOpponent = duel?.email.toLowerCase() === user?.email?.toLowerCase();
@@ -49,13 +45,15 @@ export default function Page({ params }: { params: { slug: string } }) {
           Back
         </>
       </Link>
-      {isLoading && <Loading />}
-      {notOpponentOrChallenger && <div>you are not a part of this duel</div>}
+      {(isLoading || (user && user.loading) || !user) && <Loading />}
+      {user && !user.loading && notOpponentOrChallenger && (
+        <div>you are not a part of this duel</div>
+      )}
       {isCreated && isChallenger && <DuelCreatedChallenger duel={duel} />}
       {isCreated && isOpponent && <DuelCreatedOpponent duel={duel} />}
       {isCancelled && <DuelCancelled />}
       {isFinished && <DuelFinished duel={duel} />}
-      {isAccepted && <DuelAccepted duel={duel} />}
+      {user && !user.loading && isAccepted && <DuelAccepted duel={duel} />}
     </div>
   );
 }
