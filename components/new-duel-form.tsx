@@ -32,8 +32,6 @@ export function NewDuelForm() {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();
   const [user, _]: any = React.useContext(UserContext);
-  const address = process.env
-    .NEXT_PUBLIC_DUELS_CONTRACT_ADDRESS as `0x${string}`;
 
   useSubscribe({
     eventName: 'DuelCreated',

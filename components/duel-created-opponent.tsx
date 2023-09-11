@@ -10,6 +10,8 @@ import {
 import { useWrite } from '@/hooks/useWrite';
 import { Icons } from './icons';
 import { Container } from './container';
+import { useSubscribe } from '@/hooks/useSubscribe';
+import { toast } from './ui/use-toast';
 
 export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   const { writeAsync: acceptDuel } = useWrite({
@@ -17,6 +19,20 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   });
   const [isAccepting, setIsAccepting] = useState<boolean>(false);
   const amount = (Number(duel.moveAmount) / 10 ** 18).toString();
+
+  useSubscribe({
+    eventName: 'DuelAccepted',
+    listener(logs: any) {
+      const duelId = logs[0]?.args?.id?.toString();
+      if (duelId) {
+        setIsAccepting(false);
+        return toast({
+          title: 'Duel accepted!',
+          description: 'Good luck!',
+        });
+      }
+    },
+  });
 
   async function handleCancellation() {
     setIsAccepting(true);
@@ -27,10 +43,13 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
         value: duel.moveAmount,
       });
     } catch (e) {
-      console.log(e);
+      const description = e?.data?.message || e?.message || e;
+      return toast({
+        title: 'There was a problem creating your duel.',
+        description,
+        variant: 'destructive',
+      });
     }
-
-    setIsAccepting(false);
   }
 
   return (

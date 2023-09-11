@@ -33,9 +33,8 @@ contract Duels is Ownable {
 
     event DuelCreated(uint256 id);
     event DuelAccepted(uint256 id);
-    event DuelFinished(uint256 id, address winner);
     event DuelCancelled(uint256 id);
-    event DuelMove(uint256 id, address currentPlayer);
+    event DuelMove(uint256 id, address currentPlayer, string words);
 
     function createDuel(string memory _email, string memory _targetWord) public payable {
         require(msg.value > FEE, "Amount must be greater than 0.00093 ETH");
@@ -103,7 +102,6 @@ contract Duels is Ownable {
             duels[_duelId].finishedAt = block.timestamp;
             payable(duels[_duelId].currentPlayer).transfer(duels[_duelId].potAmount);
 
-            emit DuelFinished(_duelId, duels[_duelId].currentPlayer);
         } else {
             duels[_duelId].words = string(abi.encodePacked(duels[_duelId].words, ",", _word));
 
@@ -113,7 +111,7 @@ contract Duels is Ownable {
                 duels[_duelId].currentPlayer = duels[_duelId].challenger;
             }
 
-            emit DuelMove(_duelId, duels[_duelId].currentPlayer);
+            emit DuelMove(_duelId, duels[_duelId].currentPlayer, duels[_duelId].words);
         }
 
     }

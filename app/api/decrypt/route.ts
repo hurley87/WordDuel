@@ -8,11 +8,8 @@ export async function POST(req: Request) {
     const { ciphertext } = (await req.json()) as {
       ciphertext: string;
     };
-
     const bytes = CryptoJS.AES.decrypt(ciphertext, process.env.SECRET_KEY);
     const decryptedText = bytes.toString(CryptoJS.enc.Utf8);
-
-    console.log('Decrypted Text:', decryptedText);
 
     return new NextResponse(JSON.stringify({ decryptedText }));
   } catch (error) {

@@ -13,8 +13,9 @@ import { toast } from './ui/use-toast';
 import Grid from './wordle/grid';
 import { flatten } from 'ramda';
 import { words } from '@/lib/wordle';
+import { useSubscribe } from '@/hooks/useSubscribe';
 
-export const DuelAccepted = ({ duel }) => {
+export const DuelGamePlay = ({ duel }) => {
   const [user, _]: any = useContext(UserContext);
   const yourTurn =
     duel?.currentPlayer.toLowerCase() === user?.publicAddress.toLowerCase();
@@ -45,33 +46,62 @@ export const DuelAccepted = ({ duel }) => {
   async function decryptWords(words) {
     const wordArr = words.split(',');
     wordArr.shift();
-    console.log(wordArr);
     for (let i = 0; i < wordArr.length; i++) {
       wordArr[i] = await decryptWord(wordArr[i]);
     }
     return wordArr;
   }
 
-  useEffect(() => {
-    async function loadGame() {
-      setIsLoading(true);
-      const secret = await decryptWord(duel.targetWord);
-      console.log(secret);
-      const words = await decryptWords(duel.words);
-      for (let i = 0; i < words.length; i++) {
-        for (let j = 0; j < words[i].length; j++) {
-          console.log(words[i][j]);
-          insert(words[i][j]);
-          // pause for 1 second
-          // await new Promise((r) => setTimeout(r, 1000));
-        }
-      }
-      console.log(words);
+  async function setGame(duelWords) {
+    setIsLoading(true);
+    const secret = await decryptWord(duel.targetWord);
+    const words = await decryptWords(duelWords);
+    const newGrid = emptyGrid;
+    console.log(secret);
+    console.log(words);
+    console.log(duel.targetWord);
 
-      setSecret(secret);
-      setIsLoading(false);
+    for (let i = 0; i < words.length; i++) {
+      for (let j = 0; j < words[i].length; j++) {
+        // console.log(words[i][j]);
+        const children = words[i][j];
+        let variant = 'absent' as 'present' | 'empty' | 'correct' | 'absent';
+        if (secret.includes(children)) variant = 'present';
+        // check if "children" has the same index as "secret"
+        if (secret[j] === children) variant = 'correct';
+
+        newGrid[i][j] = {
+          cursor: { y: i, x: j },
+          children: words[i][j],
+          variant,
+        };
+      }
     }
-    loadGame();
+
+    console.log(newGrid);
+    console.log('SET GAME');
+    setGrid(newGrid);
+    setCursor({ y: words.length, x: 0 });
+    setSecret(secret);
+    setIsLoading(false);
+  }
+
+  useSubscribe({
+    eventName: 'DuelMove',
+    listener(logs: any) {
+      const words = logs[0]?.args?.words;
+      setGame(words);
+      setIsLoading(false);
+      const description = !yourTurn ? 'Your turn' : `Opponent's turn`;
+      return toast({
+        title: 'Word guessed!',
+        description,
+      });
+    },
+  });
+
+  useEffect(() => {
+    setGame(duel.words);
   }, [duel.targetWord]);
 
   function insert(key: string) {
@@ -91,7 +121,6 @@ export const DuelAccepted = ({ duel }) => {
         y: cursor.y,
         x: cursor.x + 1,
       };
-      console.log(newCursor);
       setCursor(newCursor);
     }
   }
@@ -146,11 +175,10 @@ export const DuelAccepted = ({ duel }) => {
   }
 
   async function guess() {
+    setIsLoading(true);
     if (cursor.x !== grid[0].length - 1) {
       return { status: 'playing' };
     }
-
-    console.log(grid);
 
     const guessWord = getRowWord(grid[cursor.y]);
 
@@ -159,8 +187,6 @@ export const DuelAccepted = ({ duel }) => {
         status: 'playing',
       };
     }
-
-    console.log(guessWord);
 
     try {
       const result = words.includes(guessWord);
@@ -210,7 +236,10 @@ export const DuelAccepted = ({ duel }) => {
       }
     }
 
-    const word = await encryptWord(guessWord);
+    let word = await encryptWord(guessWord);
+
+    //
+    if (won) word = duel.targetWord;
 
     await makeMove?.({
       args: [duel.id.toString(), word],
@@ -223,8 +252,6 @@ export const DuelAccepted = ({ duel }) => {
       attempts,
     };
   }
-
-  console.log(grid);
 
   const usedKeys: any = [];
   const allKeys = flatten(grid);
@@ -243,7 +270,7 @@ export const DuelAccepted = ({ duel }) => {
         <Grid data={grid} />
         <Keyboard
           usedKeys={usedKeys}
-          disabled={isLoading || !yourTurn}
+          disabled={isLoading || !yourTurn || duel.state === 2}
           onKeyPress={handleKeyPress}
         />
       </div>

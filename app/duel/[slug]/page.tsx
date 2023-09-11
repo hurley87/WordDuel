@@ -1,6 +1,6 @@
 'use client';
 
-import { DuelAccepted } from '@/components/duel-accepted';
+import { DuelGamePlay } from '@/components/duel-gameplay';
 import { DuelCancelled } from '@/components/duel-cancelled';
 import { DuelCreatedChallenger } from '@/components/duel-created-challenger';
 import { DuelCreatedOpponent } from '@/components/duel-created-opponent';
@@ -53,7 +53,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       {isCreated && isOpponent && <DuelCreatedOpponent duel={duel} />}
       {isCancelled && <DuelCancelled />}
       {isFinished && <DuelFinished duel={duel} />}
-      {user && !user.loading && isAccepted && <DuelAccepted duel={duel} />}
+      {user && !user.loading && isAccepted && <DuelGamePlay duel={duel} />}
     </div>
   );
 }

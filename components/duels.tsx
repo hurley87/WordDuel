@@ -24,9 +24,6 @@ function Duels() {
     functionName: 'getMyDuels',
     args: [user?.publicAddress],
   });
-
-  console.log(isLoading);
-  console.log(duels);
   const noDuels = !isLoading && duels?.length === 0;
   const hasDuels = !isLoading && duels?.length > 0;
 
