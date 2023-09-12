@@ -34,7 +34,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
     },
   });
 
-  async function handleCancellation() {
+  async function handleAcceptDuel() {
     setIsAccepting(true);
 
     try {
@@ -67,7 +67,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
           <CardFooter>
             <Button
               disabled={isAccepting}
-              onClick={handleCancellation}
+              onClick={handleAcceptDuel}
               className="w-full"
               size="lg"
             >

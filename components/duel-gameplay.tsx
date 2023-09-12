@@ -18,7 +18,7 @@ import { words } from '@/lib/wordle';
 import { useSubscribe } from '@/hooks/useSubscribe';
 
 export const DuelGamePlay = ({ duel, yourTurn }) => {
-  const [user, _]: any = useContext(UserContext);
+  console.log(duel);
   const emptyGrid = makeEmptyGrid();
   const [grid, setGrid] = useState(emptyGrid);
   const [cursor, setCursor] = useState({ y: 0, x: 0 });

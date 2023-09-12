@@ -12,12 +12,10 @@ import {
 import { Icons } from './icons';
 import { magic } from '@/lib/magic';
 import { toast } from '@/components/ui/use-toast';
+import { formatAddress } from '@/lib/utils';
+import { Badge } from './ui/badge';
 
-const formatAddress = (address: string) => {
-  return address.slice(0, 6) + '...' + address.slice(-4);
-};
-
-export function UserAccountNav({ user, setUser }: any) {
+export function UserAccountNav({ user, setUser, balance }: any) {
   async function copyAddress() {
     try {
       await navigator.clipboard.writeText(user.publicAddress);
@@ -65,7 +63,12 @@ export function UserAccountNav({ user, setUser }: any) {
             className="cursor-pointer"
             href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${user.publicAddress}`}
           >
-            Transactions
+            <div className="flex flex-row gap-2">
+              <p>Balance</p>
+              <Badge className="text-xs" variant="secondary">
+                {balance.toFixed(2)} ETH
+              </Badge>
+            </div>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

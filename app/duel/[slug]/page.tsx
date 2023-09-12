@@ -8,15 +8,25 @@ import { DuelFinished } from '@/components/duel-finished';
 import Loading from '@/components/loading';
 import { useRead } from '@/hooks/useRead';
 import { UserContext } from '@/lib/UserContext';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import GetStarted from '@/components/get-started';
+import NotInvited from '@/components/not-invited';
+import { toast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
+import { useBalance } from 'wagmi';
+import GetETH from '@/components/get-eth';
+import { Badge } from '@/components/ui/badge';
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [user, _]: any = useContext(UserContext);
+  const { data } = useBalance({
+    address: user?.publicAddress,
+  });
+  const balance = parseFloat(data?.formatted || '0');
   const { data: duel, isLoading } = useRead({
     functionName: 'getDuel',
     watch: true,
@@ -26,13 +36,27 @@ export default function Page({ params }: { params: { slug: string } }) {
     duel?.currentPlayer?.toLowerCase() === user?.publicAddress?.toLowerCase();
 
   const isChallenger =
-    duel?.challenger.toLowerCase() === user?.publicAddress?.toLowerCase();
+    duel?.challenger?.toLowerCase() === user?.publicAddress?.toLowerCase();
   const isOpponent = duel?.email.toLowerCase() === user?.email?.toLowerCase();
   const notOpponentOrChallenger = !isChallenger && !isOpponent;
   const isCreated = duel?.state === 0;
   const isAccepted = duel?.state === 1;
   const isCancelled = duel?.state === 3;
   const isFinished = duel?.state === 2;
+  const router = useRouter();
+  const amount = Number(duel.moveAmount) / 10 ** 18;
+  const tooPoor = balance * 5 < amount;
+
+  useEffect(() => {
+    if (!isLoading && !duel) {
+      toast({
+        title: `Duel not found.`,
+        description: 'Try creating a new duel.',
+        variant: 'destructive',
+      });
+      router.push('/');
+    }
+  }, [isLoading, duel, router]);
 
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
@@ -52,14 +76,27 @@ export default function Page({ params }: { params: { slug: string } }) {
         <Loading />
       ) : (
         <>
+          {tooPoor && (
+            <div className="flex flex-col gap-6">
+              <div className="mx-auto">
+                <Badge variant="destructive">
+                  You need to deposit {(Number(duel.moveAmount) / 10 ** 18) * 5}{' '}
+                  ETH
+                </Badge>
+              </div>
+              <GetETH />
+            </div>
+          )}
           {(isLoading || (user && user.loading) || !user) && (
             <GetStarted r={duel.id} />
           )}
           {user && !user.loading && notOpponentOrChallenger && (
-            <div>you are not a part of this duel</div>
+            <NotInvited duel={duel} />
           )}
           {isCreated && isChallenger && <DuelCreatedChallenger duel={duel} />}
-          {isCreated && isOpponent && <DuelCreatedOpponent duel={duel} />}
+          {isCreated && isOpponent && !tooPoor && (
+            <DuelCreatedOpponent duel={duel} />
+          )}
           {isCancelled && <DuelCancelled />}
           {user && isFinished && (
             <DuelFinished duel={duel} yourTurn={yourTurn} />

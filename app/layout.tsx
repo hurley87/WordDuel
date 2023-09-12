@@ -60,7 +60,7 @@ export const metadata = {
     title: 'WordDuel',
     description: 'P2P Social Gaming',
     images: [`https://www.mojo.club/og.jpg`],
-    creator: '@shadcn',
+    creator: '@davidhurley87',
   },
   icons: {
     icon: '/favicon.ico',
