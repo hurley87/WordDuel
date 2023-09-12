@@ -28,7 +28,8 @@ export default function NewDuelPage() {
       <div className="mx-auto flex w-full flex-col justify-center space-y-4 sm:w-[350px]">
         <div className="flex flex-col space-y-2">
           <p className="text-sm text-muted-foreground">
-            Set the stakes and invite your opponent by email.
+            Declare your opponent by email and the amount of ETH needed for each
+            move.
           </p>
         </div>
         <NewDuelForm />

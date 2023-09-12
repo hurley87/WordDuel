@@ -130,7 +130,7 @@ export function NewDuelForm() {
           )}
         </div>
         <div className="grid gap-1">
-          <Label htmlFor="amount">Amount</Label>
+          <Label htmlFor="amount">ETH Amount</Label>
           <Input
             id="amount"
             placeholder="0.01"
