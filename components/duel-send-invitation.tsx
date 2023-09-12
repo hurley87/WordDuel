@@ -40,7 +40,6 @@ export const DuelSendInvitation = ({ duel }: { duel: any }) => {
       }),
     });
     const data = await res.json();
-    console.log(data);
     toast({
       title: 'Invitation sent!',
       description: 'Your opponent will receive an email shortly.',

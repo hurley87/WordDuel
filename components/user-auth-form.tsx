@@ -54,8 +54,6 @@ export function UserAuthForm() {
         email,
       });
 
-      console.log(didToken);
-
       // Send this token to our validation endpoint
       const res = await fetch('/api/login', {
         method: 'POST',

@@ -187,8 +187,6 @@ export default function Wordle() {
     if (tile.children !== '' && tile.variant !== 'empty') usedKeys.push(tile);
   }
 
-  console.log(secret);
-
   return (
     <main className="m-auto flex max-w-lg flex-1 flex-col gap-4 justify-between px-1 py-4 md:py-0">
       <Grid data={grid} />

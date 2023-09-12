@@ -18,7 +18,6 @@ import { words } from '@/lib/wordle';
 import { useSubscribe } from '@/hooks/useSubscribe';
 
 export const DuelGamePlay = ({ duel, yourTurn }) => {
-  console.log(duel);
   const emptyGrid = makeEmptyGrid();
   const [grid, setGrid] = useState(emptyGrid);
   const [cursor, setCursor] = useState({ y: 0, x: 0 });
@@ -65,7 +64,6 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
     listener(logs: any) {
       const words = logs[0]?.args?.words;
       const moveCount = logs[0]?.args?.moveCount;
-      console.log(words, moveCount);
       setGame(duel.targetWord, words);
       setIsLoading(false);
       const title = !yourTurn ? 'Now Your Turn' : `Now Opponent's Turn`;
