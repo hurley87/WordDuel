@@ -1,5 +1,6 @@
+'use client';
+
 import { useWrite } from '@/hooks/useWrite';
-import { UserContext } from '@/lib/UserContext';
 import {
   findLastNonEmptyTile,
   getNextRow,
@@ -9,7 +10,7 @@ import {
   decryptWords,
 } from '@/lib/wordle';
 import { Badge } from '@/components/ui/badge';
-import { useContext, useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Keyboard, { isMappableKey } from './wordle/keyboard';
 import { toast } from './ui/use-toast';
 import Grid from './wordle/grid';
@@ -23,7 +24,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
   const [cursor, setCursor] = useState({ y: 0, x: 0 });
   const [isLoading, setIsLoading] = useState(false);
   const [secret, setSecret] = useState('');
-  const { writeAsync: makeMove } = useWrite({
+  const { write: makeMove } = useWrite({
     functionName: 'makeMove',
   });
   const [isGameSet, setIsGameSet] = useState(false);
@@ -213,8 +214,8 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
 
     if (won) word = duel.targetWord;
 
-    await makeMove?.({
-      args: [duel.id.toString(), word],
+    makeMove?.({
+      args: [duel?.id.toString(), word],
       value: duel.moveAmount,
     });
 

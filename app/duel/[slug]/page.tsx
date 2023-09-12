@@ -88,7 +88,7 @@ export default function Page({ params }: { params: { slug: string } }) {
             </div>
           )}
           {(isLoading || (user && user.loading) || !user) && (
-            <GetStarted r={duel.id} />
+            <GetStarted r={duel?.id} />
           )}
           {user && !user.loading && notOpponentOrChallenger && (
             <NotInvited duel={duel} />

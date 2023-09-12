@@ -49,7 +49,7 @@ function Duels() {
               {invites
                 ?.filter((invite) => invite.state === 0)
                 .map((duel: any) => (
-                  <Duel key={parseInt(duel.id)} duelId={duel.id} />
+                  <Duel key={parseInt(duel?.id)} duelId={duel?.id} />
                 ))}
             </CardContent>
           </Card>

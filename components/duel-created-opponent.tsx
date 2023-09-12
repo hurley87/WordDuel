@@ -39,7 +39,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
 
     try {
       await acceptDuel?.({
-        args: [duel.id.toString()],
+        args: [duel?.id.toString()],
         value: duel.moveAmount,
       });
     } catch (e) {
@@ -59,8 +59,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
           <CardHeader>
             <CardDescription>
               For each guess you make {`you'll`} add {amount} ETH to the pot.
-              The person who guesses the right word first wins the duel and the
-              entire pot.
+              The person who guesses the right word first wins the entire pot.
             </CardDescription>
           </CardHeader>
           <CardFooter>
