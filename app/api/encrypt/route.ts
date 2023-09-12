@@ -16,7 +16,6 @@ export async function POST(req: Request) {
 
     return new NextResponse(JSON.stringify({ ciphertext }));
   } catch (error) {
-    console.log(error);
-    return new NextResponse(JSON.stringify({ hello: 'world' }));
+    return new NextResponse(JSON.stringify({ error }));
   }
 }

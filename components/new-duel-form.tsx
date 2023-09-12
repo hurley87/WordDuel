@@ -100,11 +100,11 @@ export function NewDuelForm() {
         value: parseEther(amountString),
       });
     } catch (e) {
-      console.log(e);
       setIsLoading(false);
+      const description = e?.data?.message || 'Please try again.';
       return toast({
         title: 'Something went wrong.',
-        description: 'Your log in request failed. Please try again.',
+        description,
         variant: 'destructive',
       });
     }

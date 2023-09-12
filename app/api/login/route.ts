@@ -20,7 +20,6 @@ export async function POST(req: Request) {
 
     return new NextResponse(JSON.stringify({ authenticated: true }));
   } catch (error) {
-    console.log(error);
-    return new NextResponse(JSON.stringify({ error: error.message }));
+    return new NextResponse(JSON.stringify({ error }));
   }
 }
