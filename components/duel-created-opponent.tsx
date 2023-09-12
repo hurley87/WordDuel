@@ -57,11 +57,10 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
       <Container>
         <Card>
           <CardHeader>
-            <CardTitle>Accept Duel</CardTitle>
             <CardDescription>
-              For every guess you make {`you'll`} have to add {amount} ETH to
-              the pot. The person who guesses the right word wins the duel and
-              all the ETH in the pot.
+              For each guess you make {`you'll`} add {amount} ETH to the pot.
+              The person who guesses the right word first wins the duel and the
+              entire pot.
             </CardDescription>
           </CardHeader>
           <CardFooter>
