@@ -55,22 +55,24 @@ function Duels() {
           </Card>
         </Container>
       )}
+      {user && !hasInvites && (
+        <Container>
+          <Card>
+            <CardHeader>
+              <CardDescription>
+                Challenge a friend to a duel where the winner takes all.
+              </CardDescription>
+            </CardHeader>
+            <CardFooter>
+              <Link href="/new" className="w-full">
+                <Button className="w-full">New Duel</Button>
+              </Link>
+            </CardFooter>
+          </Card>
+        </Container>
+      )}
       {hasDuels && (
         <>
-          <Container>
-            <Card>
-              <CardHeader>
-                <CardDescription>
-                  Challenge a friend to a duel where the winner takes all.
-                </CardDescription>
-              </CardHeader>
-              <CardFooter>
-                <Link href="/new" className="w-full">
-                  <Button className="w-full">New Duel</Button>
-                </Link>
-              </CardFooter>
-            </Card>
-          </Container>
           <Container>
             <Card>
               <CardHeader>
