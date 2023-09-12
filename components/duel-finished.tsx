@@ -55,9 +55,6 @@ export const DuelFinished = ({ duel, yourTurn }) => {
       <Badge variant="secondary">{message}</Badge>
       <div className="flex flex-col gap-4 py-4">
         <Grid data={grid} />
-        <Link className="w-full" href="/new">
-          <Button className="w-full">Create New Duel</Button>
-        </Link>
       </div>
     </>
   );

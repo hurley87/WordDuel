@@ -15,7 +15,7 @@ export default function GetStarted({ r }) {
         <Icons.swords className="mx-auto h-6 w-6" />
         <h1 className="text-2xl font-semibold tracking-tight">WordDuel</h1>
         <p className="text-sm text-muted-foreground pb-2">
-          Enter your email to log in to your account
+          Play Wordle against your friends for ETH.
         </p>
         <Link href={`/login?r=${r}`}>
           <Button>Get Started</Button>

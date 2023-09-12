@@ -32,7 +32,7 @@ export const Duel = ({ duelId }: { duelId: any }) => {
             )}
             <div className="space-y-1">
               <p className="text-xs font-medium leading-none pt-1">
-                {formatAddress(duel.challenger)} challenges {duel.email}
+                {formatAddress(duel.challenger)} ⚔️ {duel.email}
               </p>
               <p className="text-xs text-muted-foreground">
                 {DUEL_STATE[duel.state] === 'Accepted' &&

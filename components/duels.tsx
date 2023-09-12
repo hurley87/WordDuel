@@ -31,28 +31,26 @@ function Duels() {
     functionName: 'getDuelsByEmail',
     args: [user?.email],
   });
-
-  console.log(invites);
   const hasInvites =
     !invitesLoading &&
     invites?.filter((invite) => invite.state === 0).length > 0;
 
-  console.log(hasInvites);
-
   return (
-    <div className="flex flex-col gap-4 max-w-lg mx-auto px-2">
+    <div className="flex flex-col gap-4 max-w-lg mx-auto px-2 pt-32">
       {hasInvites && (
         <Container>
           <Card>
             <CardHeader>
               <CardDescription>
-                You have been invited to a duel. Accept and defend your honor.
+                You have been invited to a duel.
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-1">
-              {invites.map((duel: any) => (
-                <Duel key={parseInt(duel.id)} duelId={duel.id} />
-              ))}
+              {invites
+                ?.filter((invite) => invite.state === 0)
+                .map((duel: any) => (
+                  <Duel key={parseInt(duel.id)} duelId={duel.id} />
+                ))}
             </CardContent>
           </Card>
         </Container>

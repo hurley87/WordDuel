@@ -114,7 +114,7 @@ export function NewDuelForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid gap-4">
         <div className="grid gap-1">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">{`Opponent's`} Email</Label>
           <Input
             id="email"
             placeholder="name@example.com"

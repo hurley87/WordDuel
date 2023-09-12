@@ -21,7 +21,7 @@ export const DuelSendInvitation = ({ duel }: { duel: any }) => {
   const [user, _]: any = useContext(UserContext);
   const defaultContent = `You have been challenged to a duel by ${user.email}. \n\n Accept it here: ${window.location.origin}/duel/${duel.id}`;
   const [content, setContent] = useState<string>(defaultContent);
-  const defaultSubject = `Time to defend your honor!`;
+  const defaultSubject = `Earn money playing Wordle`;
   const [subject, setSubject] = useState<string>(defaultSubject);
   const [isSending, setIsSending] = useState<boolean>(false);
 

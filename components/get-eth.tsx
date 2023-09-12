@@ -27,7 +27,7 @@ export default function GetETH() {
     <div className="flex flex-col max-w-md mx-auto gap-4">
       <Icons.wallet className="h-8 w-8" />
       <div className="flex flex-col gap-2">
-        <h2 className="text-xl font-bold">Get some ETH on Base</h2>
+        <h2 className="text-xl font-black">Get some ETH on Base</h2>
         <p className="text-sm">
           {"You'll"} use ETH, the official currency of Base, each time you make
           a move in WordDuel. Get started by adding some ETH to your wallet

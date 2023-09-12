@@ -151,7 +151,7 @@ export default function Wordle() {
     if (won) {
       toast({
         title: 'You won!',
-        description: 'Now challenge your friend to a word duel.',
+        description: 'Now challenge your friend to a duel.',
       });
     } else {
       if (isLastRow) {

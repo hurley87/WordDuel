@@ -21,15 +21,15 @@ export default function Home() {
 
   return (
     <div className="flex flex-col">
-      <header className="sticky top-0 z-40 border-b bg-background">
-        <div className="container flex h-16 items-center justify-between py-4">
-          <div className="flex gap-6 md:gap-10">
-            <Link href="/" className="flex items-center space-x-2">
-              <Icons.swords />
-              <span className="font-bold">WordDuel</span>
-            </Link>
-          </div>
-          {user ? (
+      {user && (
+        <header className="fixed right-0 left-0 top-0 w-full z-40 border-b bg-background">
+          <div className="container flex h-16 items-center justify-between py-4">
+            <div className="flex gap-6 md:gap-10">
+              <Link href="/" className="flex items-center space-x-2">
+                <Icons.swords />
+                <span className="font-bold">WordDuel</span>
+              </Link>
+            </div>
             <UserAccountNav
               setUser={setUser}
               balance={balance}
@@ -38,18 +38,28 @@ export default function Home() {
                 email: user?.email,
               }}
             />
-          ) : (
-            <Link href="/login">
-              <Button>Get Started</Button>
-            </Link>
-          )}
-        </div>
-      </header>
+          </div>
+        </header>
+      )}
+
       {user?.loading || isLoading ? (
         <Loading />
       ) : (
-        <div className="pt-10">
-          {!user && <Wordle />}
+        <div className="mx-auto flex flex-col h-screen justify-center space-y-6 max-w-md">
+          {!user && (
+            <div className="flex flex-col space-y-2 text-center">
+              <Icons.swords className="mx-auto h-6 w-6" />
+              <h1 className="text-2xl font-semibold tracking-tight">
+                WordDuel
+              </h1>
+              <p className="text-sm text-muted-foreground pb-2">
+                Play Wordle against your friends for ETH.
+              </p>
+              <Link href={`/login`}>
+                <Button>Get Started</Button>
+              </Link>
+            </div>
+          )}
           {/* has no games */}
           {user && balance > 0 && <Duels />}
           {/* has no balance */}

@@ -77,6 +77,11 @@ export function UserAccountNav({ user, setUser, balance }: any) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
+          <Link className="cursor-pointer" href="/practice">
+            Practice
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link className="cursor-pointer" href="/faq">
             FAQ
           </Link>

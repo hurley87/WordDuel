@@ -1,13 +1,5 @@
 import { Container } from './container';
-import { Button } from './ui/button';
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from './ui/card';
-import Link from 'next/link';
+import { Card, CardDescription, CardHeader } from './ui/card';
 
 export const DuelCancelled = () => {
   return (
@@ -15,16 +7,8 @@ export const DuelCancelled = () => {
       <Container>
         <Card>
           <CardHeader>
-            <CardTitle>Duel Cancelled</CardTitle>
-            <CardDescription>
-              This duel was cancelled. You can create a new duel below.
-            </CardDescription>
+            <CardDescription>This duel has been cancelled.</CardDescription>
           </CardHeader>
-          <CardFooter>
-            <Link href="/new" className="w-full">
-              <Button className="w-full">New Duel</Button>
-            </Link>
-          </CardFooter>
         </Card>
       </Container>
     </div>
