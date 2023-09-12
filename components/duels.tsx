@@ -4,7 +4,7 @@ import '@/styles/globals.css';
 import { UserContext } from '@/lib/UserContext';
 import { useContext } from 'react';
 import { useRead } from '@/hooks/useRead';
-import Onboarding from './onboarding';
+import FAQ from './faq';
 import { Duel } from './duel';
 import { Container } from './container';
 import { Button } from './ui/button';
@@ -27,14 +27,41 @@ function Duels() {
   const noDuels = !isLoading && duels?.length === 0;
   const hasDuels = !isLoading && duels?.length > 0;
 
+  const { data: invites, isLoading: invitesLoading } = useRead({
+    functionName: 'getDuelsByEmail',
+    args: [user?.email],
+  });
+
+  console.log(invites);
+  const hasInvites =
+    !invitesLoading &&
+    invites?.filter((invite) => invite.state === 0).length > 0;
+
+  console.log(hasInvites);
+
   return (
-    <div className="flex flex-col gap-2 max-w-lg mx-auto px-2">
+    <div className="flex flex-col gap-4 max-w-lg mx-auto px-2">
+      {hasInvites && (
+        <Container>
+          <Card>
+            <CardHeader>
+              <CardDescription>
+                You have been invited to a duel. Accept and defend your honor.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-1">
+              {invites.map((duel: any) => (
+                <Duel key={parseInt(duel.id)} duelId={duel.id} />
+              ))}
+            </CardContent>
+          </Card>
+        </Container>
+      )}
       {hasDuels && (
         <>
           <Container>
             <Card>
               <CardHeader>
-                <CardTitle>New Duel</CardTitle>
                 <CardDescription>
                   Challenge a friend to a duel where the winner takes all.
                 </CardDescription>
@@ -49,12 +76,9 @@ function Duels() {
           <Container>
             <Card>
               <CardHeader>
-                <CardTitle>Current Duels</CardTitle>
-                <CardDescription>
-                  Challenge a friend to a duel. The winner takes all.
-                </CardDescription>
+                <CardDescription>All past and current duels.</CardDescription>
               </CardHeader>
-              <CardContent className="grid gap-1">
+              <CardContent className="grid gap-2">
                 {duels.map((duelId: any) => (
                   <Duel key={parseInt(duelId)} duelId={duelId} />
                 ))}
@@ -63,9 +87,10 @@ function Duels() {
           </Container>
         </>
       )}
+
       {noDuels && (
         <Container>
-          <Onboarding />
+          <FAQ />
         </Container>
       )}
     </div>

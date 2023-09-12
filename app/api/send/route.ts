@@ -10,22 +10,21 @@ const resend = new Resend(apiKey);
 
 export async function POST(req: Request) {
   try {
-    const { email, subject, text } = (await req.json()) as {
+    const { email, subject, content } = (await req.json()) as {
       email: string;
       subject: string;
-      text: string;
+      content: string;
     };
     await resend.emails.send({
       from: 'WordDuel <dh@wordduel.xyz>',
       to: [email],
       subject,
-      react: EmailTemplate({ text }),
-      text,
+      react: EmailTemplate({ content }),
+      text: content,
     });
 
     return new NextResponse(JSON.stringify({ success: true }));
   } catch (error) {
-    console.log(error);
     return new NextResponse(JSON.stringify({ error }));
   }
 }

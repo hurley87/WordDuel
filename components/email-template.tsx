@@ -1,9 +1,9 @@
 import * as React from 'react';
 
 interface EmailTemplateProps {
-  text: string;
+  content: string;
 }
 
 export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
-  text,
-}) => <div className="whitespace-pre-wrap text-black">{text}</div>;
+  content,
+}) => <div className="whitespace-pre-wrap text-black">{content}</div>;

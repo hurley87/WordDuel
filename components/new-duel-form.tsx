@@ -18,6 +18,7 @@ import { UserContext } from '@/lib/UserContext';
 import { parseEther } from 'viem';
 import { useSubscribe } from '@/hooks/useSubscribe';
 import { useWrite } from '@/hooks/useWrite';
+import { useBalance } from 'wagmi';
 
 type FormData = z.infer<typeof newDuelSchema>;
 
@@ -32,6 +33,10 @@ export function NewDuelForm() {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();
   const [user, _]: any = React.useContext(UserContext);
+  const { data } = useBalance({
+    address: user?.publicAddress,
+  });
+  const balance = parseFloat(data?.formatted || '0');
 
   useSubscribe({
     eventName: 'DuelCreated',
@@ -71,6 +76,15 @@ export function NewDuelForm() {
       const amount = data.amount;
       const word = await generateWord();
       const amountString = amount?.toString() as string;
+
+      if (amount && balance < amount) {
+        setIsLoading(false);
+        return toast({
+          title: 'You do not have enough funds.',
+          description: 'Please deposit more funds.',
+          variant: 'destructive',
+        });
+      }
 
       if (email === user?.email) {
         setIsLoading(false);

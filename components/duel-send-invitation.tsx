@@ -19,9 +19,9 @@ import { Textarea } from './ui/textarea';
 
 export const DuelSendInvitation = ({ duel }: { duel: any }) => {
   const [user, _]: any = useContext(UserContext);
-  const defaultContent = `You have been challenged to a duel by ${user.email}. \n\n Accept the duel here: ${window.location.origin}/duel/${duel.id}`;
+  const defaultContent = `You have been challenged to a duel by ${user.email}. \n\n Accept it here: ${window.location.origin}/duel/${duel.id}`;
   const [content, setContent] = useState<string>(defaultContent);
-  const defaultSubject = `You were just challenged to a duel!`;
+  const defaultSubject = `Time to defend your honor!`;
   const [subject, setSubject] = useState<string>(defaultSubject);
   const [isSending, setIsSending] = useState<boolean>(false);
 
@@ -49,16 +49,16 @@ export const DuelSendInvitation = ({ duel }: { duel: any }) => {
   }
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
-        <CardTitle>Send Duel Invitation</CardTitle>
+        <CardTitle>Send Invitation</CardTitle>
         <CardDescription>
-          Send an email to {duel.email} with the duel invitation.
+          Send an email to {duel.email} asking for a duel
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">
         <div className="grid gap-2">
-          <Label htmlFor="subject">Subject</Label>
+          <Label htmlFor="subject">Email Subject</Label>
           <Input
             id="subject"
             value={subject}
@@ -67,7 +67,7 @@ export const DuelSendInvitation = ({ duel }: { duel: any }) => {
           />
         </div>
         <div className="grid gap-2">
-          <Label htmlFor="content">Content</Label>
+          <Label htmlFor="content">Email Content</Label>
           <Textarea
             id="content"
             value={content}
@@ -83,7 +83,7 @@ export const DuelSendInvitation = ({ duel }: { duel: any }) => {
           className="w-full"
         >
           {isSending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-          Email {duel.email}
+          Send Email
         </Button>
       </CardFooter>
     </Card>

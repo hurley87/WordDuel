@@ -198,13 +198,13 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
 
     if (won) {
       toast({
-        title: 'You won!',
-        description: 'Now claim your prize.',
+        title: 'You Win',
+        description: `${Number(duel.potAmount) / 10 ** 18} ETH is yours!`,
       });
     } else {
       if (isLastRow) {
         toast({
-          title: 'Game over!',
+          title: 'Game Over',
           description: 'Pot is split between players.',
           variant: 'destructive',
         });
