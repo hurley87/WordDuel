@@ -76,7 +76,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         <Loading />
       ) : (
         <>
-          {user && tooPoor && (
+          {user && tooPoor && !notOpponentOrChallenger && (
             <div className="flex flex-col gap-6">
               <div className="mx-auto">
                 <Badge variant="destructive">
