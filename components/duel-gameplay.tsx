@@ -216,7 +216,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
 
     if (won) word = duel.targetWord;
 
-    await contract.makeMove(duel.id.toString(), word, {
+    await contract?.makeMove(duel.id.toString(), word, {
       value: duel.moveAmount,
     });
 

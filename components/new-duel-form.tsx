@@ -92,7 +92,7 @@ export function NewDuelForm() {
         });
       }
 
-      await contract.createDuel(email, word, {
+      await contract?.createDuel(email, word, {
         value: parseEther(amountString),
       });
     } catch (e) {

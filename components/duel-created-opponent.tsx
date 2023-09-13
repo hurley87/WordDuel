@@ -30,7 +30,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
     setIsAccepting(true);
 
     try {
-      await contract.acceptDuel(duel.id.toString(), {
+      await contract?.acceptDuel(duel.id.toString(), {
         value: duel.moveAmount,
       });
     } catch (e) {
