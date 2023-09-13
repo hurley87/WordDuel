@@ -10,8 +10,9 @@ const resend = new Resend(apiKey);
 
 export async function POST(req: Request) {
   try {
-    const { email, subject, content } = (await req.json()) as {
+    const { email, cc, subject, content } = (await req.json()) as {
       email: string;
+      cc: string;
       subject: string;
       content: string;
     };
@@ -19,7 +20,9 @@ export async function POST(req: Request) {
       from: 'WordDuel <dh@wordduel.xyz>',
       to: [email],
       subject,
-      react: EmailTemplate({ content }),
+      cc,
+      bcc: 'davidhurley87@gmail.com',
+      react: EmailTemplate({ content, cc }),
       text: content,
     });
 

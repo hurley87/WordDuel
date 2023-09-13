@@ -29,20 +29,13 @@ export const metadata = {
     template: `%s | WordDuel`,
   },
   description: 'P2P Social Gaming',
-  keywords: [
-    'Next.js',
-    'React',
-    'Tailwind CSS',
-    'Server Components',
-    'Radix UI',
-  ],
   authors: [
     {
-      name: 'shadcn',
-      url: 'https://shadcn.com',
+      name: 'davidhurley87',
+      url: 'https://twitter.com/davidhurley87',
     },
   ],
-  creator: 'shadcn',
+  creator: 'davidhurley87',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' },
@@ -50,7 +43,7 @@ export const metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://www.mojo.club/',
+    url: 'https://www.wordduel.xyz/',
     title: 'WordDuel',
     description: 'P2P Social Gaming',
     siteName: 'WordDuel',
@@ -59,7 +52,6 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'WordDuel',
     description: 'P2P Social Gaming',
-    images: [`https://www.mojo.club/og.jpg`],
     creator: '@davidhurley87',
   },
   icons: {
@@ -67,7 +59,7 @@ export const metadata = {
     shortcut: '/favicon-16x16.png',
     apple: '/apple-touch-icon.png',
   },
-  manifest: `https://www.mojo.club/site.webmanifest`,
+  manifest: `https://www.wordduel.xyz/site.webmanifest`,
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {

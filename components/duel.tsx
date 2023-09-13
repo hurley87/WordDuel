@@ -2,7 +2,6 @@ import { useRead } from '@/hooks/useRead';
 import { DUEL_STATE, formatAddress } from '@/lib/utils';
 import { CheckSquare, Sword, Swords, XSquare } from 'lucide-react';
 import Link from 'next/link';
-import { Icons } from './icons';
 
 export const Duel = ({ duelId }: { duelId: any }) => {
   const { data: duel, isLoading } = useRead({

@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from './ui/card';
+import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
 import { useWrite } from '@/hooks/useWrite';
 import { Icons } from './icons';
 import { Container } from './container';
@@ -14,9 +8,7 @@ import { useSubscribe } from '@/hooks/useSubscribe';
 import { toast } from './ui/use-toast';
 
 export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
-  const { writeAsync: acceptDuel } = useWrite({
-    functionName: 'acceptDuel',
-  });
+  const contract = useWrite();
   const [isAccepting, setIsAccepting] = useState<boolean>(false);
   const amount = (Number(duel.moveAmount) / 10 ** 18).toString();
 
@@ -38,8 +30,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
     setIsAccepting(true);
 
     try {
-      await acceptDuel?.({
-        args: [duel?.id.toString()],
+      await contract.acceptDuel(duel.id.toString(), {
         value: duel.moveAmount,
       });
     } catch (e) {
@@ -58,8 +49,8 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
         <Card>
           <CardHeader>
             <CardDescription>
-              For each guess you make {`you'll`} add {amount} ETH to the pot.
-              The person who guesses the right word first wins the entire pot.
+              Each time you guess {`you'll`} add <b>{amount} ETH</b> to the pot.
+              The person who guesses the right word wins the entire pot.
             </CardDescription>
           </CardHeader>
           <CardFooter>
@@ -72,7 +63,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
               {isAccepting && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
-              Accept Duel ({amount} ETH)
+              Accept ({amount} ETH)
             </Button>
           </CardFooter>
         </Card>

@@ -22,8 +22,8 @@ function FAQ() {
           How do I accept an invitation to duel?
         </AccordionTrigger>
         <AccordionContent className="text-xs">
-          Only the person with the declared email can accept the duel. They will
-          need to fund their account with ETH to play.
+          Only the person with the declared email can accept. They will need to
+          fund their account with ETH before they can duel.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-3">
@@ -41,8 +41,7 @@ function FAQ() {
         </AccordionTrigger>
         <AccordionContent className="text-xs">
           The player who guesses the right word first wins the duel and the
-          entire pot. If no one guesses the right word, the duel ends in a draw
-          and the pot is split.
+          entire pot. If no one guesses the right word, the pot is split.
         </AccordionContent>
       </AccordionItem>
     </Accordion>

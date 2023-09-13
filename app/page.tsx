@@ -7,7 +7,6 @@ import { UserContext } from '@/lib/UserContext';
 import Link from 'next/link';
 import { useContext } from 'react';
 import { useBalance } from 'wagmi';
-import Wordle from '@/components/wordle';
 import Duels from '@/components/duels';
 import Loading from '@/components/loading';
 import GetETH from '@/components/get-eth';
@@ -45,14 +44,12 @@ export default function Home() {
       {user?.loading || isLoading ? (
         <Loading />
       ) : (
-        <div className="mx-auto flex flex-col h-screen justify-center space-y-6 max-w-md">
+        <div className="mx-auto flex flex-col justify-center space-y-6 max-w-md py-24">
           {!user && (
             <div className="flex flex-col space-y-2 text-center">
-              <Icons.swords className="mx-auto h-6 w-6" />
-              <h1 className="text-2xl font-semibold tracking-tight">
-                WordDuel
-              </h1>
-              <p className="text-sm text-muted-foreground pb-2">
+              <Icons.swords className="mx-auto h-16 w-16" />
+              <h1 className="text-2xl font-black tracking-tight">WordDuel</h1>
+              <p className="text-muted-foreground pb-2">
                 Play Wordle against your friends for ETH.
               </p>
               <Link href={`/login`}>

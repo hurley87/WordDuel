@@ -13,7 +13,6 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
   CardContent,
 } from './ui/card';
 import Link from 'next/link';
@@ -36,20 +35,20 @@ function Duels() {
     invites?.filter((invite) => invite.state === 0).length > 0;
 
   return (
-    <div className="flex flex-col gap-4 max-w-lg mx-auto px-2 pt-32">
+    <div className="flex flex-col gap-4 max-w-lg mx-auto px-2">
       {hasInvites && (
         <Container>
           <Card>
             <CardHeader>
               <CardDescription>
-                You have been invited to a duel.
+                {`You've`} been challenged. Time to defend your honor.
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-1">
               {invites
                 ?.filter((invite) => invite.state === 0)
                 .map((duel: any) => (
-                  <Duel key={parseInt(duel?.id)} duelId={duel?.id} />
+                  <Duel key={parseInt(duel.id)} duelId={duel.id} />
                 ))}
             </CardContent>
           </Card>
@@ -79,9 +78,11 @@ function Duels() {
                 <CardDescription>All past and current duels.</CardDescription>
               </CardHeader>
               <CardContent className="grid gap-2">
-                {duels.map((duelId: any) => (
-                  <Duel key={parseInt(duelId)} duelId={duelId} />
-                ))}
+                {duels
+                  ?.reverse()
+                  .map((duelId: any) => (
+                    <Duel key={parseInt(duelId)} duelId={duelId} />
+                  ))}
               </CardContent>
             </Card>
           </Container>

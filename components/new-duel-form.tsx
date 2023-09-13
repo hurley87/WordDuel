@@ -37,6 +37,7 @@ export function NewDuelForm() {
     address: user?.publicAddress,
   });
   const balance = parseFloat(data?.formatted || '0');
+  const contract = useWrite();
 
   useSubscribe({
     eventName: 'DuelCreated',
@@ -50,10 +51,6 @@ export function NewDuelForm() {
         });
       router.push(`/duel/${duelId}`);
     },
-  });
-
-  const { writeAsync: createDuel } = useWrite({
-    functionName: 'createDuel',
   });
 
   async function generateWord() {
@@ -95,8 +92,7 @@ export function NewDuelForm() {
         });
       }
 
-      await createDuel?.({
-        args: [email, word],
+      await contract.createDuel(email, word, {
         value: parseEther(amountString),
       });
     } catch (e) {

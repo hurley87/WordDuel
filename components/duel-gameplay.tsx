@@ -1,5 +1,3 @@
-'use client';
-
 import { useWrite } from '@/hooks/useWrite';
 import {
   findLastNonEmptyTile,
@@ -24,15 +22,12 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
   const [cursor, setCursor] = useState({ y: 0, x: 0 });
   const [isLoading, setIsLoading] = useState(false);
   const [secret, setSecret] = useState('');
-  const { write: makeMove } = useWrite({
-    functionName: 'makeMove',
-  });
   const [isGameSet, setIsGameSet] = useState(false);
+  const contract = useWrite();
 
   const setGame = useCallback(
     async (targetWord, duelWords) => {
       const secret = await decryptWord(targetWord);
-      console.log(secret);
       const words = await decryptWords(duelWords);
       const newGrid = emptyGrid;
 
@@ -67,11 +62,13 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
       const moveCount = logs[0]?.args?.moveCount;
       setGame(duel.targetWord, words);
       setIsLoading(false);
-      const title = !yourTurn ? 'Now Your Turn' : `Now Opponent's Turn`;
-      // description of moves remaining
+      const title = !yourTurn ? 'Your Turn' : `Opponent's Turn`;
+      const movesRemaining = 6 - parseInt(moveCount);
       return toast({
         title,
-        description: `${6 - parseInt(moveCount)} moves remaining.`,
+        description: `${movesRemaining} ${
+          movesRemaining === 1 ? 'move' : 'moves'
+        } remaining.`,
       });
     },
   });
@@ -207,6 +204,11 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
           description: 'Pot is split between players.',
           variant: 'destructive',
         });
+      } else {
+        toast({
+          title: 'Incorrect',
+          description: 'Updating the board ...',
+        });
       }
     }
 
@@ -214,8 +216,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
 
     if (won) word = duel.targetWord;
 
-    makeMove?.({
-      args: [duel?.id.toString(), word],
+    await contract.makeMove(duel.id.toString(), word, {
       value: duel.moveAmount,
     });
 
