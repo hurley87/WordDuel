@@ -107,9 +107,7 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
                 disabled={disabled}
                 key={key}
                 onClick={onKeyPress.bind(null, key.toLowerCase())}
-                style={
-                  disabled ? { opacity: 0.5 } : getKeyColors(key.toLowerCase())
-                }
+                // style={getKeyColors(key.toLowerCase())}
               >
                 {isMappableKey(key) ? MAPPABLE_KEYS[key] : key}
               </Button>

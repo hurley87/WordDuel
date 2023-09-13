@@ -131,7 +131,7 @@ export function NewDuelForm() {
             id="amount"
             placeholder="0.01"
             type="number"
-            step="0.01"
+            step="0.001"
             inputMode="decimal"
             disabled={isLoading}
             {...register('amount')}

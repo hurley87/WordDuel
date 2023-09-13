@@ -14,7 +14,7 @@ export const DuelCancel = ({ duelId }: { duelId: string }) => {
 
   async function handleCancellation() {
     setIsCancelling(true);
-    await contract?.createDuel(duelId);
+    await contract?.cancelDuel(duelId);
     router.push('/');
   }
 

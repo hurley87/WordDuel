@@ -169,6 +169,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
           description: 'Please try again.',
           variant: 'destructive',
         });
+        setIsLoading(false);
         return {
           status: 'playing',
         };
