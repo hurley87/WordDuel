@@ -29,7 +29,7 @@ export default function RegisterPage() {
       <div className="mx-auto flex w-full flex-col justify-center space-y-4 sm:w-[350px]">
         <div className="flex flex-col space-y-2">
           <p className="text-sm text-muted-foreground">
-            Enter your email to get started
+            Submit an email or continue with Google.
           </p>
         </div>
         <UserAuthForm />

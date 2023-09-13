@@ -240,7 +240,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
       <div className="fixed bottom-5">
         <Badge>{yourTurn ? 'Your Turn' : `Opponent's Turn`}</Badge>
       </div>
-      <div className="flex flex-col gap-6 py-4">
+      <div className="flex flex-col gap-6 py-4 w-full px-1 max-w-lg">
         <Grid data={grid} />
         <Keyboard
           usedKeys={usedKeys}

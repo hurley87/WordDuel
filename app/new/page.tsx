@@ -33,6 +33,9 @@ export default function NewDuelPage() {
           </p>
         </div>
         <NewDuelForm />
+        <p className="text-xs text-muted-foreground">
+          * a small fee (0.00093 ETH) will be charged + gas
+        </p>
       </div>
     </div>
   );
