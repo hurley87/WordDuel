@@ -1,9 +1,10 @@
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import { UserAuthForm } from '@/components/user-auth-form';
+import { UserAuthGoogle } from '@/components/user-auth-google';
 
 export const metadata = {
   title: 'Create an account',
@@ -32,6 +33,7 @@ export default function RegisterPage() {
           </p>
         </div>
         <UserAuthForm />
+        <UserAuthGoogle />
       </div>
     </div>
   );

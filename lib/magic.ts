@@ -1,4 +1,5 @@
 import { Magic } from 'magic-sdk';
+import { OAuthExtension } from '@magic-ext/oauth';
 
 const network = {
   rpcUrl: process.env.NEXT_PUBLIC_RPC_URL as string,
@@ -11,6 +12,7 @@ const createMagic = (key: string) => {
     typeof window != 'undefined' &&
     new Magic(key, {
       network,
+      extensions: [new OAuthExtension()],
     })
   );
 };
