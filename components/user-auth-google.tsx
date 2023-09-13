@@ -49,7 +49,7 @@ export function UserAuthGoogle() {
       await magic.oauth.loginWithRedirect({
         provider: 'google',
         redirectURI: `${window.location.origin}/callback`,
-        scope: [] /* optional */,
+        scope: [],
       });
 
       setIsLoading(false);
