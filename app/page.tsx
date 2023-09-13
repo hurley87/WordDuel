@@ -46,7 +46,7 @@ export default function Home() {
       ) : (
         <div className="mx-auto flex flex-col justify-center space-y-6 max-w-md py-24">
           {!user && (
-            <div className="flex flex-col space-y-2 text-center">
+            <div className="flex flex-col space-y-2 text-center pt-20">
               <Icons.swords className="mx-auto h-16 w-16" />
               <h1 className="text-2xl font-black tracking-tight">WordDuel</h1>
               <p className="text-muted-foreground pb-2">
