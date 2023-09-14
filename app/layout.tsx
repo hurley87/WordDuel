@@ -28,7 +28,7 @@ export const metadata = {
     default: 'WordDuel',
     template: `%s | WordDuel`,
   },
-  description: 'P2P Social Gaming',
+  description: 'Play Wordle against your friends for ETH',
   authors: [
     {
       name: 'davidhurley87',
@@ -45,13 +45,13 @@ export const metadata = {
     locale: 'en_US',
     url: 'https://www.wordduel.xyz/',
     title: 'WordDuel',
-    description: 'P2P Social Gaming',
+    description: 'Play Wordle against your friends for ETH',
     siteName: 'WordDuel',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'WordDuel',
-    description: 'P2P Social Gaming',
+    description: 'Play Wordle against your friends for ETH',
     creator: '@davidhurley87',
   },
   icons: {
