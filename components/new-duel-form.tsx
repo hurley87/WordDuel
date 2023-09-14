@@ -29,6 +29,10 @@ export function NewDuelForm() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(newDuelSchema),
+    defaultValues: {
+      amount: 0.001,
+      email: '',
+    },
   });
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();

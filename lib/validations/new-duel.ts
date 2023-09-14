@@ -7,6 +7,6 @@ export const newDuelSchema = z.object({
     z.coerce
       .number({ invalid_type_error: 'Price must be a number' })
       .positive('Price must be positive')
-      .optional()
+      .default(0.001)
   ), // string[] | undefined
 });
