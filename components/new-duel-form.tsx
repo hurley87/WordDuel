@@ -129,7 +129,7 @@ export function NewDuelForm() {
           <Label htmlFor="amount">ETH Amount</Label>
           <Input
             id="amount"
-            placeholder="0.01"
+            placeholder="0.001"
             type="number"
             step="0.001"
             inputMode="decimal"
