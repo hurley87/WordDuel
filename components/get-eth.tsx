@@ -3,6 +3,7 @@ import { Icons } from './icons';
 import { UserContext } from '@/lib/UserContext';
 import { useBalance } from 'wagmi';
 import { toast } from './ui/use-toast';
+import { formatAddress } from '@/lib/utils';
 
 export default function GetETH() {
   const [user, _]: any = useContext(UserContext);
@@ -17,10 +18,6 @@ export default function GetETH() {
       title: 'Copied to clipboard.',
       description: 'Now send some ETH to your wallet.',
     });
-  }
-
-  function formatAddress(address) {
-    return `${address?.slice(0, 6)}...${address?.slice(-4)}`;
   }
 
   return (
