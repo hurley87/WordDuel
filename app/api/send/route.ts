@@ -21,7 +21,7 @@ export async function POST(req: Request) {
       to: [email],
       subject,
       cc,
-      bcc: 'davidhurley87@gmail.com',
+      bcc: 'dh@wordduel.xyz',
       react: EmailTemplate({ content, cc }),
       text: content,
     });
