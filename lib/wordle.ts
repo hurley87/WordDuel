@@ -1,6 +1,18 @@
 import { without } from 'ramda';
 import { GameTile } from '@/interfaces';
 
+export async function generateWord() {
+  const res = await fetch('/api/generate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({}),
+  });
+  const data = await res.json();
+  return data.ciphertext;
+}
+
 export async function decryptWord(ciphertext) {
   const result = await fetch('/api/decrypt', {
     method: 'POST',

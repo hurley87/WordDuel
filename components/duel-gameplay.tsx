@@ -31,11 +31,26 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
       const words = await decryptWords(duelWords);
       const newGrid = emptyGrid;
 
+      // function to count letters in a string
+      function countLetters(str, letter) {
+        let letterCount = 0;
+        for (let position = 0; position < str.length; position++) {
+          if (str.charAt(position) == letter) {
+            letterCount += 1;
+          }
+        }
+        return letterCount;
+      }
+
       for (let i = 0; i < words.length; i++) {
         for (let j = 0; j < words[i].length; j++) {
           const children = words[i][j];
           let variant = 'absent' as 'present' | 'empty' | 'correct' | 'absent';
-          if (secret.includes(children)) variant = 'present';
+          if (secret.includes(children)) {
+            countLetters(secret, children) > countLetters(words[i], children)
+              ? (variant = 'empty')
+              : (variant = 'present');
+          }
           if (secret[j] === children) variant = 'correct';
 
           newGrid[i][j] = {

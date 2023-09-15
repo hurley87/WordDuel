@@ -19,6 +19,7 @@ import { parseEther } from 'viem';
 import { useSubscribe } from '@/hooks/useSubscribe';
 import { useWrite } from '@/hooks/useWrite';
 import { useBalance } from 'wagmi';
+import { generateWord } from '@/lib/wordle';
 
 type FormData = z.infer<typeof newDuelSchema>;
 
@@ -56,18 +57,6 @@ export function NewDuelForm() {
       router.push(`/duel/${duelId}`);
     },
   });
-
-  async function generateWord() {
-    const res = await fetch('/api/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}),
-    });
-    const data = await res.json();
-    return data.ciphertext;
-  }
 
   async function onSubmit(data: FormData) {
     setIsLoading(true);

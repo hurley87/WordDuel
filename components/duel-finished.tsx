@@ -2,8 +2,7 @@ import { decryptWord, decryptWords, makeEmptyGrid } from '@/lib/wordle';
 import { useCallback, useEffect, useState } from 'react';
 import { Badge } from './ui/badge';
 import Grid from './wordle/grid';
-import { Button } from './ui/button';
-import Link from 'next/link';
+import { PlayAgain } from './play-again';
 
 export const DuelFinished = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
@@ -55,6 +54,7 @@ export const DuelFinished = ({ duel, yourTurn }) => {
       <Badge variant="secondary">{message}</Badge>
       <div className="flex flex-col gap-4 py-4">
         <Grid data={grid} />
+        <PlayAgain duel={duel} />
       </div>
     </>
   );
