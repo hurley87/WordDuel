@@ -34,7 +34,7 @@ export const PlayAgain = ({ duel }: { duel: any }) => {
     const word = await generateWord();
 
     try {
-      await contract?.createDuel(user.email, word, {
+      await contract?.createDuel(duel.email, word, {
         value: duel.moveAmount,
       });
     } catch (e) {
@@ -58,7 +58,6 @@ export const PlayAgain = ({ duel }: { duel: any }) => {
         {isAccepting && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
         Play Again
       </Button>
-      <p className="text-xs text-muted-foreground">* you will guess first</p>
     </>
   );
 };
