@@ -51,7 +51,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
           let variant = 'absent' as 'present' | 'empty' | 'correct' | 'absent';
           if (
             secret.includes(children) &&
-            countLetters(secret, children) === countLetters(word, children)
+            countLetters(secret, children) >= countLetters(word, children)
           ) {
             variant = 'present';
           }
