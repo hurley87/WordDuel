@@ -28,6 +28,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
   const setGame = useCallback(
     async (targetWord, duelWords) => {
       const secret = await decryptWord(targetWord);
+      console.log(secret);
       const words = await decryptWords(duelWords);
       const newGrid = emptyGrid;
 
