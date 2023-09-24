@@ -7,6 +7,13 @@ async function main() {
   await duels.waitForDeployment();
 
   console.log('Contract Deployed at ' + duels.target);
+
+  const FreeDuels = await hre.ethers.getContractFactory('FreeDuels');
+  const freeDuels = await FreeDuels.deploy(duels.target);
+
+  await freeDuels.waitForDeployment();
+
+  console.log('Contract Deployed at ' + freeDuels.target);
 }
 
 main().catch((error) => {

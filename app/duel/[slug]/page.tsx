@@ -56,7 +56,8 @@ export default function Page({ params }: { params: { slug: string } }) {
       });
       router.push('/');
     }
-  }, [isLoading, duel, router]);
+    console.log({ isLoading, duel, user });
+  }, [isLoading, duel, router, user]);
 
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center">
@@ -87,9 +88,7 @@ export default function Page({ params }: { params: { slug: string } }) {
               <GetETH />
             </div>
           )}
-          {(isLoading || (user && user.loading) || !user) && (
-            <GetStarted r={duel?.id} />
-          )}
+          {(isLoading || (user && user.loading) || !user) && <GetStarted />}
           {user && !user.loading && notOpponentOrChallenger && (
             <NotInvited duel={duel} />
           )}

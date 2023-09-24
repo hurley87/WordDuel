@@ -28,7 +28,7 @@ export default function NewDuelPage() {
       <div className="mx-auto flex w-full flex-col justify-center space-y-4 sm:w-[350px]">
         <div className="flex flex-col space-y-2">
           <p className="text-sm text-muted-foreground">
-            Transfer ETH to another wallet.
+            Withdraw ETH to another wallet.
           </p>
         </div>
         <TransferForm />

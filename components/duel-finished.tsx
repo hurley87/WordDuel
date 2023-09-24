@@ -3,18 +3,22 @@ import { useCallback, useEffect, useState } from 'react';
 import { Badge } from './ui/badge';
 import Grid from './wordle/grid';
 import { PlayAgain } from './play-again';
+import { Button } from './ui/button';
+import Link from 'next/link';
 
 export const DuelFinished = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
   const [grid, setGrid] = useState(emptyGrid);
   const [isGameSet, setIsGameSet] = useState(false);
   const [winnerExists, setWinnerExists] = useState(false);
+  const [secret, setSecret] = useState('');
 
   const setGame = useCallback(
     async (targetWord, duelWords) => {
       const secret = await decryptWord(targetWord);
       const words = await decryptWords(duelWords);
       const lastWord = words[words.length - 1];
+      setSecret(secret);
       const newGrid = emptyGrid;
 
       for (let i = 0; i < words.length; i++) {
@@ -51,10 +55,17 @@ export const DuelFinished = ({ duel, yourTurn }) => {
 
   return (
     <>
+      <Badge className="mb-2" variant="outline">
+        {secret}
+      </Badge>
       <Badge variant="secondary">{message}</Badge>
       <div className="flex flex-col gap-4 py-4">
         <Grid data={grid} />
-        <PlayAgain duel={duel} />
+        <Link href="/new">
+          <Button className="w-full" size="lg">
+            Play Again
+          </Button>
+        </Link>
       </div>
     </>
   );

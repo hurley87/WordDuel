@@ -72,8 +72,8 @@ export function UserAccountNav({ user, setUser, balance }: any) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link className="cursor-pointer" href="/transfer">
-            Transfer ETH
+          <Link className="cursor-pointer" href="/withdraw">
+            Withdraw
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

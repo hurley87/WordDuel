@@ -221,7 +221,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
       if (isLastRow) {
         toast({
           title: 'Game Over',
-          description: 'Pot is split between players.',
+          description: `Pot is split between players. The word was "${secret}".`,
           variant: 'destructive',
         });
       } else {

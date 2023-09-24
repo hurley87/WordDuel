@@ -10,6 +10,7 @@ import { useBalance } from 'wagmi';
 import Duels from '@/components/duels';
 import Loading from '@/components/loading';
 import GetETH from '@/components/get-eth';
+import { UserAuthGoogle } from '@/components/user-auth-google';
 
 export default function Home() {
   const [user, setUser]: any = useContext(UserContext);
@@ -47,14 +48,12 @@ export default function Home() {
         <div className="mx-auto flex flex-col justify-center space-y-6 max-w-md py-24">
           {!user && (
             <div className="flex flex-col space-y-2 text-center pt-20">
-              <Icons.swords className="mx-auto h-16 w-16" />
-              <h1 className="text-2xl font-black tracking-tight">WordDuel</h1>
+              <Icons.swords className="mx-auto h-14 w-14" />
+              <h1 className="text-3xl font-black tracking-tight">WordDuel</h1>
               <p className="text-muted-foreground pb-2">
                 Play Wordle against your friends for ETH.
               </p>
-              <Link href={`/login`}>
-                <Button>Get Started</Button>
-              </Link>
+              <UserAuthGoogle />
             </div>
           )}
           {/* has no games */}

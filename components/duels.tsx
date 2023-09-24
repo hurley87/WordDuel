@@ -75,7 +75,7 @@ function Duels() {
           <Container>
             <Card>
               <CardHeader>
-                <CardDescription>All past and current duels.</CardDescription>
+                <CardDescription>Current Duels</CardDescription>
               </CardHeader>
               <CardContent className="grid gap-2">
                 {duels
@@ -88,7 +88,6 @@ function Duels() {
           </Container>
         </>
       )}
-
       {noDuels && (
         <Container>
           <FAQ />
