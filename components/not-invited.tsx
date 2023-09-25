@@ -5,7 +5,7 @@ export default function NotInvited({ duel }) {
     <Card>
       <CardHeader>
         <CardDescription>
-          You must have access to {duel.email} to accept this duel.
+          You must have access to {duel.email} to view this duel.
         </CardDescription>
       </CardHeader>
     </Card>

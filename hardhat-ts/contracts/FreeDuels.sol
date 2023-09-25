@@ -3,14 +3,13 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import {
-    ERC2771Context
-} from "@gelatonetwork/relay-context/contracts/vendor/ERC2771Context.sol";
+    ERC2771Context,
+    Context
+} from "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
 contract FreeDuels is ERC2771Context, Ownable {
     
     enum DuelState { Created, Accepted, Finished, Cancelled }
-
-    uint256 public constant FEE = 0.00093 ether;
 
     struct Duel {
         uint id;
@@ -34,10 +33,9 @@ contract FreeDuels is ERC2771Context, Ownable {
     event DuelCancelled(uint256 id);
     event DuelMove(uint256 id, address currentPlayer, string words, uint256 moveCount);
 
-    constructor() ERC2771Context(address(0xBf175FCC7086b4f9bd59d5EAE8eA67b8f940DE0d)) {
-    }
+    constructor(address _gelatoRelay) ERC2771Context(_gelatoRelay) {}
 
-    function createDuel(string memory _email, string memory _targetWord) public payable {
+    function createDuel(string memory _email, string memory _targetWord) public {
 
         uint duelCounter = duels.length;
 
@@ -70,7 +68,7 @@ contract FreeDuels is ERC2771Context, Ownable {
         emit DuelCancelled(_duelId);
     }
 
-    function acceptDuel(uint256 _duelId) public payable {
+    function acceptDuel(uint256 _duelId) public {
         require(duels[_duelId].state == DuelState.Created, "Duel must not be accepted yet");
 
         duels[_duelId].opponent = _msgSender();
@@ -81,11 +79,10 @@ contract FreeDuels is ERC2771Context, Ownable {
         emit DuelAccepted(_duelId);
     }
 
-    function makeMove(uint256 _duelId, string memory _word) public payable {
+    function makeMove(uint256 _duelId, string memory _word) public {
         require(duels[_duelId].state == DuelState.Accepted, "Duel must be accepted");
         require(duels[_duelId].currentPlayer == _msgSender(), "Only the current player can make a move");
         
-
         duels[_duelId].words = string(abi.encodePacked(duels[_duelId].words, ",", _word));
         
         if(keccak256(abi.encodePacked(_word)) == keccak256(abi.encodePacked(duels[_duelId].targetWord))) {
@@ -155,91 +152,21 @@ contract FreeDuels is ERC2771Context, Ownable {
         return result;
     }
 
-    function getMyAcceptedDuels(address _wallet) public view returns (Duel[] memory) {
-        uint256 count = 0;
-        for(uint256 i = 0; i < myDuels[_wallet].length; i++) {
-            if(duels[myDuels[_wallet][i]].state == DuelState.Accepted) {
-                count++;
-            }
-        }
-
-        Duel[] memory result = new Duel[](count);
-        uint256 index = 0;
-        for(uint256 i = 0; i < myDuels[_wallet].length; i++) {
-            if(duels[myDuels[_wallet][i]].state == DuelState.Accepted) {
-                result[index] = duels[myDuels[_wallet][i]];
-                index++;
-            }
-        }
-
-        return result;
-    }
-
-    function getMyFinishedDuels(address _wallet) public view returns (Duel[] memory) {
-        uint256 count = 0;
-        for(uint256 i = 0; i < myDuels[_wallet].length; i++) {
-            if(duels[myDuels[_wallet][i]].state == DuelState.Finished) {
-                count++;
-            }
-        }
-
-        Duel[] memory result = new Duel[](count);
-        uint256 index = 0;
-        for(uint256 i = 0; i < myDuels[_wallet].length; i++) {
-            if(duels[myDuels[_wallet][i]].state == DuelState.Finished) {
-                result[index] = duels[myDuels[_wallet][i]];
-                index++;
-            }
-        }
-
-        return result;
-    }
-
-    function getMyCancelledDuels(address _wallet) public view returns (Duel[] memory) {
-        uint256 count = 0;
-        for(uint256 i = 0; i < myDuels[_wallet].length; i++) {
-            if(duels[myDuels[_wallet][i]].state == DuelState.Cancelled) {
-                count++;
-            }
-        }
-
-        Duel[] memory result = new Duel[](count);
-        uint256 index = 0;
-        for(uint256 i = 0; i < myDuels[_wallet].length; i++) {
-            if(duels[myDuels[_wallet][i]].state == DuelState.Cancelled) {
-                result[index] = duels[myDuels[_wallet][i]];
-                index++;
-            }
-        }
-
-        return result;
-    }
-
-    function getMyCreatedDuels(address _wallet) public view returns (Duel[] memory) {
-        uint256 count = 0;
-        for(uint256 i = 0; i < myDuels[_wallet].length; i++) {
-            if(duels[myDuels[_wallet][i]].state == DuelState.Created) {
-                count++;
-            }
-        }
-
-        Duel[] memory result = new Duel[](count);
-        uint256 index = 0;
-        for(uint256 i = 0; i < myDuels[_wallet].length; i++) {
-            if(duels[myDuels[_wallet][i]].state == DuelState.Created) {
-                result[index] = duels[myDuels[_wallet][i]];
-                index++;
-            }
-        }
-
-        return result;
-    }
-
-    function _msgSender() internal view override(Context, ERC2771Context) returns (address) {
+    function _msgSender()
+        internal
+        view
+        override(Context, ERC2771Context)
+        returns (address)
+    {
         return ERC2771Context._msgSender();
     }
 
-    function _msgData() internal view override(Context, ERC2771Context) returns (bytes calldata) {
+    function _msgData()
+        internal
+        view
+        override(Context, ERC2771Context)
+        returns (bytes calldata)
+    {
         return ERC2771Context._msgData();
     }
 }

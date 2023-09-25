@@ -1,19 +1,20 @@
 const hre = require('hardhat');
 
 async function main() {
-  const Duels = await hre.ethers.getContractFactory('Duels');
-  const duels = await Duels.deploy();
+  // const Duels = await hre.ethers.getContractFactory('Duels');
+  // const duels = await Duels.deploy();
 
-  await duels.waitForDeployment();
+  // await duels.waitForDeployment();
 
-  console.log('Contract Deployed at ' + duels.target);
+  // console.log('Duels Deployed at ' + duels.target);
 
+  const gelatoAddress = '0xd8253782c45a12053594b9deB72d8e8aB2Fca54c';
   const FreeDuels = await hre.ethers.getContractFactory('FreeDuels');
-  const freeDuels = await FreeDuels.deploy(duels.target);
+  const freeDuels = await FreeDuels.deploy(gelatoAddress);
 
   await freeDuels.waitForDeployment();
 
-  console.log('Contract Deployed at ' + freeDuels.target);
+  console.log('FreeDuels Deployed at ' + freeDuels.target);
 }
 
 main().catch((error) => {

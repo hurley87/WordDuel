@@ -2,11 +2,8 @@
 
 import { DuelGamePlay } from '@/components/duel-gameplay';
 import { DuelCancelled } from '@/components/duel-cancelled';
-import { DuelCreatedChallenger } from '@/components/duel-created-challenger';
-import { DuelCreatedOpponent } from '@/components/duel-created-opponent';
-import { DuelFinished } from '@/components/duel-finished';
 import Loading from '@/components/loading';
-import { useRead } from '@/hooks/useRead';
+import { useFreeRead } from '@/hooks/useFreeRead';
 import { UserContext } from '@/lib/UserContext';
 import { useContext, useEffect } from 'react';
 import Link from 'next/link';
@@ -17,24 +14,20 @@ import GetStarted from '@/components/get-started';
 import NotInvited from '@/components/not-invited';
 import { toast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
-import { useBalance } from 'wagmi';
-import GetETH from '@/components/get-eth';
-import { Badge } from '@/components/ui/badge';
+import { DuelCreatedChallengerFree } from '@/components/duel-created-challender-free';
+import { DuelCreatedOpponentFree } from '@/components/duel-created-opponent-free';
+import { DuelFinishedFree } from '@/components/duel-finished-free';
+import { DuelGamePlayFree } from '@/components/duel-gameplay-free';
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [user, _]: any = useContext(UserContext);
-  const { data } = useBalance({
-    address: user?.publicAddress,
-  });
-  const balance = parseFloat(data?.formatted || '0');
-  const { data: duel, isLoading } = useRead({
+  const { data: duel, isLoading } = useFreeRead({
     functionName: 'getDuel',
     watch: true,
     args: [parseInt(params.slug)],
   });
   const yourTurn =
     duel?.currentPlayer?.toLowerCase() === user?.publicAddress?.toLowerCase();
-
   const isChallenger =
     duel?.challenger?.toLowerCase() === user?.publicAddress?.toLowerCase();
   const isOpponent = duel?.email.toLowerCase() === user?.email?.toLowerCase();
@@ -44,8 +37,6 @@ export default function Page({ params }: { params: { slug: string } }) {
   const isCancelled = duel?.state === 3;
   const isFinished = duel?.state === 2;
   const router = useRouter();
-  const amount = Number(duel?.moveAmount) / 10 ** 18;
-  const tooPoor = balance * 5 < amount;
 
   useEffect(() => {
     if (!isLoading && !duel) {
@@ -56,7 +47,6 @@ export default function Page({ params }: { params: { slug: string } }) {
       });
       router.push('/');
     }
-    console.log({ isLoading, duel, user });
   }, [isLoading, duel, router, user]);
 
   return (
@@ -77,31 +67,20 @@ export default function Page({ params }: { params: { slug: string } }) {
         <Loading />
       ) : (
         <>
-          {user && tooPoor && !notOpponentOrChallenger && (
-            <div className="flex flex-col gap-6">
-              <div className="mx-auto">
-                <Badge variant="destructive">
-                  You need to deposit {(Number(duel.moveAmount) / 10 ** 18) * 5}{' '}
-                  ETH
-                </Badge>
-              </div>
-              <GetETH />
-            </div>
-          )}
           {(isLoading || (user && user.loading) || !user) && <GetStarted />}
           {user && !user.loading && notOpponentOrChallenger && (
             <NotInvited duel={duel} />
           )}
-          {isCreated && isChallenger && <DuelCreatedChallenger duel={duel} />}
-          {isCreated && isOpponent && !tooPoor && (
-            <DuelCreatedOpponent duel={duel} />
+          {isCreated && isChallenger && (
+            <DuelCreatedChallengerFree duel={duel} />
           )}
+          {isCreated && isOpponent && <DuelCreatedOpponentFree duel={duel} />}
           {isCancelled && <DuelCancelled />}
-          {user && isFinished && !notOpponentOrChallenger && (
-            <DuelFinished duel={duel} yourTurn={yourTurn} />
+          {user && isFinished && (
+            <DuelFinishedFree duel={duel} yourTurn={yourTurn} />
           )}
-          {user && !user.loading && isAccepted && !tooPoor && (
-            <DuelGamePlay duel={duel} yourTurn={yourTurn} />
+          {user && !user.loading && isAccepted && (
+            <DuelGamePlayFree duel={duel} yourTurn={yourTurn} />
           )}
         </>
       )}

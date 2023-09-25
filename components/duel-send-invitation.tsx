@@ -16,9 +16,15 @@ import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 
-export const DuelSendInvitation = ({ duel }: { duel: any }) => {
+export const DuelSendInvitation = ({
+  duel,
+  route,
+}: {
+  duel: any;
+  route: string;
+}) => {
   const [user, _]: any = useContext(UserContext);
-  const defaultContent = `Time to defend your honor. Accept the duel here: ${window.location.origin}/duel/${duel.id}`;
+  const defaultContent = `Time to defend your honor. Accept the duel here: ${window.location.origin}/${route}/${duel.id}`;
   const [content, setContent] = useState<string>(defaultContent);
   const username = user?.email.split('@')[0].replace('.', '');
   const defaultSubject = `${username} challenged you to a duel!`;

@@ -59,11 +59,11 @@ function Duels() {
           <Card>
             <CardHeader>
               <CardDescription>
-                Challenge a friend to a duel where the winner takes all.
+                Challenge a friend to a duel where the winner earns ETH.
               </CardDescription>
             </CardHeader>
             <CardFooter>
-              <Link href="/new" className="w-full">
+              <Link href="/duel" className="w-full">
                 <Button className="w-full">New Duel</Button>
               </Link>
             </CardFooter>

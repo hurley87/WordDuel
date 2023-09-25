@@ -77,7 +77,7 @@ export function UserAccountNav({ user, setUser, balance }: any) {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link className="cursor-pointer" href="/new">
+          <Link className="cursor-pointer" href="/duel">
             New Duel
           </Link>
         </DropdownMenuItem>
