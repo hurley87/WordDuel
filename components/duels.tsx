@@ -39,30 +39,34 @@ function Duels() {
   });
   const noDuels = !duels?.length && !invites?.length;
 
+  // create function that combines duels and invites and sorts by date
+  function compare(a: any, b: any) {
+    const dateA = new Date(a.createdAt);
+    const dateB = new Date(b.createdAt);
+
+    let comparison = 0;
+    if (dateA > dateB) {
+      comparison = 1;
+    } else if (dateA < dateB) {
+      comparison = -1;
+    }
+    return comparison;
+  }
+
   return (
-    <div className="flex flex-col gap-4 max-w-lg mx-auto px-2">
+    <div className="flex flex-col gap-2 max-w-lg mx-auto px-2">
       {user && (
         <Container>
-          <Card>
-            <CardHeader>
-              <CardDescription>
-                Challenge a friend to a duel and play for ETH or practice
-                playing against a friend for free.
-              </CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <div className="flex flex-col gap-2 w-full">
-                <Link href="/duel" className="w-full">
-                  <Button className="w-full">New Duel</Button>
-                </Link>
-                <Link href="/practice" className="w-full">
-                  <Button variant="secondary" className="w-full">
-                    Start Practice
-                  </Button>
-                </Link>
-              </div>
-            </CardFooter>
-          </Card>
+          <div className="flex flex-col gap-2 w-full">
+            <Link href="/duel" className="w-full">
+              <Button className="w-full">Duel for ETH</Button>
+            </Link>
+            <Link href="/practice" className="w-full">
+              <Button variant="outline" className="w-full">
+                Practice for Free
+              </Button>
+            </Link>
+          </div>
         </Container>
       )}
 
