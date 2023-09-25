@@ -17,6 +17,7 @@ import {
 } from './ui/card';
 import Link from 'next/link';
 import { useFreeRead } from '@/hooks/useFreeRead';
+import { DuelFree } from './duel-free';
 
 function Duels() {
   const [user, _]: any = useContext(UserContext);
@@ -76,11 +77,7 @@ function Duels() {
               {invitesfree
                 ?.filter((invite) => invite.state === 0)
                 .map((duel: any) => (
-                  <Duel
-                    key={parseInt(duel.id)}
-                    duelId={duel.id}
-                    route="practice"
-                  />
+                  <DuelFree key={parseInt(duel.id)} duelId={duel.id} />
                 ))}
             </CardContent>
           </Card>
@@ -97,7 +94,7 @@ function Duels() {
                 {duelsfree
                   ?.reverse()
                   .map((duelId: any) => (
-                    <Duel key={parseInt(duelId)} duelId={duelId} route="duel" />
+                    <DuelFree key={parseInt(duelId)} duelId={duelId} />
                   ))}
               </CardContent>
             </Card>
@@ -132,7 +129,7 @@ function Duels() {
               {invites
                 ?.filter((invite) => invite.state === 0)
                 .map((duel: any) => (
-                  <Duel key={parseInt(duel.id)} duelId={duel.id} route="duel" />
+                  <Duel key={parseInt(duel.id)} duelId={duel.id} />
                 ))}
             </CardContent>
           </Card>
@@ -149,7 +146,7 @@ function Duels() {
                 {duels
                   ?.reverse()
                   .map((duelId: any) => (
-                    <Duel key={parseInt(duelId)} duelId={duelId} route="duel" />
+                    <Duel key={parseInt(duelId)} duelId={duelId} />
                   ))}
               </CardContent>
             </Card>
