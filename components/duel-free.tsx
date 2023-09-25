@@ -35,13 +35,13 @@ export const DuelFree = ({ duelId }: { duelId: any }) => {
               </p>
               <p className="text-xs text-muted-foreground">
                 {DUEL_STATE[duel?.state] === 'Accepted' &&
-                  `Duel #${duelId} accepted`}
+                  `Practice #${duelId} accepted`}
                 {DUEL_STATE[duel?.state] === 'Created' &&
-                  `Duel #${duelId} proposed`}
+                  `Practice #${duelId} proposed`}
                 {DUEL_STATE[duel?.state] === 'Cancelled' &&
-                  `Duel #${duelId} cancelled`}
+                  `Practice #${duelId} cancelled`}
                 {DUEL_STATE[duel?.state] === 'Finished' &&
-                  `Duel #${duelId} finished`}
+                  `Practice #${duelId} finished`}
               </p>
             </div>
           </div>

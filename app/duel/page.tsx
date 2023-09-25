@@ -13,7 +13,7 @@ import GetETH from '@/components/get-eth';
 
 export default function NewDuelPage() {
   const [user, _]: any = useContext(UserContext);
-  const { data, isLoading } = useBalance({
+  const { data } = useBalance({
     address: user?.publicAddress,
   });
   const balance = parseFloat(data?.formatted || '0');
