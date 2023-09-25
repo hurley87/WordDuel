@@ -18,7 +18,6 @@ export async function getaloRequest(data: any) {
       data,
       user: await provider.getSigner().getAddress(),
     };
-    console.log('request', request);
     const apiKey = process.env.NEXT_PUBLIC_GELATO_API as string;
     const response = await relay.sponsoredCallERC2771(
       request,

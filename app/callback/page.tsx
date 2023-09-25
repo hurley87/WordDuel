@@ -12,7 +12,6 @@ export default function FAQPage() {
   useEffect(() => {
     async function load() {
       const result = await magic.oauth.getRedirectResult();
-      console.log(result);
       // Send this token to our validation endpoint
       const res = await fetch('/api/login', {
         method: 'POST',
