@@ -137,7 +137,6 @@ export function getNextRow(row: GameTile[], secret: string) {
       return;
     }
 
-    // exists
     if (entries.includes(i)) {
       result[i].variant = 'correct';
       const nextIndex = without([i], entries);

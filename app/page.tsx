@@ -9,7 +9,6 @@ import { useContext } from 'react';
 import { useBalance } from 'wagmi';
 import Duels from '@/components/duels';
 import Loading from '@/components/loading';
-import GetETH from '@/components/get-eth';
 import { UserAuthGoogle } from '@/components/user-auth-google';
 
 export default function Home() {
@@ -58,8 +57,6 @@ export default function Home() {
           )}
           {/* has no games */}
           {user && balance > 0 && <Duels />}
-          {/* has no balance */}
-          {user && balance === 0 && <GetETH />}
         </div>
       )}
     </div>

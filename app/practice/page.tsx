@@ -28,8 +28,8 @@ export default function PracticeDuelPage() {
       <div className="mx-auto flex w-full flex-col justify-center space-y-4 sm:w-[350px]">
         <div className="flex flex-col space-y-2">
           <p className="text-sm text-muted-foreground">
-            Invite your {`opponent`} by email. Only the person with this email
-            can accept the duel.
+            Invite your {`opponent`} by email. Only the owner of this email can
+            accept the duel.
           </p>
         </div>
         <PracticeDuelForm />

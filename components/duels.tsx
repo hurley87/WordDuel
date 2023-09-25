@@ -16,6 +16,7 @@ import {
   CardContent,
 } from './ui/card';
 import Link from 'next/link';
+import { useFreeRead } from '@/hooks/useFreeRead';
 
 function Duels() {
   const [user, _]: any = useContext(UserContext);
@@ -23,43 +24,92 @@ function Duels() {
     functionName: 'getMyDuels',
     args: [user?.publicAddress],
   });
+  const { data: duelsfree, isLoading: isFreeLoading } = useFreeRead({
+    functionName: 'getMyDuels',
+    args: [user?.publicAddress],
+  });
   const noDuels = !isLoading && duels?.length === 0;
   const hasDuels = !isLoading && duels?.length > 0;
-
+  const hasFreeDuels = !isFreeLoading && duelsfree?.length > 0;
   const { data: invites, isLoading: invitesLoading } = useRead({
+    functionName: 'getDuelsByEmail',
+    args: [user?.email],
+  });
+  const { data: invitesfree, isLoading: invitesFreeLoading } = useFreeRead({
     functionName: 'getDuelsByEmail',
     args: [user?.email],
   });
   const hasInvites =
     !invitesLoading &&
     invites?.filter((invite) => invite.state === 0).length > 0;
+  const hasFreeInvites =
+    !invitesFreeLoading &&
+    invitesfree?.filter((invite) => invite.state === 0).length > 0;
 
   return (
     <div className="flex flex-col gap-4 max-w-lg mx-auto px-2">
-      {hasInvites && (
+      {user && (
         <Container>
           <Card>
             <CardHeader>
               <CardDescription>
-                {`You've`} been challenged. Time to defend your honor.
+                Practice playing against a friend for bragging rights.
+              </CardDescription>
+            </CardHeader>
+            <CardFooter>
+              <Link href="/practice" className="w-full">
+                <Button className="w-full">Start Practice</Button>
+              </Link>
+            </CardFooter>
+          </Card>
+        </Container>
+      )}
+      {hasFreeInvites && (
+        <Container>
+          <Card>
+            <CardHeader>
+              <CardDescription>
+                {`You've`} been invited to a duel. Will you accept?
               </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-1">
-              {invites
+              {invitesfree
                 ?.filter((invite) => invite.state === 0)
                 .map((duel: any) => (
-                  <Duel key={parseInt(duel.id)} duelId={duel.id} />
+                  <Duel
+                    key={parseInt(duel.id)}
+                    duelId={duel.id}
+                    route="practice"
+                  />
                 ))}
             </CardContent>
           </Card>
         </Container>
       )}
-      {user && !hasInvites && (
+      {hasFreeDuels && (
+        <>
+          <Container>
+            <Card>
+              <CardHeader>
+                <CardDescription>Practice</CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-2">
+                {duelsfree
+                  ?.reverse()
+                  .map((duelId: any) => (
+                    <Duel key={parseInt(duelId)} duelId={duelId} route="duel" />
+                  ))}
+              </CardContent>
+            </Card>
+          </Container>
+        </>
+      )}
+      {user && (
         <Container>
           <Card>
             <CardHeader>
               <CardDescription>
-                Challenge a friend to a duel where the winner earns ETH.
+                Challenge a friend to a duel and play for ETH.
               </CardDescription>
             </CardHeader>
             <CardFooter>
@@ -70,18 +120,36 @@ function Duels() {
           </Card>
         </Container>
       )}
+      {hasInvites && (
+        <Container>
+          <Card>
+            <CardHeader>
+              <CardDescription>
+                {`You've`} been invited to a duel. {"You'll"} need ETH to play.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-1">
+              {invites
+                ?.filter((invite) => invite.state === 0)
+                .map((duel: any) => (
+                  <Duel key={parseInt(duel.id)} duelId={duel.id} route="duel" />
+                ))}
+            </CardContent>
+          </Card>
+        </Container>
+      )}
       {hasDuels && (
         <>
           <Container>
             <Card>
               <CardHeader>
-                <CardDescription>Current Duels</CardDescription>
+                <CardDescription>Duels</CardDescription>
               </CardHeader>
               <CardContent className="grid gap-2">
                 {duels
                   ?.reverse()
                   .map((duelId: any) => (
-                    <Duel key={parseInt(duelId)} duelId={duelId} />
+                    <Duel key={parseInt(duelId)} duelId={duelId} route="duel" />
                   ))}
               </CardContent>
             </Card>

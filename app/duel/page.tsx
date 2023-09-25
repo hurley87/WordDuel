@@ -1,16 +1,30 @@
+'use client';
+
 import Link from 'next/link';
 
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import { NewDuelForm } from '@/components/new-duel-form';
-
-export const metadata = {
-  title: 'Create a New Duel',
-  description: 'Set the stakes and invite your friends.',
-};
+import { useContext } from 'react';
+import { UserContext } from '@/lib/UserContext';
+import { useBalance } from 'wagmi';
+import GetETH from '@/components/get-eth';
 
 export default function NewDuelPage() {
+  const [user, _]: any = useContext(UserContext);
+  const { data, isLoading } = useBalance({
+    address: user?.publicAddress,
+  });
+  const balance = parseFloat(data?.formatted || '0');
+
+  if (balance === 0)
+    return (
+      <div className="mx-auto flex flex-col justify-center space-y-6 max-w-md py-24">
+        <GetETH />
+      </div>
+    );
+
   return (
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
       <Link

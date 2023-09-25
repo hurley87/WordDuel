@@ -3,7 +3,7 @@ import { DUEL_STATE, formatAddress } from '@/lib/utils';
 import { CheckSquare, Sword, Swords, XSquare } from 'lucide-react';
 import Link from 'next/link';
 
-export const Duel = ({ duelId }: { duelId: any }) => {
+export const Duel = ({ duelId, route }: { duelId: any; route: string }) => {
   const { data: duel, isLoading } = useRead({
     functionName: 'getDuel',
     args: [duelId],
@@ -15,7 +15,7 @@ export const Duel = ({ duelId }: { duelId: any }) => {
         <div className="h-10 w-full animate-pulse bg-primary-focus rounded-md"></div>
       )}
       {!isLoading && duel && (
-        <Link href={`/duel/${duelId}`} className="w-full">
+        <Link href={`/${route}/${duelId}`} className="w-full">
           <div className="flex space-x-4 rounded-md p-2 transition-all border border-accent hover:bg-accent hover:text-accent-foreground w-full">
             {DUEL_STATE[duel?.state] === 'Created' && (
               <Sword className="w-9 h-9" />
