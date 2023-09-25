@@ -9,12 +9,6 @@ export const Duel = ({ duelId }: { duelId: any }) => {
     args: [duelId],
   });
 
-  if (
-    DUEL_STATE[duel?.state] === 'Cancelled' ||
-    DUEL_STATE[duel?.state] === 'Finished'
-  )
-    return null;
-
   return (
     <div className={`flex`}>
       {isLoading && (
