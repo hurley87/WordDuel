@@ -10,8 +10,8 @@ export const Duel = ({ duelId }: { duelId: any }) => {
   });
 
   if (
-    DUEL_STATE[duel.state] === 'Cancelled' ||
-    DUEL_STATE[duel.state] === 'Finished'
+    DUEL_STATE[duel?.state] === 'Cancelled' ||
+    DUEL_STATE[duel?.state] === 'Finished'
   )
     return null;
 
@@ -23,16 +23,16 @@ export const Duel = ({ duelId }: { duelId: any }) => {
       {!isLoading && duel && (
         <Link href={`/duel/${duelId}`} className="w-full">
           <div className="flex space-x-4 rounded-md p-2 transition-all border border-accent hover:bg-accent hover:text-accent-foreground w-full">
-            {DUEL_STATE[duel.state] === 'Created' && (
+            {DUEL_STATE[duel?.state] === 'Created' && (
               <Sword className="w-9 h-9" />
             )}
-            {DUEL_STATE[duel.state] === 'Accepted' && (
+            {DUEL_STATE[duel?.state] === 'Accepted' && (
               <Swords className="w-9 h-9" />
             )}
-            {DUEL_STATE[duel.state] === 'Finished' && (
+            {DUEL_STATE[duel?.state] === 'Finished' && (
               <CheckSquare className="w-9 h-9" />
             )}
-            {DUEL_STATE[duel.state] === 'Cancelled' && (
+            {DUEL_STATE[duel?.state] === 'Cancelled' && (
               <XSquare className="w-9 h-9" />
             )}
             <div className="space-y-1">
@@ -40,17 +40,17 @@ export const Duel = ({ duelId }: { duelId: any }) => {
                 {formatAddress(duel.challenger)} ⚔️ {duel.email}
               </p>
               <p className="text-xs text-muted-foreground">
-                {DUEL_STATE[duel.state] === 'Accepted' &&
+                {DUEL_STATE[duel?.state] === 'Accepted' &&
                   `Duel #${duelId} accepted: ${
                     Number(duel.moveAmount) / 10 ** 18
                   } ETH per move`}
-                {DUEL_STATE[duel.state] === 'Created' &&
+                {DUEL_STATE[duel?.state] === 'Created' &&
                   `Duel #${duelId} proposed: ${
                     Number(duel.moveAmount) / 10 ** 18
-                  } ETH per move ${duel.state}`}
-                {DUEL_STATE[duel.state] === 'Cancelled' &&
+                  } ETH per move ${duel?.state}`}
+                {DUEL_STATE[duel?.state] === 'Cancelled' &&
                   `Duel #${duelId} cancelled`}
-                {DUEL_STATE[duel.state] === 'Finished' &&
+                {DUEL_STATE[duel?.state] === 'Finished' &&
                   `Duel #${duelId} finished`}
               </p>
             </div>
