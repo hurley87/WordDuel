@@ -25,9 +25,6 @@ export async function getaloRequest(data: any) {
       apiKey
     );
 
-    const taskId = response.taskId;
-    console.log('response', taskId);
-
-    return taskId;
+    return response.taskId;
   }
 }

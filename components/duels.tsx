@@ -32,8 +32,6 @@ function Duels() {
   });
   const noDuels = !duels?.length && !invites?.length;
 
-  console.log(duels);
-
   // create function that combines duels and invites and sorts by date
   function compare(a: any, b: any) {
     const dateA = new Date(a.createdAt);

@@ -56,7 +56,6 @@ export default function Page({ params }: { params: { slug: string } }) {
       });
       router.push('/');
     }
-    console.log({ isLoading, duel, user });
   }, [isLoading, duel, router, user]);
 
   return (
