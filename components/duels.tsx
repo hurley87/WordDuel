@@ -49,7 +49,7 @@ function Duels() {
   }
 
   return (
-    <div className="mx-auto flex w-full flex-col justify-center space-y-4 sm:w-[320px]">
+    <div className="mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[330px]">
       {user && (
         <Container>
           <div className="flex flex-col gap-2 w-full">

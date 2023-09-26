@@ -17,5 +17,5 @@ export function formatDate(input: string | number): string {
 export const DUEL_STATE = ['Created', 'Accepted', 'Finished', 'Cancelled'];
 
 export const formatAddress = (address: string) => {
-  return address?.slice(0, 6) + '...' + address?.slice(-4);
+  return address?.slice(0, 4) + '...' + address?.slice(-4);
 };
