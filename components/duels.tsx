@@ -8,13 +8,6 @@ import FAQ from './faq';
 import { Duel } from './duel';
 import { Container } from './container';
 import { Button } from './ui/button';
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardContent,
-} from './ui/card';
 import Link from 'next/link';
 import { useFreeRead } from '@/hooks/useFreeRead';
 import { DuelFree } from './duel-free';
@@ -39,6 +32,8 @@ function Duels() {
   });
   const noDuels = !duels?.length && !invites?.length;
 
+  console.log(duels);
+
   // create function that combines duels and invites and sorts by date
   function compare(a: any, b: any) {
     const dateA = new Date(a.createdAt);
@@ -54,7 +49,7 @@ function Duels() {
   }
 
   return (
-    <div className="flex flex-col gap-2 max-w-lg mx-auto px-2">
+    <div className="mx-auto flex w-full flex-col justify-center space-y-4 sm:w-[320px]">
       {user && (
         <Container>
           <div className="flex flex-col gap-2 w-full">

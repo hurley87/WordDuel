@@ -55,8 +55,7 @@ export default function Home() {
               <UserAuthGoogle />
             </div>
           )}
-          {/* has no games */}
-          {user && balance > 0 && <Duels />}
+          <Duels />
         </div>
       )}
     </div>
