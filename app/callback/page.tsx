@@ -5,6 +5,7 @@ import { useContext, useEffect } from 'react';
 import { magic } from '@/lib/magic';
 import { UserContext } from '@/lib/UserContext';
 import { useRouter } from 'next/navigation';
+import va from '@vercel/analytics';
 
 export default function FAQPage() {
   const [user, setUser]: any = useContext(UserContext);
@@ -25,11 +26,15 @@ export default function FAQPage() {
       if (res.ok) {
         const userMetadata = await magic.user.getMetadata();
         setUser(userMetadata);
+        va.track('Login', {
+          email: user?.email,
+          address: user?.publicAddress,
+        });
         router.push('/');
       }
     }
     load();
-  }, [router, setUser]);
+  }, [router, setUser, user?.email, user?.publicAddress]);
 
   return <Loading />;
 }

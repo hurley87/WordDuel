@@ -20,6 +20,7 @@ import { useSubscribe } from '@/hooks/useSubscribe';
 import { useWrite } from '@/hooks/useWrite';
 import { useBalance } from 'wagmi';
 import { generateWord } from '@/lib/wordle';
+import va from '@vercel/analytics';
 
 type FormData = z.infer<typeof newDuelSchema>;
 
@@ -87,6 +88,12 @@ export function NewDuelForm() {
 
       await contract?.createDuel(email, word, {
         value: parseEther(amountString),
+      });
+
+      va.track('CreateDuel', {
+        email,
+        address: user?.publicAddress,
+        value: amountString,
       });
     } catch (e) {
       setIsLoading(false);

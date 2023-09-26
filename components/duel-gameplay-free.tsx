@@ -16,6 +16,7 @@ import { flatten } from 'ramda';
 import { words } from '@/lib/wordle';
 import { useFreeSubscribe } from '@/hooks/useFreeSubscribe';
 import { getaloRequest } from '@/lib/gelato';
+import va from '@vercel/analytics';
 
 export const DuelGamePlayFree = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
@@ -241,6 +242,10 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
       word
     );
     await getaloRequest(data?.data);
+
+    va.track('PracticeMove', {
+      ...duel,
+    });
 
     return {
       status: !isLastRow && !won ? 'playing' : won ? 'win' : 'loss',

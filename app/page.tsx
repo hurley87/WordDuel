@@ -1,7 +1,6 @@
 'use client';
 
 import { Icons } from '@/components/icons';
-import { Button } from '@/components/ui/button';
 import { UserAccountNav } from '@/components/user-account-nav';
 import { UserContext } from '@/lib/UserContext';
 import Link from 'next/link';

@@ -15,6 +15,7 @@ import Grid from './wordle/grid';
 import { flatten } from 'ramda';
 import { words } from '@/lib/wordle';
 import { useSubscribe } from '@/hooks/useSubscribe';
+import va from '@vercel/analytics';
 
 export const DuelGamePlay = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
@@ -237,6 +238,10 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
 
     await contract?.makeMove(duel.id.toString(), word, {
       value: duel.moveAmount,
+    });
+
+    va.track('DuelMove', {
+      ...duel,
     });
 
     return {

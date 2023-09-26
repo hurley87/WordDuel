@@ -14,6 +14,7 @@ import { useFreeSubscribe } from '@/hooks/useFreeSubscribe';
 import { generateWord } from '@/lib/wordle';
 import { useFreeWrite } from '@/hooks/useFreeWrite';
 import { getaloRequest } from '@/lib/gelato';
+import va from '@vercel/analytics';
 
 export function PracticeDuelForm() {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -53,7 +54,12 @@ export function PracticeDuelForm() {
       }
 
       const data = await contract?.populateTransaction.createDuel(email, word);
-      return await getaloRequest(data?.data);
+      await getaloRequest(data?.data);
+
+      va.track('CreatePractice', {
+        email,
+        address: user?.publicAddress,
+      });
     } catch (e) {
       setIsLoading(false);
       const description = e?.data?.message || 'Please try again.';
