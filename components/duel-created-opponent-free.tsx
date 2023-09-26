@@ -7,11 +7,11 @@ import { Container } from './container';
 import { useFreeSubscribe } from '@/hooks/useFreeSubscribe';
 import { toast } from './ui/use-toast';
 import { getaloRequest } from '@/lib/gelato';
+import va from '@vercel/analytics';
 
 export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
   const contract = useFreeWrite();
   const [isAccepting, setIsAccepting] = useState<boolean>(false);
-  const amount = (Number(duel.moveAmount) / 10 ** 18).toString();
 
   useFreeSubscribe({
     eventName: 'DuelAccepted',
@@ -35,6 +35,9 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
         duel.id.toString()
       );
       await getaloRequest(data?.data);
+      va.track('AcceptPractice', {
+        ...duel,
+      });
     } catch (e) {
       const description = e?.data?.message || e?.message || e;
       return toast({

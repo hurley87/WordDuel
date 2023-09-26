@@ -6,6 +6,7 @@ import { Icons } from './icons';
 import { Container } from './container';
 import { useSubscribe } from '@/hooks/useSubscribe';
 import { toast } from './ui/use-toast';
+import va from '@vercel/analytics';
 
 export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   const contract = useWrite();
@@ -32,6 +33,9 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
     try {
       await contract?.acceptDuel(duel.id.toString(), {
         value: duel.moveAmount,
+      });
+      va.track('AcceptDuel', {
+        ...duel,
       });
     } catch (e) {
       const description = e?.data?.message || e?.message || e;

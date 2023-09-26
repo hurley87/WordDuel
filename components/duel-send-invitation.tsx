@@ -15,6 +15,7 @@ import { UserContext } from '@/lib/UserContext';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
+import va from '@vercel/analytics';
 
 export const DuelSendInvitation = ({
   duel,
@@ -49,6 +50,11 @@ export const DuelSendInvitation = ({
     toast({
       title: 'Invitation sent!',
       description: 'Your opponent will receive an email shortly.',
+    });
+    va.track('CreatePractice', {
+      ...duel,
+      subject,
+      content,
     });
     setIsSending(false);
   }
