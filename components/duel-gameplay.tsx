@@ -217,12 +217,18 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
         title: 'You Win',
         description: `${Number(duel.potAmount) / 10 ** 18} ETH is yours!`,
       });
+      va.track('DuelWin', {
+        ...duel,
+      });
     } else {
       if (isLastRow) {
         toast({
           title: 'Game Over',
           description: `Pot is split between players. The word was "${secret}".`,
           variant: 'destructive',
+        });
+        va.track('DuelLoss', {
+          ...duel,
         });
       } else {
         toast({

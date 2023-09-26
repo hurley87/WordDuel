@@ -218,12 +218,18 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
         title: 'You Win',
         description: `All the glory is yours!`,
       });
+      va.track('PracticeWin', {
+        ...duel,
+      });
     } else {
       if (isLastRow) {
         toast({
           title: 'Game Over',
           description: `The word was "${secret}".`,
           variant: 'destructive',
+        });
+        va.track('PracticeLoss', {
+          ...duel,
         });
       } else {
         toast({
