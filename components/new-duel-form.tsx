@@ -15,7 +15,6 @@ import { toast } from '@/components/ui/use-toast';
 import { Icons } from '@/components/icons';
 import { useRouter } from 'next/navigation';
 import { UserContext } from '@/lib/UserContext';
-import { parseEther } from 'viem';
 import { useSubscribe } from '@/hooks/useSubscribe';
 import { useWrite } from '@/hooks/useWrite';
 import { useBalance } from 'wagmi';

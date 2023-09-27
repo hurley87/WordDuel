@@ -119,7 +119,11 @@ export const useWrite = () => {
     };
 
     return { createDuel, cancelDuel, acceptDuel, makeMove };
-  } else {
-    throw new Error('No RPC provider');
-  }
+  } else
+    return {
+      createDuel: () => '',
+      cancelDuel: () => '',
+      acceptDuel: () => '',
+      makeMove: () => '',
+    };
 };
