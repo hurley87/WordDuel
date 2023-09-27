@@ -1,15 +1,15 @@
 'use client';
 
-import { useWrite } from '@/hooks/useWrite';
 import { Button } from './ui/button';
 import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icons } from './icons';
 import { getaloRequest } from '@/lib/gelato';
+import { useFreeWrite } from '@/hooks/useFreeWrite';
 
 export const DuelCancelFree = ({ duelId }: { duelId: string }) => {
-  const contract = useWrite();
+  const contract = useFreeWrite();
   const [isCancelling, setIsCancelling] = useState<boolean>(false);
   const router = useRouter();
 
