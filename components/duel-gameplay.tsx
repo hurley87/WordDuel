@@ -25,7 +25,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [secret, setSecret] = useState('');
   const [isGameSet, setIsGameSet] = useState(false);
-  const contract = useWrite();
+  const { makeMove } = useWrite();
   const [user, _]: any = useContext(UserContext);
 
   const setGame = useCallback(
@@ -244,9 +244,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
 
     if (won) word = duel.targetWord;
 
-    await contract?.makeMove(duel.id.toString(), word, {
-      value: duel.moveAmount,
-    });
+    await makeMove(duel.id.toString(), word, duel.moveAmount);
 
     va.track('DuelMove', {
       address: user?.publicAddress,

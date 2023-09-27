@@ -8,13 +8,13 @@ import { useRouter } from 'next/navigation';
 import { Icons } from './icons';
 
 export const DuelCancel = ({ duelId }: { duelId: string }) => {
-  const contract = useWrite();
+  const { cancelDuel } = useWrite();
   const [isCancelling, setIsCancelling] = useState<boolean>(false);
   const router = useRouter();
 
   async function handleCancellation() {
     setIsCancelling(true);
-    await contract?.cancelDuel(duelId);
+    await cancelDuel(duelId);
     router.push('/');
   }
 

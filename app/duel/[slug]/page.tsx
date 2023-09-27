@@ -45,7 +45,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   const isFinished = duel?.state === 2;
   const router = useRouter();
   const amount = Number(duel?.moveAmount) / 10 ** 18;
-  const tooPoor = balance * 5 < amount;
+  const tooPoor = balance < amount;
 
   useEffect(() => {
     if (!isLoading && !duel) {

@@ -43,7 +43,7 @@ export function NewDuelForm() {
     address: user?.publicAddress,
   });
   const balance = parseFloat(data?.formatted || '0');
-  const contract = useWrite();
+  const { createDuel } = useWrite();
 
   useSubscribe({
     eventName: 'DuelCreated',
@@ -86,11 +86,7 @@ export function NewDuelForm() {
         });
       }
 
-      console.log('amountString', amountString);
-
-      await contract?.createDuel(email, word, {
-        value: parseEther(amountString),
-      });
+      await createDuel(email, word, amountString);
 
       va.track('CreateDuel', {
         address: user?.publicAddress,
@@ -132,7 +128,7 @@ export function NewDuelForm() {
             id="amount"
             placeholder="0.001"
             type="number"
-            step="0.001"
+            step="0.0001"
             inputMode="decimal"
             disabled={isLoading}
             {...register('amount')}

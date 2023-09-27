@@ -13,12 +13,12 @@ import GetETH from '@/components/get-eth';
 
 export default function NewDuelPage() {
   const [user, _]: any = useContext(UserContext);
-  const { data } = useBalance({
+  const { data, isLoading } = useBalance({
     address: user?.publicAddress,
   });
-  const balance = parseFloat(data?.formatted || '0');
+  const balance = parseFloat(data?.formatted || '1');
 
-  if (balance === 0)
+  if (user && !isLoading && balance === 0)
     return (
       <div className="mx-auto flex flex-col justify-center space-y-6 max-w-md py-24">
         <GetETH />
@@ -48,7 +48,7 @@ export default function NewDuelPage() {
         </div>
         <NewDuelForm />
         <p className="text-xs text-muted-foreground">
-          * a small fee (0.00093 ETH) will be charged + gas
+          * 0.000111 ETH will be charged + gas
         </p>
       </div>
     </div>

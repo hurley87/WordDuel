@@ -10,7 +10,7 @@ import va from '@vercel/analytics';
 import { UserContext } from '@/lib/UserContext';
 
 export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
-  const contract = useWrite();
+  const { acceptDuel } = useWrite();
   const [isAccepting, setIsAccepting] = useState<boolean>(false);
   const amount = (Number(duel.moveAmount) / 10 ** 18).toString();
   const [user, _]: any = useContext(UserContext);
@@ -33,9 +33,8 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
     setIsAccepting(true);
 
     try {
-      await contract?.acceptDuel(duel.id.toString(), {
-        value: duel.moveAmount,
-      });
+      await acceptDuel(duel.id.toString(), duel.moveAmount);
+
       va.track('AcceptDuel', {
         address: user?.publicAddress,
       });
