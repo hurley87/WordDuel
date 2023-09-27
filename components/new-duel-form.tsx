@@ -93,7 +93,6 @@ export function NewDuelForm() {
       });
     } catch (e) {
       setIsLoading(false);
-      console.log('e', e);
       const description = e?.message || 'Please try again.';
       return toast({
         title: 'Something went wrong.',

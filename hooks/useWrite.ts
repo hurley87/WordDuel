@@ -14,7 +14,6 @@ export const useWrite = () => {
     const contract = new ethers.Contract(address, abi, signer);
 
     const createDuel = async (email, word, amountString): Promise<string> => {
-      console.log('createDuel', amountString);
       try {
         if (contract) {
           const gasPrice = await signer.getGasPrice();
@@ -42,7 +41,6 @@ export const useWrite = () => {
     };
 
     const cancelDuel = async (duelId): Promise<string> => {
-      console.log('cancelDuel', duelId);
       try {
         if (contract) {
           const gasPrice = await signer.getGasPrice();
@@ -67,8 +65,6 @@ export const useWrite = () => {
     };
 
     const acceptDuel = async (duelId, moveAmount): Promise<string> => {
-      console.log('acceptDuel', duelId);
-      console.log('moveAmount', moveAmount);
       try {
         if (contract) {
           const gasPrice = await signer.getGasPrice();
