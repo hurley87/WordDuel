@@ -40,7 +40,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
         address: user?.publicAddress,
       });
     } catch (e) {
-      const description = e?.data?.message || e?.message || e;
+      const description = e?.message || e;
       return toast({
         title: 'There was a problem creating your duel.',
         description,

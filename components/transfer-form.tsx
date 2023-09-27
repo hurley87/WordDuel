@@ -98,7 +98,7 @@ export function TransferForm() {
       router.push('/');
     } catch (e) {
       setIsLoading(false);
-      const description = e?.data?.message || 'Please try again.';
+      const description = e?.message || 'Please try again.';
       return toast({
         title: 'Something went wrong.',
         description,

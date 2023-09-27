@@ -38,7 +38,7 @@ export const PlayAgain = ({ duel }: { duel: any }) => {
         value: duel.moveAmount,
       });
     } catch (e) {
-      const description = e?.data?.message || e?.message || e;
+      const description = e?.message || e;
       return toast({
         title: 'There was a problem creating your duel.',
         description,

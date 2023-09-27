@@ -86,6 +86,8 @@ export function NewDuelForm() {
         });
       }
 
+      console.log('amountString', amountString);
+
       await contract?.createDuel(email, word, {
         value: parseEther(amountString),
       });
@@ -95,7 +97,8 @@ export function NewDuelForm() {
       });
     } catch (e) {
       setIsLoading(false);
-      const description = e?.data?.message || 'Please try again.';
+      console.log('e', e);
+      const description = e?.message || 'Please try again.';
       return toast({
         title: 'Something went wrong.',
         description,
