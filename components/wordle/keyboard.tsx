@@ -70,19 +70,17 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
   const getKeyColors: any = useCallback(
     (key: string) => {
       const tiles = usedKeys.filter((k) => k.children === key);
+      console.log('tiles', tiles);
       if (tiles.length > 0) {
-        const tile =
-          tiles.find(propEq('variant', 'correct')) ??
-          tiles.find(propEq('variant', 'present')) ??
-          tiles.find(propEq('variant', 'absent'));
+        const tile = tiles[0];
+        let background = '';
+        if (tile?.variant === 'correct') background = 'rgb(34 197 94)';
+        if (tile?.variant === 'present') background = 'rgb(234 179 8)';
+        if (tile?.variant === 'absent') background = 'rgb(75 85 99)';
 
         return {
-          color: tile?.variant ? 'white' : 'black',
-          background: match(tile?.variant ?? 'empty')
-            .with('absent', always('rgb(75 85 99)'))
-            .with('correct', always('rgb(34 197 94)'))
-            .with('present', always('rgb(234 179 8)'))
-            .otherwise(always('')),
+          color: 'white',
+          background,
         };
       }
 
@@ -107,7 +105,7 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
                 disabled={disabled}
                 key={key}
                 onClick={onKeyPress.bind(null, key.toLowerCase())}
-                // style={getKeyColors(key.toLowerCase())}
+                style={getKeyColors(key.toLowerCase())}
               >
                 {isMappableKey(key) ? MAPPABLE_KEYS[key] : key}
               </Button>
