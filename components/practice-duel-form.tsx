@@ -57,7 +57,6 @@ export function PracticeDuelForm() {
       await getaloRequest(data?.data);
 
       va.track('CreatePractice', {
-        email,
         address: user?.publicAddress,
       });
     } catch (e) {

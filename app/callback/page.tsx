@@ -27,7 +27,6 @@ export default function FAQPage() {
         const userMetadata = await magic.user.getMetadata();
         setUser(userMetadata);
         va.track('Login', {
-          email: user?.email,
           address: user?.publicAddress,
         });
         router.push('/');

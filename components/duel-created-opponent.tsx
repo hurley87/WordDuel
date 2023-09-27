@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button } from './ui/button';
 import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
 import { useWrite } from '@/hooks/useWrite';
@@ -7,11 +7,13 @@ import { Container } from './container';
 import { useSubscribe } from '@/hooks/useSubscribe';
 import { toast } from './ui/use-toast';
 import va from '@vercel/analytics';
+import { UserContext } from '@/lib/UserContext';
 
 export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   const contract = useWrite();
   const [isAccepting, setIsAccepting] = useState<boolean>(false);
   const amount = (Number(duel.moveAmount) / 10 ** 18).toString();
+  const [user, _]: any = useContext(UserContext);
 
   useSubscribe({
     eventName: 'DuelAccepted',
@@ -35,7 +37,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
         value: duel.moveAmount,
       });
       va.track('AcceptDuel', {
-        ...duel,
+        address: user?.publicAddress,
       });
     } catch (e) {
       const description = e?.data?.message || e?.message || e;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button } from './ui/button';
 import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
 import { useFreeWrite } from '@/hooks/useFreeWrite';
@@ -8,10 +8,12 @@ import { useFreeSubscribe } from '@/hooks/useFreeSubscribe';
 import { toast } from './ui/use-toast';
 import { getaloRequest } from '@/lib/gelato';
 import va from '@vercel/analytics';
+import { UserContext } from '@/lib/UserContext';
 
 export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
   const contract = useFreeWrite();
   const [isAccepting, setIsAccepting] = useState<boolean>(false);
+  const [user, _]: any = useContext(UserContext);
 
   useFreeSubscribe({
     eventName: 'DuelAccepted',
@@ -36,7 +38,7 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
       );
       await getaloRequest(data?.data);
       va.track('AcceptPractice', {
-        ...duel,
+        address: user?.publicAddress,
       });
     } catch (e) {
       const description = e?.data?.message || e?.message || e;

@@ -8,7 +8,7 @@ import {
   decryptWords,
 } from '@/lib/wordle';
 import { Badge } from '@/components/ui/badge';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useContext } from 'react';
 import Keyboard, { isMappableKey } from './wordle/keyboard';
 import { toast } from './ui/use-toast';
 import Grid from './wordle/grid';
@@ -16,6 +16,7 @@ import { flatten } from 'ramda';
 import { words } from '@/lib/wordle';
 import { useSubscribe } from '@/hooks/useSubscribe';
 import va from '@vercel/analytics';
+import { UserContext } from '@/lib/UserContext';
 
 export const DuelGamePlay = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
@@ -25,6 +26,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
   const [secret, setSecret] = useState('');
   const [isGameSet, setIsGameSet] = useState(false);
   const contract = useWrite();
+  const [user, _]: any = useContext(UserContext);
 
   const setGame = useCallback(
     async (targetWord, duelWords) => {
@@ -218,7 +220,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
         description: `${Number(duel.potAmount) / 10 ** 18} ETH is yours!`,
       });
       va.track('DuelWin', {
-        ...duel,
+        address: user?.publicAddress,
       });
     } else {
       if (isLastRow) {
@@ -228,7 +230,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
           variant: 'destructive',
         });
         va.track('DuelLoss', {
-          ...duel,
+          address: user?.publicAddress,
         });
       } else {
         toast({
@@ -247,7 +249,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
     });
 
     va.track('DuelMove', {
-      ...duel,
+      address: user?.publicAddress,
     });
 
     return {

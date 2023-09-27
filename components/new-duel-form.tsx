@@ -91,9 +91,7 @@ export function NewDuelForm() {
       });
 
       va.track('CreateDuel', {
-        email,
         address: user?.publicAddress,
-        value: amountString,
       });
     } catch (e) {
       setIsLoading(false);

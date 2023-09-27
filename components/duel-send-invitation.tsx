@@ -52,9 +52,7 @@ export const DuelSendInvitation = ({
       description: 'Your opponent will receive an email shortly.',
     });
     va.track('CreatePractice', {
-      ...duel,
-      subject,
-      content,
+      address: user?.publicAddress,
     });
     setIsSending(false);
   }

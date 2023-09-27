@@ -8,7 +8,7 @@ import {
   decryptWords,
 } from '@/lib/wordle';
 import { Badge } from '@/components/ui/badge';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useContext } from 'react';
 import Keyboard, { isMappableKey } from './wordle/keyboard';
 import { toast } from './ui/use-toast';
 import Grid from './wordle/grid';
@@ -17,6 +17,7 @@ import { words } from '@/lib/wordle';
 import { useFreeSubscribe } from '@/hooks/useFreeSubscribe';
 import { getaloRequest } from '@/lib/gelato';
 import va from '@vercel/analytics';
+import { UserContext } from '@/lib/UserContext';
 
 export const DuelGamePlayFree = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
@@ -26,6 +27,7 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
   const [secret, setSecret] = useState('');
   const [isGameSet, setIsGameSet] = useState(false);
   const contract = useFreeWrite();
+  const [user, _]: any = useContext(UserContext);
 
   const setGame = useCallback(
     async (targetWord, duelWords) => {
@@ -219,7 +221,7 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
         description: `All the glory is yours!`,
       });
       va.track('PracticeWin', {
-        ...duel,
+        address: user?.publicAddress,
       });
     } else {
       if (isLastRow) {
@@ -229,7 +231,7 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
           variant: 'destructive',
         });
         va.track('PracticeLoss', {
-          ...duel,
+          address: user?.publicAddress,
         });
       } else {
         toast({
@@ -250,7 +252,7 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
     await getaloRequest(data?.data);
 
     va.track('PracticeMove', {
-      ...duel,
+      address: user?.publicAddress,
     });
 
     return {
