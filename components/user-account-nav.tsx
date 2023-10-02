@@ -9,16 +9,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Icons } from './icons';
-import { magic } from '@/lib/magic';
 import { toast } from '@/components/ui/use-toast';
 import { formatAddress } from '@/lib/utils';
 import { Badge } from './ui/badge';
+import { usePrivyWagmi } from '@privy-io/wagmi-connector';
+import { useBalance } from 'wagmi';
 
-export function UserAccountNav({ user, setUser, balance }: any) {
+export function UserAccountNav() {
+  const { wallet: activeWallet } = usePrivyWagmi();
+  const { data: balance } = useBalance({
+    address: activeWallet?.address as `0x${string}`,
+  });
+
   async function copyAddress() {
     try {
-      await navigator.clipboard.writeText(user.publicAddress);
+      await navigator.clipboard.writeText(activeWallet?.address as string);
       toast({
         title: 'Copied to clipboard',
         description: 'Your public address has been copied to your clipboard.',
@@ -35,45 +40,34 @@ export function UserAccountNav({ user, setUser, balance }: any) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <span className="relative flex shrink-0 overflow-hidden rounded-full h-8 w-8">
-          <span className="flex h-full w-full items-center justify-center rounded-full bg-muted">
-            <Icons.user className="h-4 w-4" />
-          </span>
-        </span>
+        <Badge className="	" variant="secondary">
+          {parseFloat(balance?.formatted as string).toFixed(3)} ETH
+        </Badge>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
-            {user.publicAddress && (
-              <p onClick={copyAddress} className="font-medium cursor-pointer">
-                {formatAddress(user.publicAddress)}
-              </p>
-            )}
-            {user.email && (
-              <p className="w-[200px] truncate text-sm text-muted-foreground">
-                {user.email}
-              </p>
-            )}
+            <p
+              onClick={copyAddress}
+              className="font-medium cursor-pointer text-sm"
+            >
+              {formatAddress(activeWallet?.address as string)}
+            </p>
           </div>
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link
-            target="_blank"
-            className="cursor-pointer"
-            href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${user.publicAddress}`}
-          >
-            <div className="flex flex-row gap-2">
-              <p>Balance</p>
-              <Badge className="text-xs" variant="secondary">
-                {balance.toFixed(2)} ETH
-              </Badge>
-            </div>
+          <Link className="cursor-pointer" href="/profile">
+            Profile
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link className="cursor-pointer" href="/withdraw">
-            Withdraw
+          <Link
+            target="_blank"
+            className="cursor-pointer"
+            href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${activeWallet?.address}`}
+          >
+            View Explorer
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
@@ -90,17 +84,6 @@ export function UserAccountNav({ user, setUser, balance }: any) {
           <Link className="cursor-pointer" href="/faq">
             FAQ
           </Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          className="cursor-pointer"
-          onSelect={(event) => {
-            event.preventDefault();
-            magic.user.logout();
-            setUser(null);
-          }}
-        >
-          Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

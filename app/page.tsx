@@ -1,62 +1,34 @@
 'use client';
 
 import { Icons } from '@/components/icons';
-import { UserAccountNav } from '@/components/user-account-nav';
-import { UserContext } from '@/lib/UserContext';
-import Link from 'next/link';
-import { useContext } from 'react';
-import { useBalance } from 'wagmi';
 import Duels from '@/components/duels';
 import Loading from '@/components/loading';
-import { UserAuthGoogle } from '@/components/user-auth-google';
+import { usePrivy } from '@privy-io/react-auth';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
-  const [user, setUser]: any = useContext(UserContext);
-  const { data, isLoading } = useBalance({
-    address: user?.publicAddress,
-  });
-  const balance = parseFloat(data?.formatted || '0');
+  const { ready, authenticated, login } = usePrivy();
+
+  if (!ready) {
+    return <Loading />;
+  }
 
   return (
-    <div className="flex flex-col">
-      {user && (
-        <header className="fixed right-0 left-0 top-0 w-full z-40 border-b bg-background">
-          <div className="container flex h-16 items-center justify-between py-4">
-            <div className="flex gap-6 md:gap-10">
-              <Link href="/" className="flex items-center space-x-2">
-                <Icons.swords />
-                <span className="font-bold">WordDuel</span>
-              </Link>
-            </div>
-            <UserAccountNav
-              setUser={setUser}
-              balance={balance}
-              user={{
-                publicAddress: user?.publicAddress,
-                email: user?.email,
-              }}
-            />
-          </div>
-        </header>
-      )}
-
-      {user?.loading || isLoading ? (
-        <Loading />
-      ) : (
-        <div className="mx-auto flex flex-col justify-center space-y-6 max-w-md py-24">
-          {!user && (
-            <div className="flex flex-col space-y-2 text-center pt-20">
-              <Icons.swords className="mx-auto h-14 w-14" />
-              <h1 className="text-3xl font-black tracking-tight">WordDuel</h1>
-              <p className="text-muted-foreground pb-2">
-                Play Wordle against your friends for ETH.
-              </p>
-              <UserAuthGoogle />
-            </div>
-          )}
-          <Duels />
+    <div className="flex flex-col max-w-sm mx-auto">
+      {ready && !authenticated && (
+        <div className="flex flex-col space-y-2 text-center pt-20">
+          <Icons.swords className="mx-auto h-14 w-14" />
+          <h1 className="text-3xl font-black tracking-tight">WordDuel</h1>
+          <p className="text-muted-foreground pb-2">
+            Play Wordle against your friends for ETH.
+          </p>
+          <Button className="mx-auto w-full" onClick={login}>
+            Login
+          </Button>
         </div>
       )}
+
+      {ready && authenticated && <Duels />}
     </div>
   );
 }

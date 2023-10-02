@@ -7,7 +7,7 @@ import {
     Context
 } from "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
-contract FreeDuels is ERC2771Context, Ownable {
+contract OpenFreeDuels is ERC2771Context, Ownable {
     
     enum DuelState { Created, Accepted, Finished, Cancelled }
 
@@ -16,7 +16,6 @@ contract FreeDuels is ERC2771Context, Ownable {
         address challenger;
         address opponent;
         address currentPlayer;
-        string email;
         string targetWord;
         string words;
         uint256 createdAt;
@@ -35,7 +34,7 @@ contract FreeDuels is ERC2771Context, Ownable {
 
     constructor(address _gelatoRelay) ERC2771Context(_gelatoRelay) {}
 
-    function createDuel(string memory _email, string memory _targetWord) public {
+    function createDuel(string memory _targetWord) public {
 
         uint duelCounter = duels.length;
 
@@ -43,7 +42,6 @@ contract FreeDuels is ERC2771Context, Ownable {
             id: duelCounter,
             challenger: _msgSender(),
             opponent: address(0),
-            email: _email,
             targetWord: _targetWord,
             currentPlayer: _msgSender(),
             words: "",
@@ -129,26 +127,6 @@ contract FreeDuels is ERC2771Context, Ownable {
     
     function getDuels() public view returns (Duel[] memory) {
         return duels;
-    }
-
-    function getDuelsByEmail(string memory _email) public view returns (Duel[] memory) {
-        uint256 count = 0;
-        for(uint256 i = 0; i < duels.length; i++) {
-            if(keccak256(abi.encodePacked(duels[i].email)) == keccak256(abi.encodePacked(_email))) {
-                count++;
-            }
-        }
-
-        Duel[] memory result = new Duel[](count);
-        uint256 index = 0;
-        for(uint256 i = 0; i < duels.length; i++) {
-            if(keccak256(abi.encodePacked(duels[i].email)) == keccak256(abi.encodePacked(_email))) {
-                result[index] = duels[i];
-                index++;
-            }
-        }
-
-        return result;
     }
 
     function _msgSender()

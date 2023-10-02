@@ -70,7 +70,7 @@ export default function Keyboard({ onKeyPress, disabled, usedKeys }: Props) {
   const getKeyColors: any = useCallback(
     (key: string) => {
       const tiles = usedKeys.filter((k) => k.children === key);
-      console.log('tiles', tiles);
+
       if (tiles.length > 0) {
         const tile = tiles[0];
         let background = '';

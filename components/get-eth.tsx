@@ -1,19 +1,19 @@
-import { useContext } from 'react';
 import { Icons } from './icons';
-import { UserContext } from '@/lib/UserContext';
 import { useBalance } from 'wagmi';
 import { toast } from './ui/use-toast';
 import { formatAddress } from '@/lib/utils';
+import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 
 export default function GetETH() {
-  const [user, _]: any = useContext(UserContext);
+  const { wallet } = usePrivyWagmi();
+  const address = wallet?.address as `0x${string}`;
   const { data } = useBalance({
-    address: user?.publicAddress,
+    address,
   });
   const balance = parseFloat(data?.formatted || '0');
 
   function handleCopyToClipBoard() {
-    navigator.clipboard.writeText(user?.publicAddress);
+    navigator.clipboard.writeText(address);
     return toast({
       title: 'Copied to clipboard.',
       description: 'Now send some ETH to your wallet.',
@@ -42,7 +42,7 @@ export default function GetETH() {
             Copy Your Wallet Address
           </p>
           <p className="text-sm text-muted-foreground text-blue-500">
-            {formatAddress(user?.publicAddress)}
+            {formatAddress(address)}
           </p>
         </div>
       </div>

@@ -1,4 +1,3 @@
-import { useContext, useState } from 'react';
 import { Button } from './ui/button';
 import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
 import { useWrite } from '@/hooks/useWrite';
@@ -7,20 +6,24 @@ import { Container } from './container';
 import { useSubscribe } from '@/hooks/useSubscribe';
 import { toast } from './ui/use-toast';
 import va from '@vercel/analytics';
-import { UserContext } from '@/lib/UserContext';
+import { usePrivyWagmi } from '@privy-io/wagmi-connector';
+import { parseEther } from 'viem';
+import { useAccount } from 'wagmi';
 
 export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
-  const { acceptDuel } = useWrite();
-  const [isAccepting, setIsAccepting] = useState<boolean>(false);
+  const { wallet } = usePrivyWagmi();
+  const { write, isLoading } = useWrite('acceptDuel');
   const amount = (Number(duel.moveAmount) / 10 ** 18).toString();
-  const [user, _]: any = useContext(UserContext);
+  const { address, isConnected, isConnecting, isDisconnected } = useAccount();
+
+  console.log('DuelCreatedOpponent');
+  console.log(address, isConnected, isConnecting, isDisconnected);
 
   useSubscribe({
     eventName: 'DuelAccepted',
     listener(logs: any) {
       const duelId = logs[0]?.args?.id?.toString();
       if (duelId) {
-        setIsAccepting(false);
         return toast({
           title: 'Duel Accepted',
           description: 'Good luck!',
@@ -30,13 +33,15 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   });
 
   async function handleAcceptDuel() {
-    setIsAccepting(true);
-
     try {
-      await acceptDuel(duel.id.toString(), duel.moveAmount);
+      write({
+        args: [duel.id.toString()],
+        from: wallet?.address as `0x${string}`,
+        value: parseEther(amount.toString()),
+      });
 
       va.track('AcceptDuel', {
-        address: user?.publicAddress,
+        address: wallet?.address as `0x${string}`,
       });
     } catch (e) {
       const description = e?.message || e;
@@ -60,12 +65,12 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
           </CardHeader>
           <CardFooter>
             <Button
-              disabled={isAccepting}
+              disabled={isLoading}
               onClick={handleAcceptDuel}
               className="w-full"
               size="lg"
             >
-              {isAccepting && (
+              {isLoading && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
               Accept ({amount} ETH)

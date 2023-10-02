@@ -3,18 +3,20 @@
 import { useWrite } from '@/hooks/useWrite';
 import { Button } from './ui/button';
 import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icons } from './icons';
+import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 
 export const DuelCancel = ({ duelId }: { duelId: string }) => {
-  const { cancelDuel } = useWrite();
-  const [isCancelling, setIsCancelling] = useState<boolean>(false);
+  const { wallet } = usePrivyWagmi();
+  const { isLoading, write } = useWrite('cancelDuel');
   const router = useRouter();
 
   async function handleCancellation() {
-    setIsCancelling(true);
-    await cancelDuel(duelId);
+    write({
+      args: [duelId],
+      from: wallet?.address as `0x${string}`,
+    });
     router.push('/');
   }
 
@@ -25,14 +27,12 @@ export const DuelCancel = ({ duelId }: { duelId: string }) => {
       </CardHeader>
       <CardFooter>
         <Button
-          disabled={isCancelling}
+          disabled={isLoading}
           onClick={handleCancellation}
           className="w-full"
-          variant="outline"
+          variant="destructive"
         >
-          {isCancelling && (
-            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-          )}
+          {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Cancel Duel
         </Button>
       </CardFooter>

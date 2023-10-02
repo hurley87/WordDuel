@@ -47,11 +47,10 @@ export const DuelFinished = ({ duel, yourTurn }) => {
     if (!isGameSet) setGame(duel.targetWord, duel.words);
   }, [duel.targetWord, duel.words, isGameSet, setGame]);
 
-  let message = `${yourTurn ? 'You' : 'Your opponent'} won ${
-    Number(duel.potAmount) / 10 ** 18
-  } ETH`;
-  if (!winnerExists)
-    message = `${Number(duel.potAmount) / 10 ** 18} ETH pot split`;
+  const potAmount = Number(duel.potAmount) / 10 ** 18;
+  let message = winnerExists
+    ? `${yourTurn ? 'You' : 'Your opponent'} won ${potAmount} ETH`
+    : `${potAmount} ETH pot split`;
 
   return (
     <>

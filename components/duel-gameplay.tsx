@@ -8,7 +8,7 @@ import {
   decryptWords,
 } from '@/lib/wordle';
 import { Badge } from '@/components/ui/badge';
-import { useEffect, useState, useCallback, useContext } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Keyboard, { isMappableKey } from './wordle/keyboard';
 import { toast } from './ui/use-toast';
 import Grid from './wordle/grid';
@@ -16,17 +16,16 @@ import { flatten } from 'ramda';
 import { words } from '@/lib/wordle';
 import { useSubscribe } from '@/hooks/useSubscribe';
 import va from '@vercel/analytics';
-import { UserContext } from '@/lib/UserContext';
+import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 
 export const DuelGamePlay = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
   const [grid, setGrid] = useState(emptyGrid);
   const [cursor, setCursor] = useState({ y: 0, x: 0 });
-  const [isLoading, setIsLoading] = useState(false);
   const [secret, setSecret] = useState('');
   const [isGameSet, setIsGameSet] = useState(false);
-  const { makeMove } = useWrite();
-  const [user, _]: any = useContext(UserContext);
+  const { wallet } = usePrivyWagmi();
+  const { isLoading, write, isSuccess } = useWrite('makeMove');
 
   const setGame = useCallback(
     async (targetWord, duelWords) => {
@@ -70,7 +69,6 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
       setGrid(newGrid);
       setCursor({ y: words.length, x: 0 });
       setSecret(secret);
-      setIsLoading(false);
       setIsGameSet(true);
     },
     [emptyGrid]
@@ -82,7 +80,6 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
       const words = logs[0]?.args?.words;
       const moveCount = logs[0]?.args?.moveCount;
       setGame(duel.targetWord, words);
-      setIsLoading(false);
       const title = !yourTurn ? 'Your Turn' : `Opponent's Turn`;
       const movesRemaining = 6 - parseInt(moveCount);
       return toast({
@@ -169,7 +166,6 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
   }
 
   async function guess() {
-    setIsLoading(true);
     if (cursor.x !== grid[0].length - 1) {
       return { status: 'playing' };
     }
@@ -190,7 +186,6 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
           description: 'Please try again.',
           variant: 'destructive',
         });
-        setIsLoading(false);
         return {
           status: 'playing',
         };
@@ -198,63 +193,19 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
     } catch {}
 
     const won = secret === guessWord;
-    const attempts = cursor.y + 1;
-    const isLastRow = cursor.y === grid.length - 1;
-    const newGrid = grid;
-
-    newGrid[cursor.y] = getNextRow(newGrid[cursor.y], secret);
-
-    setGrid([...newGrid]);
-
-    if (!isLastRow) {
-      const newCursor = {
-        y: cursor.y + 1,
-        x: 0,
-      };
-      setCursor(newCursor);
-    }
-
-    if (won) {
-      toast({
-        title: 'You Win',
-        description: `${Number(duel.potAmount) / 10 ** 18} ETH is yours!`,
-      });
-      va.track('DuelWin', {
-        address: user?.publicAddress,
-      });
-    } else {
-      if (isLastRow) {
-        toast({
-          title: 'Game Over',
-          description: `Pot is split between players. The word was "${secret}".`,
-          variant: 'destructive',
-        });
-        va.track('DuelLoss', {
-          address: user?.publicAddress,
-        });
-      } else {
-        toast({
-          title: 'Incorrect',
-          description: 'Updating the board ...',
-        });
-      }
-    }
-
     let word = await encryptWord(guessWord);
 
     if (won) word = duel.targetWord;
 
-    await makeMove(duel.id.toString(), word, duel.moveAmount);
-
-    va.track('DuelMove', {
-      address: user?.publicAddress,
+    await write({
+      args: [duel.id.toString(), word],
+      from: wallet?.address as `0x${string}`,
+      value: duel.moveAmount,
     });
 
-    return {
-      status: !isLastRow && !won ? 'playing' : won ? 'win' : 'loss',
-      guess: guessWord,
-      attempts,
-    };
+    va.track('DuelMove', {
+      address: wallet?.address as `0x${string}`,
+    });
   }
 
   const usedKeys: any = [];

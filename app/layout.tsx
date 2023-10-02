@@ -6,7 +6,9 @@ import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Analytics } from '@/components/analytics';
-import Wagmi from '@/components/wagmi';
+import Privy from '@/components/privy';
+import Header from '@/components/header';
+import SwitchNetwork from '@/components/switch-network';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -74,7 +76,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Wagmi>{children}</Wagmi>
+          <Privy>
+            <SwitchNetwork>
+              <Header />
+              <div className="py-20 px-4">{children}</div>
+            </SwitchNetwork>
+          </Privy>
           <Analytics />
           <Toaster />
         </ThemeProvider>
