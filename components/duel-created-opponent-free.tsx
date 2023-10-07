@@ -9,6 +9,7 @@ import { acceptDuel } from '@/lib/gelato';
 import va from '@vercel/analytics';
 import { useWallets } from '@privy-io/react-auth';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
+import { baseGoerli, base } from 'wagmi/chains';
 
 export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
   const { wallet } = usePrivyWagmi();
@@ -35,9 +36,12 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
 
   async function handleAcceptDuel() {
     setIsAccepting(true);
+    const chainId =
+      process.env.NODE_ENV === 'production' ? base.id : baseGoerli.id;
 
     try {
       let provider = await wallets[0]?.getEthersProvider();
+      wallets[0]?.switchChain(chainId);
       if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
       await acceptDuel(provider, duel.id.toString());
 

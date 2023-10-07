@@ -6,7 +6,6 @@ import {
   decryptWord,
   decryptWords,
 } from '@/lib/wordle';
-import { Badge } from '@/components/ui/badge';
 import { useEffect, useState, useCallback } from 'react';
 import Keyboard, { isMappableKey } from './wordle/keyboard';
 import { toast } from './ui/use-toast';
@@ -19,6 +18,7 @@ import va from '@vercel/analytics';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useWallets } from '@privy-io/react-auth';
 import { formatAddress } from '@/lib/utils';
+import { baseGoerli, base } from 'wagmi/chains';
 
 export const DuelGamePlayFree = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
@@ -248,8 +248,11 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
     let word = await encryptWord(guessWord);
 
     if (won) word = duel.targetWord;
+    const chainId =
+      process.env.NODE_ENV === 'production' ? base.id : baseGoerli.id;
 
     let provider = await wallets[0]?.getEthersProvider();
+    wallets[0]?.switchChain(chainId);
     if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
 
     await makeMove(provider, duel.id.toString(), word);

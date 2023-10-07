@@ -13,6 +13,7 @@ import va from '@vercel/analytics';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useEffect, useState } from 'react';
 import { useWallets } from '@privy-io/react-auth';
+import { baseGoerli, base } from 'wagmi/chains';
 
 export function PracticeDuelCreate() {
   const { wallet } = usePrivyWagmi();
@@ -50,9 +51,11 @@ export function PracticeDuelCreate() {
     setIsLoading(true);
 
     try {
-      console.log('wallet', wallets);
+      const chainId =
+        process.env.NODE_ENV === 'production' ? base.id : baseGoerli.id;
 
       let provider = await wallets[0]?.getEthersProvider();
+      wallets[0]?.switchChain(chainId);
       if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
 
       console.log('provider', provider);
