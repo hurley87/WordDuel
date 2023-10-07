@@ -14,13 +14,20 @@ export default function NewDuelPage() {
 
   if (!isLoading && balance === 0)
     return (
-      <div className="mx-auto flex flex-col justify-center space-y-6 max-w-md py-24">
+      <div className="mx-auto flex flex-col justify-center space-y-6 max-w-sm py-24">
         <GetETH />
       </div>
     );
 
   return (
-    <div className="mx-auto flex w-full flex-col justify-center space-y-4 sm:w-[350px]">
+    <div className="mx-auto flex w-full flex-col justify-center space-y-4 max-w-sm py-20">
+      <div className="flex flex-col space-y-2">
+        <p className="text-sm text-muted-foreground">
+          Create a duel where you and an opponent take turns guessing a 5-letter
+          word. You decide how much ETH is added to the pot for each guess.
+          {"You'll"} guess first and whoever guesses right wins the pot.
+        </p>
+      </div>
       <NewDuel />
       <p className="text-xs text-muted-foreground">
         * 0.000777 ETH will be charged + gas

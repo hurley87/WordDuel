@@ -79,7 +79,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Privy>
             <SwitchNetwork>
               <Header />
-              <div className="py-20 px-4">{children}</div>
+              <div className="p-2 h-screen overflow-y-hidden">{children}</div>
             </SwitchNetwork>
           </Privy>
           <Analytics />

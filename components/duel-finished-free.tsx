@@ -4,6 +4,7 @@ import { Badge } from './ui/badge';
 import Grid from './wordle/grid';
 import { Button } from './ui/button';
 import Link from 'next/link';
+import { formatAddress } from '@/lib/utils';
 
 export const DuelFinishedFree = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
@@ -46,21 +47,23 @@ export const DuelFinishedFree = ({ duel, yourTurn }) => {
     if (!isGameSet) setGame(duel.targetWord, duel.words);
   }, [duel.targetWord, duel.words, isGameSet, setGame]);
 
-  let message = `${yourTurn ? 'You' : 'Your opponent'} won`;
+  let message = `${
+    yourTurn ? 'You' : `${formatAddress(duel.currentPlayer)}`
+  } won`;
   if (!winnerExists) message = `Ended in a tie`;
 
   return (
-    <>
-      <h1 className="font-black mb-2 uppercase">{secret}</h1>
-      <Badge variant="secondary">{message}</Badge>
-      <div className="flex flex-col gap-4 py-4">
+    <div className="flex flex-col gap-2 text-center">
+      <h1 className="font-black uppercase">{secret}</h1>
+      <p className="font-light pb-2">{message}</p>
+      <div className="flex flex-col gap-4">
         <Grid data={grid} />
         <Link href="/practice">
-          <Button className="w-full" size="lg">
+          <Button className="w-full" variant="ghost">
             Play Again
           </Button>
         </Link>
       </div>
-    </>
+    </div>
   );
 };

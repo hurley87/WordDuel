@@ -5,18 +5,22 @@ import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icons } from './icons';
-import { getaloRequest } from '@/lib/gelato';
-import { useFreeWrite } from '@/hooks/useFreeWrite';
+import { cancelDuel } from '@/lib/gelato';
+import { useWallets } from '@privy-io/react-auth';
 
 export const DuelCancelFree = ({ duelId }: { duelId: string }) => {
-  const contract = useFreeWrite();
   const [isCancelling, setIsCancelling] = useState<boolean>(false);
   const router = useRouter();
+  const { wallets } = useWallets();
+  const embeddedWallet = wallets.find(
+    (wallet) => wallet.walletClientType === 'privy'
+  );
 
   async function handleCancellation() {
     setIsCancelling(true);
-    const data = await contract?.populateTransaction.cancelDuel(duelId);
-    await getaloRequest(data?.data);
+    const provider = await embeddedWallet?.getEthersProvider();
+
+    await cancelDuel(provider, duelId);
     router.push('/');
   }
 

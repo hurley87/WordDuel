@@ -8,23 +8,21 @@ import { Icons } from '@/components/icons';
 import { useRouter } from 'next/navigation';
 import { useFreeSubscribe } from '@/hooks/useFreeSubscribe';
 import { generateWord } from '@/lib/wordle';
-import { useFreeWrite } from '@/hooks/useFreeWrite';
-import { getaloRequest } from '@/lib/gelato';
+import { createDuel } from '@/lib/gelato';
 import va from '@vercel/analytics';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useEffect, useState } from 'react';
-import { useEthersProvider } from '@/lib/ethers';
-import { usePublicClient } from 'wagmi';
+import { useWallets } from '@privy-io/react-auth';
 
-export function PracticeDuelForm() {
+export function PracticeDuelCreate() {
   const { wallet } = usePrivyWagmi();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
   const [word, setWord] = useState<string>('');
-  const data = useFreeWrite('createDuel', [word]);
-  const provider = usePublicClient();
-
-  const address = wallet?.address as `0x${string}`;
+  const { wallets } = useWallets();
+  const embeddedWallet = wallets.find(
+    (wallet) => wallet.walletClientType === 'privy'
+  );
 
   useEffect(() => {
     async function getWord() {
@@ -32,7 +30,7 @@ export function PracticeDuelForm() {
       setWord(word);
     }
     getWord();
-  }, [data]);
+  }, []);
 
   useFreeSubscribe({
     eventName: 'DuelCreated',
@@ -52,7 +50,9 @@ export function PracticeDuelForm() {
     setIsLoading(true);
 
     try {
-      await getaloRequest(data, provider, address);
+      const provider = await embeddedWallet?.getEthersProvider();
+
+      await createDuel(provider, word);
 
       va.track('CreatePractice', {
         address: wallet?.address as `0x${string}`,

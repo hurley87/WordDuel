@@ -62,7 +62,7 @@ export function NewDuel() {
   return (
     <div className="grid gap-4">
       <div className="grid gap-1">
-        <Label htmlFor="amount">ETH Amount per move</Label>
+        <Label htmlFor="amount">Cost per move (ETH)</Label>
         <Input
           id="amount"
           placeholder="0.001"

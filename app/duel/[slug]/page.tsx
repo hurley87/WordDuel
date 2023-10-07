@@ -55,7 +55,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   if (!ready) return <Loading />;
 
   return (
-    <>
+    <div className="mx-auto flex flex-col justify-center space-y-0 max-w-md absolute bottom-2 left-0 right-0">
       {tooPoor && (
         <div className="flex flex-col gap-6">
           <div className="mx-auto">
@@ -76,6 +76,6 @@ export default function Page({ params }: { params: { slug: string } }) {
       {user && isCancelled && <DuelCancelled />}
       {user && isFinished && <DuelFinished duel={duel} yourTurn={yourTurn} />}
       {user && isAccepted && <DuelGamePlay duel={duel} yourTurn={yourTurn} />}
-    </>
+    </div>
   );
 }

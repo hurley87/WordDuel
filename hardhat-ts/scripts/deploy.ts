@@ -16,12 +16,12 @@ async function main() {
 
   // console.log('FreeDuels Deployed at ' + freeDuels.target);
 
-  // const OpenDuels = await hre.ethers.getContractFactory('OpenDuels');
-  // const openduels = await OpenDuels.deploy();
+  const OpenDuels = await hre.ethers.getContractFactory('OpenDuels');
+  const openduels = await OpenDuels.deploy();
 
-  // await openduels.waitForDeployment();
+  await openduels.waitForDeployment();
 
-  // console.log('Duels Deployed at ' + openduels.target);
+  console.log('Duels Deployed at ' + openduels.target);
 
   const gelatoAddress = '0xd8253782c45a12053594b9deB72d8e8aB2Fca54c';
   const OpenFreeDuels = await hre.ethers.getContractFactory('OpenFreeDuels');

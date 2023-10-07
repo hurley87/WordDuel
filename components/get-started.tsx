@@ -12,7 +12,7 @@ export const metadata = {
 
 export default function GetStarted() {
   return (
-    <div className="flex flex-col gap-2 max-w-lg mx-auto px-2">
+    <div className="flex flex-col gap-2 max-w-lg mx-auto px-2 pt-20">
       <Container>
         <Card>
           <CardHeader>

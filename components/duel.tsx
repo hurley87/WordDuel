@@ -9,6 +9,7 @@ export const Duel = ({ duelId }: { duelId: any }) => {
     args: [duelId],
   });
 
+  if (DUEL_STATE[duel?.state] === 'Cancelled') return null;
   return (
     <div className={`flex`}>
       {isLoading && (
@@ -31,7 +32,8 @@ export const Duel = ({ duelId }: { duelId: any }) => {
             )}
             <div className="space-y-1">
               <p className="text-xs font-medium leading-none pt-1">
-                {formatAddress(duel.challenger)} ⚔️ {duel.email}
+                {formatAddress(duel.challenger)} ⚔️{' '}
+                {formatAddress(duel.opponent)}
               </p>
               <p className="text-xs text-muted-foreground">
                 {DUEL_STATE[duel?.state] === 'Accepted' &&
@@ -39,11 +41,9 @@ export const Duel = ({ duelId }: { duelId: any }) => {
                     Number(duel.moveAmount) / 10 ** 18
                   } ETH per move`}
                 {DUEL_STATE[duel?.state] === 'Created' &&
-                  `Duel #${duelId} proposed: ${
+                  `Duel #${duelId}: ${
                     Number(duel.moveAmount) / 10 ** 18
-                  } ETH per move ${duel?.state}`}
-                {DUEL_STATE[duel?.state] === 'Cancelled' &&
-                  `Duel #${duelId} cancelled`}
+                  } ETH per move`}
                 {DUEL_STATE[duel?.state] === 'Finished' &&
                   `Duel #${duelId} finished`}
               </p>

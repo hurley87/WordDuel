@@ -28,6 +28,7 @@ import {
   RefreshCcw,
   Delete,
   Gem,
+  Egg,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -63,4 +64,5 @@ export const Icons = {
   swords: Swords,
   delete: Delete,
   gem: Gem,
+  egg: Egg,
 };

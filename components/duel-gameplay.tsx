@@ -17,6 +17,7 @@ import { words } from '@/lib/wordle';
 import { useSubscribe } from '@/hooks/useSubscribe';
 import va from '@vercel/analytics';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
+import { formatAddress } from '@/lib/utils';
 
 export const DuelGamePlay = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
@@ -25,7 +26,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
   const [secret, setSecret] = useState('');
   const [isGameSet, setIsGameSet] = useState(false);
   const { wallet } = usePrivyWagmi();
-  const { isLoading, write, isSuccess } = useWrite('makeMove');
+  const { isLoading, write } = useWrite('makeMove');
 
   const setGame = useCallback(
     async (targetWord, duelWords) => {
@@ -216,19 +217,26 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
   }
 
   return (
-    <>
-      <Badge variant="secondary">{Number(duel.potAmount) / 10 ** 18} ETH</Badge>
-      <div className="fixed bottom-5">
-        <Badge>{yourTurn ? 'Your Turn' : `Opponent's Turn`}</Badge>
+    <div className="flex flex-col gap-2 w-full max-w-lg text-center">
+      <Grid data={grid} />
+      <Keyboard
+        usedKeys={usedKeys}
+        disabled={isLoading || !yourTurn || duel.state === 2}
+        onKeyPress={handleKeyPress}
+      />
+      <div className="flex flex-row gap-2 text-sm justify-center font-medium leading-none text-center">
+        <p
+          className={duel.currentPlayer === duel.challenger ? '' : 'opacity-50'}
+        >
+          {formatAddress(duel.challenger)}
+        </p>
+        <p>⚔️</p>
+        <p className={duel.currentPlayer === duel.opponent ? '' : 'opacity-50'}>
+          {formatAddress(duel.opponent)}
+        </p>
+        <p>|</p>
+        <p>{Number(duel.potAmount) / 10 ** 18} ETH</p>
       </div>
-      <div className="flex flex-col gap-6 py-4 w-full px-3 max-w-lg">
-        <Grid data={grid} />
-        <Keyboard
-          usedKeys={usedKeys}
-          disabled={isLoading || !yourTurn || duel.state === 2}
-          onKeyPress={handleKeyPress}
-        />
-      </div>
-    </>
+    </div>
   );
 };

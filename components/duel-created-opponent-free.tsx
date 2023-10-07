@@ -1,19 +1,23 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Button } from './ui/button';
 import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
-import { useFreeWrite } from '@/hooks/useFreeWrite';
 import { Icons } from './icons';
 import { Container } from './container';
 import { useFreeSubscribe } from '@/hooks/useFreeSubscribe';
 import { toast } from './ui/use-toast';
-import { getaloRequest } from '@/lib/gelato';
+import { acceptDuel } from '@/lib/gelato';
 import va from '@vercel/analytics';
-import { UserContext } from '@/lib/UserContext';
+import { useWallets } from '@privy-io/react-auth';
+import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 
 export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
-  const contract = useFreeWrite();
+  const { wallet } = usePrivyWagmi();
+  const { wallets } = useWallets();
+  const embeddedWallet = wallets.find(
+    (wallet) => wallet.walletClientType === 'privy'
+  );
+
   const [isAccepting, setIsAccepting] = useState<boolean>(false);
-  const [user, _]: any = useContext(UserContext);
 
   useFreeSubscribe({
     eventName: 'DuelAccepted',
@@ -33,12 +37,11 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
     setIsAccepting(true);
 
     try {
-      const data = await contract?.populateTransaction.acceptDuel(
-        duel.id.toString()
-      );
-      await getaloRequest(data?.data);
+      const provider = await embeddedWallet?.getEthersProvider();
+      await acceptDuel(provider, duel.id.toString());
+
       va.track('AcceptPractice', {
-        address: user?.publicAddress,
+        address: wallet?.address as `0x${string}`,
       });
     } catch (e) {
       const description = e?.message || e;
@@ -51,7 +54,7 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 max-w-lg mx-auto px-2">
+    <div className="flex flex-col gap-2 max-w-lg mx-auto py-20">
       <Container>
         <Card>
           <CardHeader>

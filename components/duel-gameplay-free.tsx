@@ -1,4 +1,3 @@
-import { useFreeWrite } from '@/hooks/useFreeWrite';
 import {
   findLastNonEmptyTile,
   getNextRow,
@@ -8,16 +7,18 @@ import {
   decryptWords,
 } from '@/lib/wordle';
 import { Badge } from '@/components/ui/badge';
-import { useEffect, useState, useCallback, useContext } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Keyboard, { isMappableKey } from './wordle/keyboard';
 import { toast } from './ui/use-toast';
 import Grid from './wordle/grid';
 import { flatten } from 'ramda';
 import { words } from '@/lib/wordle';
 import { useFreeSubscribe } from '@/hooks/useFreeSubscribe';
-import { getaloRequest } from '@/lib/gelato';
+import { makeMove } from '@/lib/gelato';
 import va from '@vercel/analytics';
-import { UserContext } from '@/lib/UserContext';
+import { usePrivyWagmi } from '@privy-io/wagmi-connector';
+import { useWallets } from '@privy-io/react-auth';
+import { formatAddress } from '@/lib/utils';
 
 export const DuelGamePlayFree = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
@@ -26,8 +27,11 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [secret, setSecret] = useState('');
   const [isGameSet, setIsGameSet] = useState(false);
-  const contract = useFreeWrite();
-  const [user, _]: any = useContext(UserContext);
+  const { wallet } = usePrivyWagmi();
+  const { wallets } = useWallets();
+  const embeddedWallet = wallets.find(
+    (wallet) => wallet.walletClientType === 'privy'
+  );
 
   const setGame = useCallback(
     async (targetWord, duelWords) => {
@@ -221,7 +225,7 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
         description: `All the glory is yours!`,
       });
       va.track('PracticeWin', {
-        address: user?.publicAddress,
+        address: wallet?.address as `0x${string}`,
       });
     } else {
       if (isLastRow) {
@@ -231,7 +235,7 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
           variant: 'destructive',
         });
         va.track('PracticeLoss', {
-          address: user?.publicAddress,
+          address: wallet?.address as `0x${string}`,
         });
       } else {
         toast({
@@ -245,14 +249,12 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
 
     if (won) word = duel.targetWord;
 
-    const data = await contract?.populateTransaction.makeMove(
-      duel.id.toString(),
-      word
-    );
-    await getaloRequest(data?.data);
+    const provider = await embeddedWallet?.getEthersProvider();
+
+    await makeMove(provider, duel.id.toString(), word);
 
     va.track('PracticeMove', {
-      address: user?.publicAddress,
+      address: wallet?.address as `0x${string}`,
     });
 
     return {
@@ -270,18 +272,24 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
   }
 
   return (
-    <>
-      <div className="fixed bottom-5">
-        <Badge>{yourTurn ? 'Your Turn' : `Opponent's Turn`}</Badge>
+    <div className="flex flex-col gap-6 py-4 w-full px-2 ">
+      <Grid data={grid} />
+      <Keyboard
+        usedKeys={usedKeys}
+        disabled={isLoading || !yourTurn || duel.state === 2}
+        onKeyPress={handleKeyPress}
+      />
+      <div className="flex flex-row gap-2 text-sm justify-center font-medium leading-none text-center">
+        <p
+          className={duel.currentPlayer === duel.challenger ? '' : 'opacity-50'}
+        >
+          {formatAddress(duel.challenger)}
+        </p>
+        <p>⚔️</p>
+        <p className={duel.currentPlayer === duel.opponent ? '' : 'opacity-50'}>
+          {formatAddress(duel.opponent)}
+        </p>
       </div>
-      <div className="flex flex-col gap-6 py-4 w-full px-3 max-w-lg">
-        <Grid data={grid} />
-        <Keyboard
-          usedKeys={usedKeys}
-          disabled={isLoading || !yourTurn || duel.state === 2}
-          onKeyPress={handleKeyPress}
-        />
-      </div>
-    </>
+    </div>
   );
 };

@@ -1,4 +1,4 @@
-import { PracticeDuelForm } from '@/components/practice-duel-form';
+import { PracticeDuelCreate } from '@/components/practice-duel-create';
 
 export const metadata = {
   title: 'Create a New Free Duel',
@@ -7,14 +7,15 @@ export const metadata = {
 
 export default function PracticeDuelPage() {
   return (
-    <div className="mx-auto flex w-full flex-col justify-center space-y-4 sm:w-[350px]">
+    <div className="mx-auto flex w-full flex-col justify-center space-y-4 max-w-sm py-20">
       <div className="flex flex-col space-y-2">
         <p className="text-sm text-muted-foreground">
-          Invite your {`opponent`} by email. Only the owner of this email can
-          accept the duel.
+          Create a practice duel where you and an opponent take turns guessing a
+          5-letter word. {"You'll"} guess first and whoever guesses the correct
+          word first wins.
         </p>
       </div>
-      <PracticeDuelForm />
+      <PracticeDuelCreate />
     </div>
   );
 }

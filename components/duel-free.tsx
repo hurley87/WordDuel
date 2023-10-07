@@ -9,6 +9,9 @@ export const DuelFree = ({ duelId }: { duelId: any }) => {
     args: [duelId],
   });
 
+  if (!duel) return null;
+  if (DUEL_STATE[duel?.state] === 'Cancelled') return null;
+
   return (
     <div className={`flex`}>
       {isLoading && (
@@ -31,7 +34,8 @@ export const DuelFree = ({ duelId }: { duelId: any }) => {
             )}
             <div className="space-y-1">
               <p className="text-xs font-medium leading-none pt-1">
-                {formatAddress(duel.challenger)} ⚔️ {duel.email}
+                {formatAddress(duel.challenger)} ⚔️{' '}
+                {formatAddress(duel.opponent)}
               </p>
               <p className="text-xs text-muted-foreground">
                 {DUEL_STATE[duel?.state] === 'Accepted' &&

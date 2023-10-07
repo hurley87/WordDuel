@@ -22,12 +22,11 @@ export default function Home() {
           <p className="text-muted-foreground pb-2">
             Play Wordle against your friends for ETH.
           </p>
-          <Button className="mx-auto w-full" onClick={login}>
-            Login
+          <Button className="mx-auto px-20 relative block" onClick={login}>
+            Get Started
           </Button>
         </div>
       )}
-
       {ready && authenticated && <Duels />}
     </div>
   );

@@ -30,7 +30,7 @@ export const DuelCancel = ({ duelId }: { duelId: string }) => {
           disabled={isLoading}
           onClick={handleCancellation}
           className="w-full"
-          variant="destructive"
+          variant="outline"
         >
           {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Cancel Duel

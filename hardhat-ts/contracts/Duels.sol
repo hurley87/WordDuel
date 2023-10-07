@@ -45,7 +45,6 @@ contract Duels is Ownable {
             email: _email,
             targetWord: _targetWord,
             currentPlayer: msg.sender,
-
             words: "",
             moveAmount: msg.value,
             potAmount: msg.value - FEE,

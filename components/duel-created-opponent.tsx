@@ -8,16 +8,11 @@ import { toast } from './ui/use-toast';
 import va from '@vercel/analytics';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { parseEther } from 'viem';
-import { useAccount } from 'wagmi';
 
 export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   const { wallet } = usePrivyWagmi();
   const { write, isLoading } = useWrite('acceptDuel');
   const amount = (Number(duel.moveAmount) / 10 ** 18).toString();
-  const { address, isConnected, isConnecting, isDisconnected } = useAccount();
-
-  console.log('DuelCreatedOpponent');
-  console.log(address, isConnected, isConnecting, isDisconnected);
 
   useSubscribe({
     eventName: 'DuelAccepted',
@@ -54,7 +49,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 max-w-lg mx-auto px-2">
+    <div className="flex flex-col gap-2 max-w-lg mx-auto py-20">
       <Container>
         <Card>
           <CardHeader>
@@ -73,7 +68,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
               {isLoading && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
-              Accept ({amount} ETH)
+              Accept Duel ({amount} ETH)
             </Button>
           </CardFooter>
         </Card>
