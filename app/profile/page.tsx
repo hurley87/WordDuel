@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function ProfilePage() {
   return (
-    <div className="flex flex-col gap-4 max-w-sm mx-auto">
+    <div className="flex flex-col gap-2 max-w-sm mx-auto pt-11">
       <ProfileAccounts />
       <TransferForm />
       <Logout />
