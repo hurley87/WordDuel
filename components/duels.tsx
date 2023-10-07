@@ -76,7 +76,7 @@ function Duels() {
                       ))}
                   </div>
                 ) : (
-                  <Icons.egg className="mx-auto h-14 w-14 mt-10" />
+                  <Icons.egg className="mx-auto h-14 w-14 mt-32" />
                 )}
               </div>
             </TabsContent>
@@ -117,7 +117,7 @@ function Duels() {
                     ))}
                 </div>
               ) : (
-                <Icons.egg className="mx-auto h-14 w-14 mt-10" />
+                <Icons.egg className="mx-auto h-14 w-14 mt-32" />
               )}
             </TabsContent>
           </Tabs>

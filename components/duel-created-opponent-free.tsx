@@ -37,7 +37,8 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
     setIsAccepting(true);
 
     try {
-      const provider = await embeddedWallet?.getEthersProvider();
+      let provider = await wallets[0]?.getEthersProvider();
+      if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
       await acceptDuel(provider, duel.id.toString());
 
       va.track('AcceptPractice', {
@@ -54,7 +55,7 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 max-w-lg mx-auto py-20">
+    <div className="flex flex-col gap-2 max-w-lg mx-auto">
       <Container>
         <Card>
           <CardHeader>

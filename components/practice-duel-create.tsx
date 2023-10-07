@@ -50,7 +50,12 @@ export function PracticeDuelCreate() {
     setIsLoading(true);
 
     try {
-      const provider = await embeddedWallet?.getEthersProvider();
+      console.log('wallet', wallets);
+
+      let provider = await wallets[0]?.getEthersProvider();
+      if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
+
+      console.log('provider', provider);
 
       await createDuel(provider, word);
 

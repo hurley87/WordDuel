@@ -249,7 +249,8 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
 
     if (won) word = duel.targetWord;
 
-    const provider = await embeddedWallet?.getEthersProvider();
+    let provider = await wallets[0]?.getEthersProvider();
+    if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
 
     await makeMove(provider, duel.id.toString(), word);
 
