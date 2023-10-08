@@ -34,10 +34,10 @@ function Duels() {
       <Tabs defaultValue="practice" className="w-full">
         <TabsList className="absolute bottom-1 left-2 right-2 mx-auto max-w-sm">
           <TabsTrigger className="w-full" value="practice">
-            Practice
+            Practice for Free
           </TabsTrigger>
           <TabsTrigger className="w-full" value="ranked">
-            Ranked
+            Duel for ETH
           </TabsTrigger>
         </TabsList>
         <TabsContent className="max-w-sm mx-auto" value="practice">
@@ -87,7 +87,7 @@ function Duels() {
             href="/duel"
             className="absolute bottom-11 left-2 right-2  mx-auto max-w-sm"
           >
-            <Button className="w-full">Duel for ETH</Button>
+            <Button className="w-full">Create Ranked Duel</Button>
           </Link>
           <Tabs defaultValue="All Duels" className="w-full pt-2">
             <TabsList className="absolute top-12 right-2 left-2 max-w-sm mx-auto">
