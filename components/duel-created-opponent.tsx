@@ -20,7 +20,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
       const duelId = logs[0]?.args?.id?.toString();
       if (duelId) {
         return toast({
-          title: 'Duel Accepted',
+          title: 'Game has started.',
           description: 'Good luck!',
         });
       }

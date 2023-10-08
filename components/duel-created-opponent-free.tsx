@@ -27,7 +27,7 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
       if (duelId) {
         setIsAccepting(false);
         return toast({
-          title: 'Duel Accepted',
+          title: 'Game has started.',
           description: 'Good luck!',
         });
       }
