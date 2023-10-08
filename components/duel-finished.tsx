@@ -59,7 +59,7 @@ export const DuelFinished = ({ duel, yourTurn }) => {
       <p className="font-light pb-2">{message}</p>
       <div className="flex flex-col gap-4">
         <Grid data={grid} />
-        <Link href="/duel">
+        <Link href="/">
           <Button className="w-full" variant="ghost">
             Play Again
           </Button>
