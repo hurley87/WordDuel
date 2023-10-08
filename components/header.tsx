@@ -27,7 +27,7 @@ function Header() {
           </Link>
         </div>
         <Link className="cursor-pointer" href="/profile">
-          <Badge variant="secondary">
+          <Badge className="text-sm" variant="secondary">
             {formatAddress(address)} |{' '}
             {parseFloat(balance?.formatted as string).toFixed(3)} ETH
           </Badge>

@@ -21,7 +21,7 @@ export default function GetETH() {
   }
 
   return (
-    <div className="flex flex-col max-w-sm mx-auto gap-4 py-10 px-8">
+    <div className="flex flex-col max-w-lg mx-auto gap-4 py-10 px-8">
       <Icons.wallet className="h-8 w-8" />
       <div className="flex flex-col gap-2">
         <h2 className="text-xl font-black">Get some ETH on Base</h2>

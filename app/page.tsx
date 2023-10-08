@@ -14,7 +14,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col max-w-sm mx-auto">
+    <div className="flex flex-col max-w-lg mx-auto">
       {ready && !authenticated && (
         <div className="flex flex-col space-y-2 text-center pt-20">
           <Icons.swords className="mx-auto h-14 w-14" />

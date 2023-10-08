@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function PracticeDuelPage() {
   return (
-    <div className="mx-auto flex flex-col justify-center space-y-4 max-w-sm absolute bottom-2 right-2 left-2">
+    <div className="mx-auto flex flex-col justify-center space-y-4 max-w-lg absolute bottom-2 right-2 left-2">
       <div className="flex flex-col space-y-2">
         <p className="text-sm text-muted-foreground">
           Create a practice duel where you and an opponent take turns guessing a

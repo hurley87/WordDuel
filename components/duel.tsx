@@ -17,7 +17,7 @@ export const Duel = ({ duelId }: { duelId: any }) => {
       )}
       {!isLoading && duel && (
         <Link href={`/duel/${duelId}`} className="w-full">
-          <div className="flex space-x-4 rounded-md p-2 transition-all border border-accent hover:bg-accent hover:text-accent-foreground w-full">
+          <div className="flex space-x-4 rounded-none p-2 transition-all border border-accent hover:bg-accent hover:text-accent-foreground w-full">
             {DUEL_STATE[duel?.state] === 'Created' && (
               <Sword className="w-9 h-9" />
             )}

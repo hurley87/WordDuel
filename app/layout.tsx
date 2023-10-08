@@ -70,7 +70,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <head />
       <body
         className={cn(
-          'min-h-screen bg-background font-sans antialiased overflow-y-hidden oveflow-x-hidden',
+          'min-h-screen bg-background font-sans antialiased overflow-y-hidden oveflow-x-hiddens',
           fontSans.variable,
           fontHeading.variable
         )}
@@ -79,7 +79,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <Privy>
             <SwitchNetwork>
               <Header />
-              <div className="p-2 h-screen overflow-y-hidden">{children}</div>
+              <div className="h-screen overflow-y-hidden">{children}</div>
             </SwitchNetwork>
           </Privy>
           <Analytics />
