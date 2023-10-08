@@ -85,17 +85,8 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
     eventName: 'DuelMove',
     listener(logs: any) {
       const words = logs[0]?.args?.words;
-      const moveCount = logs[0]?.args?.moveCount;
       setGame(duel.targetWord, words);
       setIsLoading(false);
-      const title = !yourTurn ? 'Your Turn' : `Opponent's Turn`;
-      const movesRemaining = 6 - parseInt(moveCount);
-      return toast({
-        title,
-        description: `${movesRemaining} ${
-          movesRemaining === 1 ? 'move' : 'moves'
-        } remaining.`,
-      });
     },
   });
 
