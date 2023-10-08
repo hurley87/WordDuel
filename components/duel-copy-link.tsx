@@ -24,13 +24,12 @@ export const DuelCopyLink = ({
     <Card>
       <CardHeader>
         <CardDescription>
-          {"You'll"} need someone to join your game. Share this link with a
-          friend.
+          {"You'll"} need someone to join your game. Share this link.
         </CardDescription>
       </CardHeader>
       <CardFooter>
         <Button onClick={handleCopyLinkToClipboard} className="w-full">
-          Copy Link
+          Copy Share Link
         </Button>
       </CardFooter>
     </Card>
