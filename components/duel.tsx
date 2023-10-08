@@ -37,11 +37,11 @@ export const Duel = ({ duelId }: { duelId: any }) => {
               </p>
               <p className="text-xs text-muted-foreground">
                 {DUEL_STATE[duel?.state] === 'Accepted' &&
-                  `Duel #${duelId} accepted: ${
+                  `#${duelId} accepted: ${
                     Number(duel.moveAmount) / 10 ** 18
                   } ETH per move`}
                 {DUEL_STATE[duel?.state] === 'Created' &&
-                  `Duel #${duelId}: ${
+                  `#${duelId}: ${
                     Number(duel.moveAmount) / 10 ** 18
                   } ETH per move`}
                 {DUEL_STATE[duel?.state] === 'Finished' && `Game over`}

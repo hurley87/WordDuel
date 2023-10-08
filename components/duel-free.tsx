@@ -41,7 +41,7 @@ export const DuelFree = ({ duelId }: { duelId: any }) => {
                 {DUEL_STATE[duel?.state] === 'Accepted' &&
                   `#${duelId} in progress`}
                 {DUEL_STATE[duel?.state] === 'Created' &&
-                  `#${duelId}: Click to join`}
+                  `#${duelId} click to join`}
                 {DUEL_STATE[duel?.state] === 'Cancelled' &&
                   `#${duelId} cancelled`}
                 {DUEL_STATE[duel?.state] === 'Finished' &&
