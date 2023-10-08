@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
@@ -15,12 +15,17 @@ import va from '@vercel/analytics';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { parseEther } from 'viem';
 import { generateWord } from '@/lib/wordle';
+import { useBalance } from 'wagmi';
 
 export function NewDuel() {
   const [amount, setAmount] = React.useState<number>(0.001);
   const router = useRouter();
   const { wallet } = usePrivyWagmi();
   const { isLoading, write } = useWrite('createDuel');
+  const { data } = useBalance({
+    address: wallet?.address as `0x${string}`,
+  });
+  const balance = parseFloat(data?.formatted || '1');
 
   useSubscribe({
     eventName: 'DuelCreated',
@@ -39,6 +44,13 @@ export function NewDuel() {
   async function createDuel() {
     try {
       const word = await generateWord();
+
+      if (balance < amount)
+        return toast({
+          title: 'You do not have enough ETH.',
+          description: 'Please get more ETH.',
+          variant: 'destructive',
+        });
 
       write({
         args: [word],
@@ -74,14 +86,10 @@ export function NewDuel() {
           onChange={(e) => setAmount(parseFloat(e.target.value))}
         />
       </div>
-      <button
-        className={cn(buttonVariants({ size: 'lg' }))}
-        disabled={isLoading}
-        onClick={createDuel}
-      >
+      <Button size="lg" disabled={isLoading} onClick={createDuel}>
         {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
         Start Game ({amount.toString()} ETH)
-      </button>
+      </Button>
     </div>
   );
 }

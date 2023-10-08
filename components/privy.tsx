@@ -35,7 +35,7 @@ function Privy({ children }) {
           theme: '#030711',
           accentColor: '#94A3B8',
           logo: 'https://www.wordduel.xyz/logo.png',
-          showWalletLoginFirst: true,
+          showWalletLoginFirst: false,
         },
       }}
     >
