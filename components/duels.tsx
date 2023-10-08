@@ -9,6 +9,8 @@ import { useFreeRead } from '@/hooks/useFreeRead';
 import { DuelFree } from './duel-free';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { Icons } from './icons';
+import { PracticeDuelCreate } from './practice-duel-create';
+import { DuelCreate } from './duel-create';
 
 function Duels() {
   const { wallet } = usePrivyWagmi();
@@ -37,25 +39,20 @@ function Duels() {
             Practice for Free
           </TabsTrigger>
           <TabsTrigger className="w-full" value="ranked">
-            Duel for ETH
+            Play for ETH
           </TabsTrigger>
         </TabsList>
         <TabsContent className="max-w-md mx-auto" value="practice">
-          <Link
-            href="/practice"
-            className="fixed bottom-9 left-0 right-0 mx-auto max-w-md"
-          >
-            <Button className="w-full rounded-none">
-              Create Practice Duel
-            </Button>
-          </Link>
+          <div className="fixed bottom-9 left-0 right-0 mx-auto max-w-md w-full">
+            <PracticeDuelCreate />
+          </div>
           <Tabs defaultValue="All Practices" className="w-full pt-2">
             <TabsList className="fixed bottom-0 left-0 right-0 max-w-md mx-auto rounded-none">
               <TabsTrigger className="w-full" value="All Practices">
-                All Practice Duels
+                All Practices
               </TabsTrigger>
               <TabsTrigger className="w-full" value="My Practices">
-                My Practice Duels
+                My Practices
               </TabsTrigger>
             </TabsList>
             <TabsContent value="All Practices">
@@ -68,9 +65,9 @@ function Duels() {
               </div>
             </TabsContent>
             <TabsContent value="My Practices">
-              <div className="flex flex-col gap-2 pt-14 pb-32 h-screen overflow-auto">
+              <div className="flex flex-col gap-0 pt-14 pb-32 h-screen overflow-auto">
                 {myfreeduels?.length > 0 ? (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-0">
                     {myfreeduels
                       ?.reverse()
                       .map((duelId) => (
@@ -85,23 +82,20 @@ function Duels() {
           </Tabs>
         </TabsContent>
         <TabsContent value="ranked">
-          <Link
-            href="/duel"
-            className="fixed bottom-9 left-0 right-0  mx-auto max-w-md"
-          >
-            <Button className="w-full rounded-none">Create Ranked Duel</Button>
-          </Link>
+          <div className="fixed bottom-9 left-0 right-0  mx-auto max-w-md w-full">
+            <DuelCreate />
+          </div>
           <Tabs defaultValue="All Duels" className="w-full pt-2">
             <TabsList className="fixed bottom-0 right-0 left-0 max-w-md mx-auto rounded-none">
               <TabsTrigger className="w-full" value="All Duels">
-                All Ranked Duels
+                All Games
               </TabsTrigger>
               <TabsTrigger className="w-full" value="My Duels">
-                My Ranked Duels
+                My Games
               </TabsTrigger>
             </TabsList>
             <TabsContent value="All Duels">
-              <div className="flex flex-col gap-2 pt-14 pb-32 h-screen overflow-auto max-w-md mx-auto">
+              <div className="flex flex-col gap-0 pt-14 pb-32 h-screen overflow-auto max-w-md mx-auto">
                 {duels
                   ?.reverse()
                   .map((duel: any) => (
@@ -111,7 +105,7 @@ function Duels() {
             </TabsContent>
             <TabsContent value="My Duels">
               {myduels?.length > 0 ? (
-                <div className="flex flex-col gap-2 pt-14 pb-32 h-screen overflow-auto max-w-md mx-auto">
+                <div className="flex flex-col gap-0 pt-14 pb-32 h-screen overflow-auto max-w-md mx-auto">
                   {myduels
                     ?.reverse()
                     .map((duelId) => (

@@ -77,9 +77,14 @@ export function PracticeDuelCreate() {
   }
 
   return (
-    <Button onClick={handleCreateDuel} size="lg" disabled={isLoading}>
+    <Button
+      className="w-full rounded-none"
+      onClick={handleCreateDuel}
+      disabled={isLoading}
+      variant="secondary"
+    >
       {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-      Create Practice Duel
+      Start Practice
     </Button>
   );
 }

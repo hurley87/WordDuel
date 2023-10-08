@@ -24,8 +24,8 @@ export const DuelCopyLink = ({
     <Card>
       <CardHeader>
         <CardDescription>
-          {"You're"} waiting on an opponent to accept your duel. Invite someone
-          using this link: {`\n${description}`}
+          {"You'll"} need someone to join your game. Share this link with a
+          friend.
         </CardDescription>
       </CardHeader>
       <CardFooter>

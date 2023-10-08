@@ -44,8 +44,7 @@ export const Duel = ({ duelId }: { duelId: any }) => {
                   `Duel #${duelId}: ${
                     Number(duel.moveAmount) / 10 ** 18
                   } ETH per move`}
-                {DUEL_STATE[duel?.state] === 'Finished' &&
-                  `Duel #${duelId} finished`}
+                {DUEL_STATE[duel?.state] === 'Finished' && `Game over`}
               </p>
             </div>
           </div>

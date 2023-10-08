@@ -55,9 +55,9 @@ export default function Page({ params }: { params: { slug: string } }) {
   if (!ready) return <Loading />;
 
   return (
-    <div className="mx-auto flex flex-col justify-center space-y-0 max-w-md absolute bottom-2 left-0 right-0">
+    <div className="mx-auto flex flex-col justify-center space-y-0 max-w-md pt-20">
       {tooPoor && (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-2">
           <div className="mx-auto">
             <Badge variant="destructive">
               You need to deposit {(Number(duel.moveAmount) / 10 ** 18) * 5} ETH

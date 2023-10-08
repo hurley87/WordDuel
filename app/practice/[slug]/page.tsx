@@ -41,11 +41,12 @@ export default function Page({ params }: { params: { slug: string } }) {
     }
   }, [isLoading, duel, router]);
 
+  if (!wallet) return <GetStarted />;
+
   if (!ready) return <Loading />;
 
   return (
-    <div className="mx-auto flex flex-col justify-center space-y-0 max-w-md absolute bottom-2 left-0 right-0">
-      {!wallet && <GetStarted />}
+    <div className="mx-auto flex flex-col justify-center space-y-0 max-w-md pt-20">
       {isCreated && isChallenger && <DuelCreatedChallengerFree duel={duel} />}
       {isCreated && !isChallenger && <DuelCreatedOpponentFree duel={duel} />}
       {isCancelled && <DuelCancelled />}

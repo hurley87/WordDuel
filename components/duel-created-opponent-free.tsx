@@ -59,30 +59,16 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 max-w-lg mx-auto">
-      <Container>
-        <Card>
-          <CardHeader>
-            <CardDescription>
-              {"You've"} been challenged to a word duel. Accept the duel to play
-              for free and earn bragging rights.
-            </CardDescription>
-          </CardHeader>
-          <CardFooter>
-            <Button
-              disabled={isAccepting}
-              onClick={handleAcceptDuel}
-              className="w-full"
-              size="lg"
-            >
-              {isAccepting && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Accept Duel
-            </Button>
-          </CardFooter>
-        </Card>
-      </Container>
+    <div className="flex flex-col gap-2 max-w-sm mx-auto">
+      <Button
+        disabled={isAccepting}
+        onClick={handleAcceptDuel}
+        className="w-full"
+        size="lg"
+      >
+        {isAccepting && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+        Join Practice
+      </Button>
     </div>
   );
 };

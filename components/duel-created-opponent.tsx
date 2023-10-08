@@ -49,30 +49,16 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 max-w-lg mx-auto">
-      <Container>
-        <Card>
-          <CardHeader>
-            <CardDescription>
-              Each time you guess {`you'll`} add <b>{amount} ETH</b> to the pot.
-              The person who guesses the right word wins the entire pot.
-            </CardDescription>
-          </CardHeader>
-          <CardFooter>
-            <Button
-              disabled={isLoading}
-              onClick={handleAcceptDuel}
-              className="w-full"
-              size="lg"
-            >
-              {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Accept Duel ({amount} ETH)
-            </Button>
-          </CardFooter>
-        </Card>
-      </Container>
+    <div className="flex flex-col gap-2 max-w-sm mx-auto">
+      <Button
+        disabled={isLoading}
+        onClick={handleAcceptDuel}
+        className="w-full"
+        size="lg"
+      >
+        {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+        Join Game ({amount} ETH)
+      </Button>
     </div>
   );
 };
