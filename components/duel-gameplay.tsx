@@ -1,13 +1,11 @@
 import { useWrite } from '@/hooks/useWrite';
 import {
   findLastNonEmptyTile,
-  getNextRow,
   getRowWord,
   makeEmptyGrid,
   decryptWord,
   decryptWords,
 } from '@/lib/wordle';
-import { Badge } from '@/components/ui/badge';
 import { useEffect, useState, useCallback } from 'react';
 import Keyboard, { isMappableKey } from './wordle/keyboard';
 import { toast } from './ui/use-toast';

@@ -2,16 +2,17 @@
 
 import '@/styles/globals.css';
 
-import { baseGoerli, base } from 'wagmi/chains';
+import { base, baseGoerli } from 'wagmi/chains';
 import { configureChains } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { PrivyProvider } from '@privy-io/react-auth';
 import { PrivyWagmiConnector } from '@privy-io/wagmi-connector';
 
 const http = process.env.NEXT_PUBLIC_RPC_URL as string;
+const chainId = process.env.NODE_ENV === 'production' ? base : baseGoerli;
 
 const configureChainsConfig = configureChains(
-  [baseGoerli],
+  [chainId],
   [
     jsonRpcProvider({
       rpc: () => ({

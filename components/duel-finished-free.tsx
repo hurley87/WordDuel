@@ -1,6 +1,5 @@
 import { decryptWord, decryptWords, makeEmptyGrid } from '@/lib/wordle';
 import { useCallback, useEffect, useState } from 'react';
-import { Badge } from './ui/badge';
 import Grid from './wordle/grid';
 import { Button } from './ui/button';
 import Link from 'next/link';
