@@ -52,6 +52,8 @@ export default function Page({ params }: { params: { slug: string } }) {
     }
   }, [isLoading, duel, router]);
 
+  if (!wallet) return <GetStarted />;
+
   if (!ready) return <Loading />;
 
   return (
@@ -66,7 +68,6 @@ export default function Page({ params }: { params: { slug: string } }) {
           <GetETH />
         </div>
       )}
-      {ready && !user && <GetStarted />}
       {user && isCreated && isChallenger && (
         <DuelCreatedChallenger duel={duel} />
       )}
