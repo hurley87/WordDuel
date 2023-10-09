@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
-import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
 import { Icons } from './icons';
-import { Container } from './container';
 import { useFreeSubscribe } from '@/hooks/useFreeSubscribe';
 import { toast } from './ui/use-toast';
 import { acceptDuel } from '@/lib/gelato';

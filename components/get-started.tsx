@@ -1,8 +1,4 @@
-import Link from 'next/link';
-
 import { Button } from '@/components/ui/button';
-import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
-import { Container } from './container';
 import { Icons } from './icons';
 import { usePrivy } from '@privy-io/react-auth';
 

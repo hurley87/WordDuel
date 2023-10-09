@@ -84,6 +84,8 @@ contract OpenDuels is Ownable {
 
         myDuels[msg.sender].push(_duelId);
 
+        duels[_duelId].currentPlayer = msg.sender;
+
         emit DuelAccepted(_duelId);
     }
 

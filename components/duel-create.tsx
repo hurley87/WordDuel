@@ -17,7 +17,10 @@ export function DuelCreate() {
   return (
     <Dialog>
       <DialogTrigger className="w-full">
-        <Button variant="secondary" className="w-full rounded-none">
+        <Button
+          variant="secondary"
+          className="w-full rounded-none border-b border-background"
+        >
           Start Game
         </Button>
       </DialogTrigger>

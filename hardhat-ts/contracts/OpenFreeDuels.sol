@@ -26,6 +26,9 @@ contract OpenFreeDuels is ERC2771Context, Ownable {
     Duel[] public duels;
 
     mapping (address => uint[]) public myDuels;
+    mapping (address => uint[]) public wins;
+    mapping (address => uint[]) public losses;
+    mapping (address => uint[]) public draws;
 
     event DuelCreated(uint256 id);
     event DuelAccepted(uint256 id);
@@ -74,6 +77,8 @@ contract OpenFreeDuels is ERC2771Context, Ownable {
 
         myDuels[_msgSender()].push(_duelId);
 
+        duels[_duelId].currentPlayer = _msgSender();
+
         emit DuelAccepted(_duelId);
     }
 
@@ -85,6 +90,8 @@ contract OpenFreeDuels is ERC2771Context, Ownable {
         
         if(keccak256(abi.encodePacked(_word)) == keccak256(abi.encodePacked(duels[_duelId].targetWord))) {
             duels[_duelId].state = DuelState.Finished;
+            wins[duels[_duelId].currentPlayer].push(_duelId);
+            losses[duels[_duelId].currentPlayer == duels[_duelId].challenger ? duels[_duelId].opponent : duels[_duelId].challenger].push(_duelId);
         } else {
             
             if(duels[_duelId].currentPlayer == duels[_duelId].challenger) {
@@ -97,6 +104,8 @@ contract OpenFreeDuels is ERC2771Context, Ownable {
 
             if(duels[_duelId].moveCount == 6) {
                 duels[_duelId].state = DuelState.Finished;
+                draws[duels[_duelId].challenger].push(_duelId);
+                draws[duels[_duelId].opponent].push(_duelId);
             } else {
                 emit DuelMove(_duelId, duels[_duelId].currentPlayer, duels[_duelId].words, duels[_duelId].moveCount);
             }
@@ -113,12 +122,20 @@ contract OpenFreeDuels is ERC2771Context, Ownable {
         return myDuels[_wallet].length;
     }
 
-    function getDuel(uint256 _duelId) public view returns (Duel memory) {
-        return duels[_duelId];
+    function getWinsCount(address _wallet) public view returns (uint256) {
+        return wins[_wallet].length;
     }
 
-    function getBalance() public view returns (uint256) {
-        return address(this).balance;
+    function getLossesCount(address _wallet) public view returns (uint256) {
+        return losses[_wallet].length;
+    }
+
+    function getDrawsCount(address _wallet) public view returns (uint256) {
+        return draws[_wallet].length;
+    }
+
+    function getDuel(uint256 _duelId) public view returns (Duel memory) {
+        return duels[_duelId];
     }
 
     function getMyDuels(address _wallet) public view returns (uint[] memory) {

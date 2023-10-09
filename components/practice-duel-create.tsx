@@ -78,7 +78,7 @@ export function PracticeDuelCreate() {
 
   return (
     <Button
-      className="w-full rounded-none"
+      className="w-full rounded-none border-b border-background"
       onClick={handleCreateDuel}
       disabled={isLoading}
       variant="secondary"
