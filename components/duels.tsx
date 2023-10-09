@@ -11,6 +11,7 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { Icons } from './icons';
 import { PracticeDuelCreate } from './practice-duel-create';
 import { DuelCreate } from './duel-create';
+import { Duel } from './duel';
 
 function Duels() {
   const { wallet } = usePrivyWagmi();
@@ -99,7 +100,7 @@ function Duels() {
                 {duels
                   ?.reverse()
                   .map((duel: any) => (
-                    <DuelFree key={parseInt(duel.id)} duelId={duel.id} />
+                    <Duel key={parseInt(duel.id)} duelId={duel.id} />
                   ))}
               </div>
             </TabsContent>
@@ -109,7 +110,7 @@ function Duels() {
                   {myduels
                     ?.reverse()
                     .map((duelId) => (
-                      <DuelFree key={parseInt(duelId)} duelId={duelId} />
+                      <Duel key={parseInt(duelId)} duelId={duelId} />
                     ))}
                 </div>
               ) : (
