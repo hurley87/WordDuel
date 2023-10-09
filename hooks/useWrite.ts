@@ -10,5 +10,8 @@ export const useWrite = (functionName) => {
     address,
     abi,
     functionName,
+    onError(error) {
+      console.log('Error', error);
+    },
   }) as any;
 };

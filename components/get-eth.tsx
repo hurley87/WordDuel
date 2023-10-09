@@ -47,7 +47,7 @@ export default function GetETH() {
         </div>
       </div>
       <div className="flex gap-2">
-        <p>Wallet Balance: {balance} ETH </p>
+        <p>Wallet Balance: {balance.toFixed(4)} ETH </p>
         <Icons.refresh
           onClick={() => window.location.reload()}
           className="h-4 w-4 relative top-1 cursor-pointer"

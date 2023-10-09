@@ -2,8 +2,6 @@
 
 import '@/styles/globals.css';
 import { useRead } from '@/hooks/useRead';
-import { Button } from './ui/button';
-import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useFreeRead } from '@/hooks/useFreeRead';
 import { DuelFree } from './duel-free';
@@ -33,7 +31,7 @@ function Duels() {
   });
 
   return (
-    <div className="mx-auto w-full max-w-md ">
+    <div className="mx-auto w-full max-w-md border border-accent">
       <Tabs defaultValue="practice" className="w-full">
         <TabsList className="fixed top-11 left-0 right-0 mx-auto max-w-md rounded-none">
           <TabsTrigger className="w-full" value="practice">

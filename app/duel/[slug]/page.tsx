@@ -76,7 +76,9 @@ export default function Page({ params }: { params: { slug: string } }) {
       )}
       {user && isCancelled && <DuelCancelled />}
       {user && isFinished && <DuelFinished duel={duel} yourTurn={yourTurn} />}
-      {user && isAccepted && <DuelGamePlay duel={duel} yourTurn={yourTurn} />}
+      {user && isAccepted && !tooPoor && (
+        <DuelGamePlay duel={duel} yourTurn={yourTurn} />
+      )}
     </div>
   );
 }
