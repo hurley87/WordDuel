@@ -539,7 +539,7 @@ export const words = [
   'creed',
   'creek',
   'creep',
-  'crema',
+  'cream',
   'creme',
   'crest',
   'crick',
