@@ -3,7 +3,6 @@
 import { Button } from './ui/button';
 import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Icons } from './icons';
 import { cancelDuel } from '@/lib/gelato';
 import { useWallets } from '@privy-io/react-auth';
@@ -11,7 +10,6 @@ import { baseGoerli, base } from 'wagmi/chains';
 
 export const DuelCancelFree = ({ duelId }: { duelId: string }) => {
   const [isCancelling, setIsCancelling] = useState<boolean>(false);
-  const router = useRouter();
   const { wallets } = useWallets();
   const embeddedWallet = wallets.find(
     (wallet) => wallet.walletClientType === 'privy'
@@ -25,7 +23,6 @@ export const DuelCancelFree = ({ duelId }: { duelId: string }) => {
     wallets[0]?.switchChain(chainId);
     if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
     await cancelDuel(provider, duelId);
-    router.push('/');
   }
 
   return (

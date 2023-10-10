@@ -7,7 +7,7 @@ export const DuelCancelled = () => {
       <Container>
         <Card>
           <CardHeader>
-            <CardDescription>This duel has been cancelled.</CardDescription>
+            <CardDescription>This game has been cancelled.</CardDescription>
           </CardHeader>
         </Card>
       </Container>
