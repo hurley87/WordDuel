@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Icons } from './icons';
 import { cancelDuel } from '@/lib/gelato';
 import { useWallets } from '@privy-io/react-auth';
+import { baseGoerli, base } from 'wagmi/chains';
 
 export const DuelCancelFree = ({ duelId }: { duelId: string }) => {
   const [isCancelling, setIsCancelling] = useState<boolean>(false);
@@ -18,8 +19,11 @@ export const DuelCancelFree = ({ duelId }: { duelId: string }) => {
 
   async function handleCancellation() {
     setIsCancelling(true);
-    const provider = await embeddedWallet?.getEthersProvider();
-
+    const chainId =
+      process.env.NODE_ENV === 'production' ? base.id : baseGoerli.id;
+    let provider = await wallets[0]?.getEthersProvider();
+    wallets[0]?.switchChain(chainId);
+    if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
     await cancelDuel(provider, duelId);
     router.push('/');
   }
