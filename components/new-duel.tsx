@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
@@ -15,21 +15,24 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { parseEther } from 'viem';
 import { generateWord } from '@/lib/wordle';
 import { useBalance } from 'wagmi';
+import { useState } from 'react';
 
 export function NewDuel() {
   const [amount, setAmount] = React.useState<number>(0.001);
   const router = useRouter();
   const { wallet } = usePrivyWagmi();
-  const { isLoading, write } = useWrite('createDuel');
+  const { write } = useWrite('createDuel');
   const { data } = useBalance({
     address: wallet?.address as `0x${string}`,
   });
   const balance = parseFloat(data?.formatted || '1');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useSubscribe({
     eventName: 'DuelCreated',
     listener(logs: any) {
       const duelId = logs[0]?.args?.id?.toString();
+      setIsLoading(false);
       if (!duelId)
         return toast({
           title: 'There was a problem creating your duel.',
@@ -41,6 +44,7 @@ export function NewDuel() {
   });
 
   async function createDuel() {
+    setIsLoading(true);
     try {
       const word = await generateWord();
 

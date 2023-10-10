@@ -31,7 +31,7 @@ function Duels() {
   });
 
   return (
-    <div className="mx-auto w-full max-w-md border border-accent">
+    <div className="mx-auto w-full max-w-md shadow-inner md:shadow-accent">
       <Tabs defaultValue="practice" className="w-full">
         <TabsList className="fixed top-11 left-0 right-0 mx-auto max-w-md rounded-none">
           <TabsTrigger className="w-full" value="practice">
