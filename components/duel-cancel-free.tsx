@@ -27,7 +27,7 @@ export const DuelCancelFree = ({ duelId }: { duelId: string }) => {
   return (
     <Card>
       <CardHeader>
-        <CardDescription>Cancel this duel.</CardDescription>
+        <CardDescription>Cancel this game.</CardDescription>
       </CardHeader>
       <CardFooter>
         <Button
@@ -39,7 +39,7 @@ export const DuelCancelFree = ({ duelId }: { duelId: string }) => {
           {isCancelling && (
             <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           )}
-          Cancel Duel
+          Cancel Game
         </Button>
       </CardFooter>
     </Card>
