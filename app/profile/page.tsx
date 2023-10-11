@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function ProfilePage() {
   return (
-    <div className="flex flex-col max-w-md mx-auto pt-11 overflow-y-auto h-screen">
+    <div className="flex flex-col max-w-md mx-auto pt-11 overflow-y-auto h-screen pb-10">
       <ProfileActiveWallet />
       <ProfileAccounts />
       <TransferForm />
