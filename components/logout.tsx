@@ -15,10 +15,10 @@ function Logout() {
   }
 
   return (
-    <Card>
+    <Card className="rounded-none">
       <CardHeader>
         <CardDescription className="whitespace-pre">
-          Logout of your account.
+          Logout of your account
         </CardDescription>
       </CardHeader>
       <CardFooter>

@@ -1,5 +1,6 @@
 import Logout from '@/components/logout';
 import ProfileAccounts from '@/components/profile-accounts';
+import ProfileActiveWallet from '@/components/profile-active-wallet';
 import { TransferForm } from '@/components/transfer-form';
 
 export const metadata = {
@@ -9,7 +10,8 @@ export const metadata = {
 
 export default function ProfilePage() {
   return (
-    <div className="flex flex-col gap-2 max-w-md mx-auto pt-20">
+    <div className="flex flex-col max-w-md mx-auto pt-11 overflow-y-auto h-screen">
+      <ProfileActiveWallet />
       <ProfileAccounts />
       <TransferForm />
       <Logout />

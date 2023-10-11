@@ -59,16 +59,16 @@ export function TransferForm() {
   }
 
   return (
-    <Card>
+    <Card className="rounded-none">
       <CardHeader>
         <CardDescription className="whitespace-pre">
-          Transfer ETH to another wallet.
+          Transfer ETH to another wallet
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
           <div className="grid gap-1">
-            <Label htmlFor="address">Wallet Address</Label>
+            <Label htmlFor="address">{"Recipient's"} Wallet Address</Label>
             <Input
               id="address"
               placeholder="0x1D266998DA65E25DE8e1770d48e0E55DDEE39D24"

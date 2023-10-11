@@ -52,11 +52,9 @@ function ProfileAccounts() {
   }
 
   return (
-    <Card>
+    <Card className="rounded-none">
       <CardHeader>
-        <CardDescription className="whitespace-pre">
-          Active wallet: {formatAddress(`${activeWallet?.address}`)}
-        </CardDescription>
+        <CardDescription>Your Wallets</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
@@ -69,7 +67,9 @@ function ProfileAccounts() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <p onClick={handleCopyAddress}>{wallet.address}</p>
+                      <p onClick={handleCopyAddress}>
+                        {formatAddress(wallet.address)}
+                      </p>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Copy wallet address</p>
