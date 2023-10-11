@@ -69,9 +69,7 @@ function ProfileAccounts() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <p onClick={handleCopyAddress}>
-                        {formatAddress(wallet.address)}
-                      </p>
+                      <p onClick={handleCopyAddress}>{wallet.address}</p>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Copy wallet address</p>
