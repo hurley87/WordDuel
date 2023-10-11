@@ -47,77 +47,37 @@ function Duels() {
           <div className="fixed bottom-0 left-0 right-0 mx-auto max-w-md w-full">
             <PracticeDuelCreate />
           </div>
-          <Tabs defaultValue="All Practices" className="w-full pt-2">
-            <TabsList className="fixed top-20 left-0 right-0 max-w-md mx-auto rounded-none">
-              <TabsTrigger className="w-full" value="All Practices">
-                All Practices
-              </TabsTrigger>
-              <TabsTrigger className="w-full" value="My Practices">
-                My Practices
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="All Practices">
-              <div className="flex flex-col gap-0 pt-24 pb-32 h-screen overflow-auto w-full">
-                {freeduels
-                  ?.reverse()
-                  .map((duel: any) => (
-                    <DuelFree key={parseInt(duel.id)} duelId={duel.id} />
-                  ))}
-              </div>
-            </TabsContent>
-            <TabsContent value="My Practices">
-              <div className="flex flex-col gap-0 pt-24 pb-32 h-screen overflow-auto">
-                {myfreeduels?.length > 0 ? (
-                  <div className="flex flex-col gap-0">
-                    {myfreeduels
-                      ?.reverse()
-                      .map((duelId) => (
-                        <DuelFree key={parseInt(duelId)} duelId={duelId} />
-                      ))}
-                  </div>
-                ) : (
-                  <Icons.egg className="mx-auto h-14 w-14 mt-32" />
-                )}
-              </div>
-            </TabsContent>
-          </Tabs>
+          <div className="flex flex-col gap-0 pt-20 pb-32 h-screen overflow-auto">
+            <div className="flex flex-col gap-0">
+              {myfreeduels
+                ?.reverse()
+                .map((duelId) => (
+                  <DuelFree key={parseInt(duelId)} duelId={duelId} />
+                ))}
+              {freeduels
+                .filter((duel: any) => !myfreeduels?.includes(duel.id))
+                ?.reverse()
+                .map((duel: any) => (
+                  <DuelFree key={parseInt(duel.id)} duelId={duel.id} />
+                ))}
+            </div>
+          </div>
         </TabsContent>
         <TabsContent value="ranked">
           <div className="fixed bottom-0 left-0 right-0  mx-auto max-w-md w-full">
             <DuelCreate />
           </div>
-          <Tabs defaultValue="All Duels" className="w-full pt-2">
-            <TabsList className="fixed top-20 left-0 right-0 max-w-md mx-auto rounded-none">
-              <TabsTrigger className="w-full" value="All Duels">
-                All Games
-              </TabsTrigger>
-              <TabsTrigger className="w-full" value="My Duels">
-                My Games
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="All Duels">
-              <div className="flex flex-col gap-0 pt-28 pb-32 h-screen overflow-auto max-w-md mx-auto">
-                {duels
-                  ?.reverse()
-                  .map((duel: any) => (
-                    <Duel key={parseInt(duel.id)} duelId={duel.id} />
-                  ))}
-              </div>
-            </TabsContent>
-            <TabsContent value="My Duels">
-              {myduels?.length > 0 ? (
-                <div className="flex flex-col gap-0 pt-28 pb-32 h-screen overflow-auto max-w-md mx-auto">
-                  {myduels
-                    ?.reverse()
-                    .map((duelId) => (
-                      <Duel key={parseInt(duelId)} duelId={duelId} />
-                    ))}
-                </div>
-              ) : (
-                <Icons.egg className="mx-auto h-14 w-14 mt-32" />
-              )}
-            </TabsContent>
-          </Tabs>
+          <div className="flex flex-col gap-0 pt-20 pb-32 h-screen overflow-auto max-w-md mx-auto">
+            {myduels
+              ?.reverse()
+              .map((duelId) => <Duel key={parseInt(duelId)} duelId={duelId} />)}
+            {duels
+              .filter((duel: any) => !myduels?.includes(duel.id))
+              ?.reverse()
+              .map((duel: any) => (
+                <Duel key={parseInt(duel.id)} duelId={duel.id} />
+              ))}
+          </div>
         </TabsContent>
       </Tabs>
     </div>
