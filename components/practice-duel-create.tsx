@@ -58,8 +58,6 @@ export function PracticeDuelCreate() {
       wallets[0]?.switchChain(chainId);
       if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
 
-      console.log('provider', provider);
-
       await createDuel(provider, word);
 
       va.track('CreatePractice', {

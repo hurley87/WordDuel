@@ -6,7 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useFreeRead } from '@/hooks/useFreeRead';
 import { DuelFree } from './duel-free';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
-import { Icons } from './icons';
 import { PracticeDuelCreate } from './practice-duel-create';
 import { DuelCreate } from './duel-create';
 import { Duel } from './duel';
@@ -29,8 +28,6 @@ function Duels() {
     functionName: 'getDuels',
     args: [],
   });
-
-  console.log(duels);
 
   return (
     <div className="mx-auto w-full max-w-md shadow-inner md:shadow-accent">
