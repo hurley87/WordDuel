@@ -47,7 +47,7 @@ function Duels() {
           <div className="fixed bottom-0 left-0 right-0 mx-auto max-w-md w-full">
             <PracticeDuelCreate />
           </div>
-          <div className="flex flex-col gap-0 pt-20 pb-32 h-screen overflow-auto">
+          <div className="flex flex-col gap-0 pt-24 md:pt-20 pb-32 h-screen overflow-auto">
             <div className="flex flex-col gap-0">
               {myfreeduels
                 ?.reverse()
@@ -67,7 +67,7 @@ function Duels() {
           <div className="fixed bottom-0 left-0 right-0  mx-auto max-w-md w-full">
             <DuelCreate />
           </div>
-          <div className="flex flex-col gap-0 pt-20 pb-32 h-screen overflow-auto max-w-md mx-auto">
+          <div className="flex flex-col gap-0 pt-24 md:pt-20 pb-32 h-screen overflow-auto max-w-md mx-auto">
             {myduels
               ?.reverse()
               .map((duelId) => <Duel key={parseInt(duelId)} duelId={duelId} />)}
