@@ -54,7 +54,7 @@ function ProfileAccounts() {
   return (
     <Card className="rounded-none">
       <CardHeader>
-        <CardDescription>Your Wallets</CardDescription>
+        <CardDescription>Your wallets</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-2">
