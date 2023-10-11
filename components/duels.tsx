@@ -55,7 +55,7 @@ function Duels() {
                   <DuelFree key={parseInt(duelId)} duelId={duelId} />
                 ))}
               {freeduels
-                .filter((duel: any) => !myfreeduels?.includes(duel.id))
+                ?.filter((duel: any) => !myfreeduels?.includes(duel.id))
                 ?.reverse()
                 .map((duel: any) => (
                   <DuelFree key={parseInt(duel.id)} duelId={duel.id} />
@@ -72,7 +72,7 @@ function Duels() {
               ?.reverse()
               .map((duelId) => <Duel key={parseInt(duelId)} duelId={duelId} />)}
             {duels
-              .filter((duel: any) => !myduels?.includes(duel.id))
+              ?.filter((duel: any) => !myduels?.includes(duel.id))
               ?.reverse()
               .map((duel: any) => (
                 <Duel key={parseInt(duel.id)} duelId={duel.id} />
