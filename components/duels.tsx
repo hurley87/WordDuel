@@ -14,7 +14,7 @@ import { Duel } from './duel';
 function Duels() {
   const { wallet } = usePrivyWagmi();
   const { data: duels } = useRead({
-    functionName: 'getDuels',
+    functionName: 'getCreatedDuels',
     args: [],
   });
   const { data: myduels } = useRead({
@@ -30,6 +30,8 @@ function Duels() {
     args: [],
   });
 
+  console.log(duels);
+
   return (
     <div className="mx-auto w-full max-w-md shadow-inner md:shadow-accent">
       <Tabs defaultValue="practice" className="w-full">
@@ -42,11 +44,11 @@ function Duels() {
           </TabsTrigger>
         </TabsList>
         <TabsContent className="max-w-md mx-auto" value="practice">
-          <div className="fixed bottom-9 left-0 right-0 mx-auto max-w-md w-full">
+          <div className="fixed bottom-0 left-0 right-0 mx-auto max-w-md w-full">
             <PracticeDuelCreate />
           </div>
           <Tabs defaultValue="All Practices" className="w-full pt-2">
-            <TabsList className="fixed bottom-0 left-0 right-0 max-w-md mx-auto rounded-none">
+            <TabsList className="fixed top-20 left-0 right-0 max-w-md mx-auto rounded-none">
               <TabsTrigger className="w-full" value="All Practices">
                 All Practices
               </TabsTrigger>
@@ -55,7 +57,7 @@ function Duels() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="All Practices">
-              <div className="flex flex-col gap-0 pt-14 pb-32 h-screen overflow-auto w-full">
+              <div className="flex flex-col gap-0 pt-24 pb-32 h-screen overflow-auto w-full">
                 {freeduels
                   ?.reverse()
                   .map((duel: any) => (
@@ -64,7 +66,7 @@ function Duels() {
               </div>
             </TabsContent>
             <TabsContent value="My Practices">
-              <div className="flex flex-col gap-0 pt-14 pb-32 h-screen overflow-auto">
+              <div className="flex flex-col gap-0 pt-24 pb-32 h-screen overflow-auto">
                 {myfreeduels?.length > 0 ? (
                   <div className="flex flex-col gap-0">
                     {myfreeduels
@@ -81,11 +83,11 @@ function Duels() {
           </Tabs>
         </TabsContent>
         <TabsContent value="ranked">
-          <div className="fixed bottom-9 left-0 right-0  mx-auto max-w-md w-full">
+          <div className="fixed bottom-0 left-0 right-0  mx-auto max-w-md w-full">
             <DuelCreate />
           </div>
           <Tabs defaultValue="All Duels" className="w-full pt-2">
-            <TabsList className="fixed bottom-0 right-0 left-0 max-w-md mx-auto rounded-none">
+            <TabsList className="fixed top-20 left-0 right-0 max-w-md mx-auto rounded-none">
               <TabsTrigger className="w-full" value="All Duels">
                 All Games
               </TabsTrigger>
@@ -94,7 +96,7 @@ function Duels() {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="All Duels">
-              <div className="flex flex-col gap-0 pt-14 pb-32 h-screen overflow-auto max-w-md mx-auto">
+              <div className="flex flex-col gap-0 pt-28 pb-32 h-screen overflow-auto max-w-md mx-auto">
                 {duels
                   ?.reverse()
                   .map((duel: any) => (
@@ -104,7 +106,7 @@ function Duels() {
             </TabsContent>
             <TabsContent value="My Duels">
               {myduels?.length > 0 ? (
-                <div className="flex flex-col gap-0 pt-14 pb-32 h-screen overflow-auto max-w-md mx-auto">
+                <div className="flex flex-col gap-0 pt-28 pb-32 h-screen overflow-auto max-w-md mx-auto">
                   {myduels
                     ?.reverse()
                     .map((duelId) => (

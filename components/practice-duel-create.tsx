@@ -82,6 +82,7 @@ export function PracticeDuelCreate() {
       onClick={handleCreateDuel}
       disabled={isLoading}
       variant="secondary"
+      size="lg"
     >
       {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
       Start Practice
