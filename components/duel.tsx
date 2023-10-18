@@ -8,7 +8,9 @@ export const Duel = ({ duel, route }: { duel: any; route: string }) => {
 
   let message = `#${duel.id.toString()}: ${
     duel.challengerTwitter || formatAddress(duel.challenger)
-  } ⚔️ ${duel.challengerOpponent || formatAddress(duel.opponent)}`;
+  } ⚔️ ${duel.challengerOpponent || formatAddress(duel.opponent)} ${
+    DUEL_STATE[duel?.state] === 'Finished' ? '✅' : ''
+  }`;
   if (DUEL_STATE[duel?.state] === 'Created' && route === 'duel')
     message = `#${duel.id.toString()}: ${route}  against ${
       duel.challengerTwitter || formatAddress(duel.challenger)
@@ -21,8 +23,6 @@ export const Duel = ({ duel, route }: { duel: any; route: string }) => {
     message = `#${duel.id.toString()}: view your ${route}`;
   if (DUEL_STATE[duel?.state] === 'Cancelled')
     message = `#${duel.id.toString()}: cancelled`;
-  if (DUEL_STATE[duel?.state] === 'Finished')
-    message = `#${duel.id.toString()}: ${route} complete`;
   return (
     <Link href={`/${route}/${duel.id.toString()}`} className="w-full">
       <div className="flex justify-between rounded-none px-2 py-4 transition-all border-b border-accent hover:bg-accent hover:text-accent-foreground w-full">
