@@ -28,7 +28,7 @@ export const DuelTwitterShare = ({
           }
           className="w-full"
         >
-          Share on X
+          Share Link
         </Button>
       </CardFooter>
     </Card>
