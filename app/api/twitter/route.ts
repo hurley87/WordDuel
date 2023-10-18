@@ -17,12 +17,11 @@ export async function POST(req: Request) {
 
     let username = formatAddress(address);
     const user = await privy.getUserByWalletAddress(address);
-    if(!!user?.twitter) username = user.twitter.username as string;
-
+    if (!!user?.twitter) username = user.twitter.username as string;
 
     return new NextResponse(JSON.stringify({ username }));
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return new NextResponse(JSON.stringify({ error }));
   }
 }

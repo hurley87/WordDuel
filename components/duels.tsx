@@ -34,7 +34,9 @@ function Duels() {
             <PracticeDuelCreate />
           </div>
           <div className="flex flex-col gap-0 pt-20 pb-32 h-screen overflow-auto">
-            {freeduels?.length > 0 && <DuelsList duelslist={freeduels} route="practice" />}
+            {freeduels?.length > 0 && (
+              <DuelsList duelslist={freeduels} route="practice" />
+            )}
           </div>
         </TabsContent>
         <TabsContent value="ranked">
