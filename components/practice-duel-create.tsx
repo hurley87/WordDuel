@@ -83,7 +83,7 @@ export function PracticeDuelCreate() {
       size="lg"
     >
       {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-      Start Practice
+      Create Practice
     </Button>
   );
 }

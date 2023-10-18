@@ -91,7 +91,7 @@ export function NewDuel() {
       </div>
       <Button size="lg" disabled={isLoading} onClick={createDuel}>
         {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-        Start Game ({amount.toString()} ETH)
+        Create Game ({amount.toString()} ETH)
       </Button>
     </div>
   );

@@ -59,7 +59,7 @@ export function TransferForm() {
   }
 
   return (
-    <Card className="rounded-none">
+    <Card>
       <CardHeader>
         <CardDescription className="whitespace-pre">
           Transfer ETH to another wallet

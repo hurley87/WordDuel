@@ -52,7 +52,7 @@ export const DuelFinishedFree = ({ duel, yourTurn }) => {
   if (!winnerExists) message = `Ended in a tie`;
 
   return (
-    <div className="flex flex-col gap-2 text-center">
+    <div className="flex flex-col gap-2 text-center pt-10">
       <h1 className="font-black uppercase">{secret}</h1>
       <p className="font-light pb-2">{message}</p>
       <div className="flex flex-col gap-4">

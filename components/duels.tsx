@@ -4,25 +4,14 @@ import '@/styles/globals.css';
 import { useRead } from '@/hooks/useRead';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useFreeRead } from '@/hooks/useFreeRead';
-import { DuelFree } from './duel-free';
-import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { PracticeDuelCreate } from './practice-duel-create';
 import { DuelCreate } from './duel-create';
-import { Duel } from './duel';
+import DuelsList from './duels-list';
 
 function Duels() {
-  const { wallet } = usePrivyWagmi();
   const { data: duels } = useRead({
-    functionName: 'getCreatedDuels',
+    functionName: 'getDuels',
     args: [],
-  });
-  const { data: myduels } = useRead({
-    functionName: 'getMyDuels',
-    args: [wallet?.address],
-  });
-  const { data: myfreeduels } = useFreeRead({
-    functionName: 'getMyDuels',
-    args: [wallet?.address],
   });
   const { data: freeduels } = useFreeRead({
     functionName: 'getDuels',
@@ -45,19 +34,7 @@ function Duels() {
             <PracticeDuelCreate />
           </div>
           <div className="flex flex-col gap-0 pt-20 pb-32 h-screen overflow-auto">
-            <div className="flex flex-col gap-0">
-              {myfreeduels
-                ?.reverse()
-                .map((duelId) => (
-                  <DuelFree key={parseInt(duelId)} duelId={duelId} />
-                ))}
-              {freeduels
-                ?.filter((duel: any) => !myfreeduels?.includes(duel.id))
-                ?.reverse()
-                .map((duel: any) => (
-                  <DuelFree key={parseInt(duel.id)} duelId={duel.id} />
-                ))}
-            </div>
+            {freeduels?.length > 0 && <DuelsList duelslist={freeduels} route="practice" />}
           </div>
         </TabsContent>
         <TabsContent value="ranked">
@@ -65,15 +42,7 @@ function Duels() {
             <DuelCreate />
           </div>
           <div className="flex flex-col gap-0 pt-20 pb-32 h-screen overflow-auto max-w-md mx-auto">
-            {myduels
-              ?.reverse()
-              .map((duelId) => <Duel key={parseInt(duelId)} duelId={duelId} />)}
-            {duels
-              ?.filter((duel: any) => !myduels?.includes(duel.id))
-              ?.reverse()
-              .map((duel: any) => (
-                <Duel key={parseInt(duel.id)} duelId={duel.id} />
-              ))}
+            {duels?.length > 0 && <DuelsList duelslist={duels} route="duel" />}
           </div>
         </TabsContent>
       </Tabs>

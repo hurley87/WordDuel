@@ -19,7 +19,7 @@ function ProfileActiveWallet() {
   }
 
   return (
-    <Card className="rounded-none">
+    <Card>
       <CardHeader>
         <CardDescription>
           <p>Your active wallet address</p>

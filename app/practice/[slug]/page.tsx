@@ -46,7 +46,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   if (!ready) return <Loading />;
 
   return (
-    <div className="mx-auto flex flex-col justify-center space-y-0 max-w-md pt-20">
+    <div className="mx-auto flex flex-col justify-center space-y-0 max-w-md  pt-11">
       {isCreated && isChallenger && <DuelCreatedChallengerFree duel={duel} />}
       {isCreated && !isChallenger && <DuelCreatedOpponentFree duel={duel} />}
       {isCancelled && <DuelCancelled />}

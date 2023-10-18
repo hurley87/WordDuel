@@ -22,7 +22,7 @@ export function DuelCreate() {
           size="lg"
           className="w-full rounded-none border-b border-background"
         >
-          Start Game
+          Create Game
         </Button>
       </DialogTrigger>
       <DialogContent>

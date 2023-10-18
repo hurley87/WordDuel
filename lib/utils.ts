@@ -19,3 +19,17 @@ export const DUEL_STATE = ['Created', 'Accepted', 'Finished', 'Cancelled'];
 export const formatAddress = (address: string) => {
   return address?.slice(0, 4) + '...' + address?.slice(-4);
 };
+
+export async function getTwitterUsername(address: string) {
+  const res = await fetch('/api/twitter', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      address,
+    }),
+  });
+  const data = await res.json();
+  return data.username;
+}

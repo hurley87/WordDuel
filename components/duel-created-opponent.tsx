@@ -6,11 +6,36 @@ import { toast } from './ui/use-toast';
 import va from '@vercel/analytics';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { parseEther } from 'viem';
+import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
+import { useRead } from '@/hooks/useRead';
+import { useEffect, useState } from 'react';
+import { getTwitterUsername } from '@/lib/utils';
 
 export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   const { wallet } = usePrivyWagmi();
   const { write, isLoading } = useWrite('acceptDuel');
   const amount = (Number(duel.moveAmount) / 10 ** 18).toString();
+  const [name, setName] = useState('');
+  const { data: winsCount } = useRead({
+    functionName: 'getWinsCount',
+    args: [duel.challenger],
+  });
+  const { data: lossesCount } = useRead({
+    functionName: 'getLossesCount',
+    args: [duel.challenger],
+  });
+  const { data: drawsCount } = useRead({
+    functionName: 'getDrawsCount',
+    args: [duel.challenger],
+  });
+
+  useEffect(() => {
+    async function getName() {
+      const twitterName = await getTwitterUsername(duel.challenger);
+      setName(twitterName);
+    }
+    getName();
+  }, []);
 
   useSubscribe({
     eventName: 'DuelAccepted',
@@ -47,16 +72,29 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 max-w-sm mx-auto">
-      <Button
-        disabled={isLoading}
-        onClick={handleAcceptDuel}
-        className="w-full"
-        size="lg"
-      >
-        {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-        Join Game ({amount} ETH)
-      </Button>
+    <div className="flex flex-col gap-0 max-w-lg mx-auto">
+      <Card>
+        <CardHeader>
+          <CardDescription>
+            Join this practice and compete in a free game of wordle against{' '}
+            {name} ({winsCount?.toString() || 0}-{lossesCount?.toString() || 0}-
+            {drawsCount?.toString() || 0}).
+          </CardDescription>
+        </CardHeader>
+        <CardFooter>
+          <Button
+            disabled={isLoading}
+            onClick={handleAcceptDuel}
+            className="w-full"
+            size="lg"
+          >
+            {isLoading && (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            Join Game ({amount} ETH)
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

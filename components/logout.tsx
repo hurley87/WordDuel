@@ -15,7 +15,7 @@ function Logout() {
   }
 
   return (
-    <Card className="rounded-none">
+    <Card>
       <CardHeader>
         <CardDescription className="whitespace-pre">
           Logout of your account

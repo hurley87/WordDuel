@@ -206,7 +206,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
   }
 
   return (
-    <div className="flex flex-col gap-8 w-full max-w-lg text-center">
+    <div className="flex flex-col gap-8 w-full max-w-lg text-center pt-10">
       <Grid data={grid} />
       <Keyboard
         usedKeys={usedKeys}

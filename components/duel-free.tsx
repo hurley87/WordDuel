@@ -11,7 +11,6 @@ export const DuelFree = ({ duelId }: { duelId: any }) => {
 
   if (!duel) return null;
   if (DUEL_STATE[duel?.state] === 'Cancelled') return null;
-  if (DUEL_STATE[duel?.state] === 'Finished') return null;
 
   return (
     <div className={`flex w-full`}>

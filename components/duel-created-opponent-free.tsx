@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 import { Icons } from './icons';
 import { useFreeSubscribe } from '@/hooks/useFreeSubscribe';
@@ -8,6 +8,9 @@ import va from '@vercel/analytics';
 import { useWallets } from '@privy-io/react-auth';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { baseGoerli, base } from 'wagmi/chains';
+import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
+import { getTwitterUsername } from '@/lib/utils';
+import { useFreeRead } from '@/hooks/useFreeRead';
 
 export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
   const { wallet } = usePrivyWagmi();
@@ -15,8 +18,28 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
   const embeddedWallet = wallets.find(
     (wallet) => wallet.walletClientType === 'privy'
   );
-
+  const [name, setName] = useState('');
   const [isAccepting, setIsAccepting] = useState<boolean>(false);
+  const { data: winsCount } = useFreeRead({
+    functionName: 'getWinsCount',
+    args: [duel.challenger],
+  });
+  const { data: lossesCount } = useFreeRead({
+    functionName: 'getLossesCount',
+    args: [duel.challenger],
+  });
+  const { data: drawsCount } = useFreeRead({
+    functionName: 'getDrawsCount',
+    args: [duel.challenger],
+  });
+
+  useEffect(() => {
+    async function getName() {
+      const twitterName = await getTwitterUsername(duel.challenger);
+      setName(twitterName);
+    }
+    getName();
+  }, []);
 
   useFreeSubscribe({
     eventName: 'DuelAccepted',
@@ -57,16 +80,28 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 max-w-sm mx-auto">
-      <Button
-        disabled={isAccepting}
-        onClick={handleAcceptDuel}
-        className="w-full"
-        size="lg"
-      >
-        {isAccepting && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-        Join Practice
-      </Button>
+    <div className="flex flex-col gap-0 max-w-lg mx-auto">
+      <Card>
+        <CardHeader>
+          <CardDescription>
+            Join this practice and compete in a free game of wordle against{' '}
+            {name} ({winsCount.toString()}-{lossesCount?.toString() || 0}-
+            {drawsCount?.toString() || 0}).
+          </CardDescription>
+        </CardHeader>
+        <CardFooter>
+          <Button
+            disabled={isAccepting}
+            onClick={handleAcceptDuel}
+            className="w-full"
+          >
+            {isAccepting && (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            Join Practice
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

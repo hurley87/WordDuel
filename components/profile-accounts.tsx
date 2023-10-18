@@ -52,7 +52,7 @@ function ProfileAccounts() {
   }
 
   return (
-    <Card className="rounded-none">
+    <Card>
       <CardHeader>
         <CardDescription>Your wallets</CardDescription>
       </CardHeader>
