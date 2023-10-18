@@ -21,9 +21,9 @@ function Header() {
     <header className="border-b bg-background fixed top-0 w-full">
       <div className="flex h-11 items-center justify-between p-2 lg:px-20">
         <div className="flex gap-6 md:gap-10">
-          <Link href="/" className="flex items-center space-x-2">
-            <Icons.swords className="h-5 w-5" />
-            <span className="font-black">WordDuel</span>
+          <Link href="/" className="flex items-center space-x-1">
+            <Icons.swords className="h-4 w-4" />
+            <span className="font-bold">WordDuel</span>
           </Link>
         </div>
         <Link className="cursor-pointer" href="/profile">
