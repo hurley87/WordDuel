@@ -22,7 +22,9 @@ export const Duel = ({ duel, route }: { duel: any; route: string }) => {
   if (wallet?.address === duel.challenger)
     message = `#${duel.id.toString()}: view your ${route}`;
   if (DUEL_STATE[duel?.state] === 'Cancelled')
-    message = `#${duel.id.toString()}: cancelled`;
+    message = `#${duel.id.toString()}: cancelled by ${
+      duel.challengerTwitter || formatAddress(duel.challenger)
+    }`;
   return (
     <Link href={`/${route}/${duel.id.toString()}`} className="w-full">
       <div className="flex justify-between rounded-none px-2 py-4 transition-all border-b border-accent hover:bg-accent hover:text-accent-foreground w-full">
