@@ -16,7 +16,7 @@ function ProfileLinkTwitter() {
     <Card>
       <CardHeader>
         <CardDescription>
-          <p>Twitter</p>
+          <p>Connect your X account</p>
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -32,7 +32,7 @@ function ProfileLinkTwitter() {
           className="w-full"
           variant="outline"
         >
-          {!!user?.twitter ? 'Unlink Twitter' : 'Link Twitter'}
+          {!!user?.twitter ? 'Disconnect' : 'Connect'}
         </Button>
       </CardFooter>
     </Card>

@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Icons } from './icons';
 import { usePrivy } from '@privy-io/react-auth';
+import { useRouter } from 'next/navigation';
 
 export const metadata = {
   title: 'Create an account',
@@ -9,6 +10,12 @@ export const metadata = {
 
 export default function GetStarted() {
   const { login } = usePrivy();
+  const router = useRouter();
+
+  async function handleLogin() {
+    login();
+    router.push('/profile');
+  }
 
   return (
     <div className="flex flex-col space-y-2 text-center pt-20">
@@ -17,7 +24,7 @@ export default function GetStarted() {
       <p className="text-muted-foreground pb-2">
         Play Wordle against your friends for ETH.
       </p>
-      <Button className="mx-auto px-20 relative block" onClick={login}>
+      <Button className="mx-auto px-20 relative block" onClick={handleLogin}>
         Get Started
       </Button>
     </div>
