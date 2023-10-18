@@ -22,7 +22,7 @@ function ProfileActiveWallet() {
     <Card>
       <CardHeader>
         <CardDescription>
-          <p>Your active wallet address</p>
+          <p>Active wallet</p>
         </CardDescription>
       </CardHeader>
       <CardContent>

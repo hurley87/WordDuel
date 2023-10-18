@@ -13,9 +13,7 @@ export const DuelTwitterShare = ({
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardDescription>
-          Invite someone to join your game. Post something on X.
-        </CardDescription>
+        <CardDescription>Find someone on X.</CardDescription>
       </CardHeader>
       <CardFooter>
         <Button

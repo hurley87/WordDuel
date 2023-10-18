@@ -23,10 +23,10 @@ function Duels() {
       <Tabs defaultValue="practice" className="w-full">
         <TabsList className="fixed top-11 left-0 right-0 mx-auto max-w-md rounded-none">
           <TabsTrigger className="w-full" value="practice">
-            Practice for Free
+            Practice for Free 🐔
           </TabsTrigger>
           <TabsTrigger className="w-full" value="ranked">
-            Play for ETH
+            Play for ETH 🤑
           </TabsTrigger>
         </TabsList>
         <TabsContent className="max-w-md mx-auto" value="practice">

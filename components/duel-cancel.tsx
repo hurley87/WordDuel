@@ -3,7 +3,6 @@
 import { useWrite } from '@/hooks/useWrite';
 import { Button } from './ui/button';
 import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
-import { useRouter } from 'next/navigation';
 import { Icons } from './icons';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useState } from 'react';
@@ -16,7 +15,7 @@ export const DuelCancel = ({ duelId }: { duelId: string }) => {
   return (
     <Card>
       <CardHeader>
-        <CardDescription>Cancel this game and get reimbursed.</CardDescription>
+        <CardDescription>Cancel and get reimbursed.</CardDescription>
       </CardHeader>
       <CardFooter>
         <Button

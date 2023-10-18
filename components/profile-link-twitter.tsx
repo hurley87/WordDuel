@@ -16,7 +16,7 @@ function ProfileLinkTwitter() {
     <Card>
       <CardHeader>
         <CardDescription>
-          <p>Your Twitter account</p>
+          <p>Twitter</p>
         </CardDescription>
       </CardHeader>
       <CardContent>

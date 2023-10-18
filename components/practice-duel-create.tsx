@@ -75,15 +75,16 @@ export function PracticeDuelCreate() {
   }
 
   return (
-    <Button
-      className="w-full rounded-none border-b border-background"
-      onClick={handleCreateDuel}
-      disabled={isLoading}
-      variant="secondary"
-      size="lg"
-    >
-      {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-      Create Practice
-    </Button>
+    <div className="w-full p-2 bg-slate-800">
+      <Button
+        className="w-full border-b border-background"
+        onClick={handleCreateDuel}
+        disabled={isLoading}
+        size="lg"
+      >
+        {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+        Create Practice
+      </Button>
+    </div>
   );
 }

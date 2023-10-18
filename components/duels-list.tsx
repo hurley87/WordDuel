@@ -3,12 +3,12 @@
 import '@/styles/globals.css';
 import { Duel } from './duel';
 import { useEffect, useState } from 'react';
-import { Button } from './ui/button';
+// import { Button } from './ui/button';
 import { getTwitterUsername } from '@/lib/utils';
 
 function DuelsList({ duelslist, route }) {
   const [duels, setDuels] = useState([]);
-  const [duelType, setDuelType] = useState('Open');
+  // const [duelType, setDuelType] = useState('Open');
 
   useEffect(() => {
     duelslist.map(async (duel) => {
@@ -27,7 +27,7 @@ function DuelsList({ duelslist, route }) {
 
   return (
     <div className="flex flex-col gap-0">
-      <div className="border-b border-accent flex gap-2 w-full items-center justify-center pb-2 px-2">
+      {/* <div className="border-b border-accent flex gap-2 w-full items-center justify-center pb-2 px-2">
         <Button
           onClick={() => setDuelType('Open')}
           size="sm"
@@ -52,8 +52,8 @@ function DuelsList({ duelslist, route }) {
         >
           Over
         </Button>
-      </div>
-      {duelType === 'Open' &&
+      </div> */}
+      {/* {duelType === 'Open' &&
         duels
           ?.filter((duel: any) => duel.state === 0)
           .reverse()
@@ -73,7 +73,17 @@ function DuelsList({ duelslist, route }) {
           .reverse()
           .map((duel: any) => (
             <Duel key={parseInt(duel.id)} route={route} duel={duel} />
-          ))}
+          ))} */}
+      {duels
+        // ?.filter((duel: any) => duel.state === 0)
+        .map((duel: any) => {
+          duel.id = parseInt(duel.id.toString());
+          return duel;
+        })
+        .sort(({ id: a }, { id: b }) => b - a)
+        .map((duel: any) => (
+          <Duel key={parseInt(duel.id)} route={route} duel={duel} />
+        ))}
     </div>
   );
 }

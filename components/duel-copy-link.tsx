@@ -23,7 +23,11 @@ export const DuelCopyLink = ({
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardDescription>Or share this link.</CardDescription>
+        <CardDescription>
+          {' '}
+          This is {path} #{duelId.toString()}. Invite someone to play using this
+          link.
+        </CardDescription>
       </CardHeader>
       <CardFooter>
         <Button
