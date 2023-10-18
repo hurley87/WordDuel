@@ -59,7 +59,7 @@ export default function Page({ params }: { params: { slug: string } }) {
   return (
     <div className="mx-auto flex flex-col justify-center space-y-0 max-w-md pt-11">
       {tooPoor && (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 pt-10">
           <div className="mx-auto">
             <Badge variant="destructive">
               You need to deposit {(Number(duel.moveAmount) / 10 ** 18) * 5} ETH
@@ -75,7 +75,9 @@ export default function Page({ params }: { params: { slug: string } }) {
         <DuelCreatedOpponent duel={duel} />
       )}
       {user && isCancelled && <DuelCancelled />}
-      {user && isFinished && <DuelFinished duel={duel} yourTurn={yourTurn} />}
+      {user && isFinished && !tooPoor && (
+        <DuelFinished duel={duel} yourTurn={yourTurn} />
+      )}
       {user && isAccepted && !tooPoor && (
         <DuelGamePlay duel={duel} yourTurn={yourTurn} />
       )}

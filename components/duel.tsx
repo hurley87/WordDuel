@@ -5,10 +5,15 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 
 export const Duel = ({ duel, route }: { duel: any; route: string }) => {
   const { wallet } = usePrivyWagmi();
+
   let message = `#${duel.id.toString()}: ${
     duel.challengerTwitter || formatAddress(duel.challenger)
   } ⚔️ ${duel.challengerOpponent || formatAddress(duel.opponent)}`;
-  if (DUEL_STATE[duel?.state] === 'Created')
+  if (DUEL_STATE[duel?.state] === 'Created' && route === 'duel')
+    message = `#${duel.id.toString()}: ${route}  against ${
+      duel.challengerTwitter || formatAddress(duel.challenger)
+    } ${`(${Number(duel.moveAmount) / 10 ** 18} ETH)`}`;
+  if (DUEL_STATE[duel?.state] === 'Created' && route !== 'duel')
     message = `#${duel.id.toString()}: ${route}  against ${
       duel.challengerTwitter || formatAddress(duel.challenger)
     }`;
@@ -21,7 +26,7 @@ export const Duel = ({ duel, route }: { duel: any; route: string }) => {
   return (
     <Link href={`/${route}/${duel.id.toString()}`} className="w-full">
       <div className="flex justify-between rounded-none px-2 py-4 transition-all border-b border-accent hover:bg-accent hover:text-accent-foreground w-full">
-        <p className="font-bold">{message}</p>
+        <p className="font-medium text-sm">{message}</p>
         <p className="font-bold flex flex-col items-center">
           <Icons.chevronRight />
         </p>
