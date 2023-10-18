@@ -64,7 +64,7 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
       let provider = await wallets[0]?.getEthersProvider();
       wallets[0]?.switchChain(chainId);
       if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
-      await acceptDuel(provider, duel.id.toString());
+      await acceptDuel(provider, duel?.id?.toString());
 
       va.track('AcceptPractice', {
         address: wallet?.address as `0x${string}`,
@@ -85,7 +85,7 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
         <CardHeader>
           <CardDescription>
             Join this practice and compete in a free game of wordle against{' '}
-            {name} ({winsCount.toString()}-{lossesCount?.toString() || 0}-
+            {name} ({winsCount?.toString() || 0}-{lossesCount?.toString() || 0}-
             {drawsCount?.toString() || 0}).
           </CardDescription>
         </CardHeader>

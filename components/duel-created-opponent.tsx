@@ -53,7 +53,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   async function handleAcceptDuel() {
     try {
       write({
-        args: [duel.id.toString()],
+        args: [duel?.id?.toString()],
         from: wallet?.address as `0x${string}`,
         value: parseEther(amount.toString()),
       });
