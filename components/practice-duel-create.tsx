@@ -12,10 +12,12 @@ import { createDuel } from '@/lib/gelato';
 import va from '@vercel/analytics';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useEffect, useState } from 'react';
-import { useWallets } from '@privy-io/react-auth';
+import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { baseGoerli, base } from 'wagmi/chains';
+import GetStarted from './get-started';
 
 export function PracticeDuelCreate() {
+  const { user } = usePrivy();
   const { wallet } = usePrivyWagmi();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -76,15 +78,19 @@ export function PracticeDuelCreate() {
 
   return (
     <div className="w-full p-2 bg-slate-800">
-      <Button
-        className="w-full border-b border-background"
-        onClick={handleCreateDuel}
-        disabled={isLoading}
-        size="lg"
-      >
-        {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-        Create Practice
-      </Button>
+      {user ? (
+        <Button
+          className="w-full border-b border-background"
+          onClick={handleCreateDuel}
+          disabled={isLoading}
+          size="lg"
+        >
+          {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+          Create Practice
+        </Button>
+      ) : (
+        <GetStarted />
+      )}
     </div>
   );
 }
