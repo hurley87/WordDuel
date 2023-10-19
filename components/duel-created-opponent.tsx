@@ -8,14 +8,12 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { parseEther } from 'viem';
 import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
 import { useRead } from '@/hooks/useRead';
-import { useEffect, useState } from 'react';
-import { getTwitterUsername } from '@/lib/utils';
+import { formatAddress } from '@/lib/utils';
 
 export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   const { wallet } = usePrivyWagmi();
   const { write, isLoading } = useWrite('acceptDuel');
   const amount = (Number(duel.moveAmount) / 10 ** 18).toString();
-  const [name, setName] = useState('');
   const { data: winsCount } = useRead({
     functionName: 'getWinsCount',
     args: [duel.challenger],
@@ -28,14 +26,6 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
     functionName: 'getDrawsCount',
     args: [duel.challenger],
   });
-
-  useEffect(() => {
-    async function getName() {
-      const twitterName = await getTwitterUsername(duel.challenger);
-      setName(twitterName);
-    }
-    getName();
-  }, []);
 
   useSubscribe({
     eventName: 'DuelAccepted',
@@ -77,8 +67,8 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
         <CardHeader>
           <CardDescription>
             Join this practice and compete in a free game of wordle against{' '}
-            {name} ({winsCount?.toString() || 0}-{lossesCount?.toString() || 0}-
-            {drawsCount?.toString() || 0}).
+            {formatAddress(duel.challenger)} ({winsCount?.toString() || 0}-
+            {lossesCount?.toString() || 0}-{drawsCount?.toString() || 0}).
           </CardDescription>
         </CardHeader>
         <CardFooter>

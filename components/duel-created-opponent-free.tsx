@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from './ui/button';
 import { Icons } from './icons';
 import { useFreeSubscribe } from '@/hooks/useFreeSubscribe';
@@ -9,7 +9,7 @@ import { useWallets } from '@privy-io/react-auth';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { baseGoerli, base } from 'wagmi/chains';
 import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
-import { getTwitterUsername } from '@/lib/utils';
+import { formatAddress } from '@/lib/utils';
 import { useFreeRead } from '@/hooks/useFreeRead';
 
 export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
@@ -18,7 +18,6 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
   const embeddedWallet = wallets.find(
     (wallet) => wallet.walletClientType === 'privy'
   );
-  const [name, setName] = useState('');
   const [isAccepting, setIsAccepting] = useState<boolean>(false);
   const { data: winsCount } = useFreeRead({
     functionName: 'getWinsCount',
@@ -32,14 +31,6 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
     functionName: 'getDrawsCount',
     args: [duel.challenger],
   });
-
-  useEffect(() => {
-    async function getName() {
-      const twitterName = await getTwitterUsername(duel.challenger);
-      setName(twitterName);
-    }
-    getName();
-  }, []);
 
   useFreeSubscribe({
     eventName: 'DuelAccepted',
@@ -85,8 +76,8 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
         <CardHeader>
           <CardDescription>
             Join this practice and compete in a free game of wordle against{' '}
-            {name} ({winsCount?.toString() || 0}-{lossesCount?.toString() || 0}-
-            {drawsCount?.toString() || 0}).
+            {formatAddress(duel.challenger)} ({winsCount?.toString() || 0}-
+            {lossesCount?.toString() || 0}-{drawsCount?.toString() || 0}).
           </CardDescription>
         </CardHeader>
         <CardFooter>
