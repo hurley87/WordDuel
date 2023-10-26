@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
     await getMessaging().send(message);
   } catch (e) {
-    console.error('sendFCMMessage error', e);
+    console.log('sendFCMMessage error', e);
   }
 
   return NextResponse.json({ message: 'success' });
