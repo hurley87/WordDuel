@@ -3,8 +3,8 @@
 import React, { useEffect } from 'react';
 import { detect } from 'detect-browser';
 import { MdOutlineIosShare } from 'react-icons/md';
-import { isSupported } from 'firebase/messaging';
-import { Button } from './ui/button';
+// import { isSupported } from 'firebase/messaging';
+// import { Button } from './ui/button';
 
 function DownloadDialog() {
   const [isReady, setIsReady] = React.useState(false);
