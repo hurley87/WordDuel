@@ -82,7 +82,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </Privy>
           <Analytics />
           <Toaster />
-          <DownloadDialog />
+          {/* <DownloadDialog /> */}
         </ThemeProvider>
       </body>
     </html>

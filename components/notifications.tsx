@@ -99,11 +99,12 @@ export default function Notifications() {
             <MdOutlineIosShare className="w-10 h-10 mx-auto" />
           </h1>
           <h1 className="text-center text-lg font-bold">Setup Notifications</h1>
-          <p className="text-sm">All WordDuel to send you notifications.</p>
+          <p className="text-sm">Allow WordDuel to send you notifications.</p>
           <Button onClick={() => requestPermission()}>
             Request Permission
           </Button>
           <p className="overflow-x-scroll">{token}</p>
+          <p></p>
         </div>
       )}
     </div>
