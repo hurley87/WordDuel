@@ -16,6 +16,7 @@ function DownloadDialog() {
     console.log(notificationsAllowed);
     setIsPWA(isPWA);
     if (browser) {
+      console.log(browser);
       if (parseInt(browser?.version || '0') >= 16) {
         setIsReady(true);
       }
