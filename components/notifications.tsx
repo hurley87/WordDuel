@@ -18,6 +18,7 @@ export default function Notifications() {
   const address = wallet?.address as string;
   const [tokenExists, setTokenExists] = useState(true);
   const [token, setToken] = useState('');
+  const [isFCMSupported, setIOsFCMSupported] = useState(true);
 
   console.log(messages);
 
@@ -55,6 +56,7 @@ export default function Notifications() {
         console.log('Notification permission granted.');
         const isFCMSupported = await isSupported();
         console.log(isFCMSupported);
+        setIOsFCMSupported(isFCMSupported);
         if (!isFCMSupported) return;
         const fcmToken = await getToken(messaging(), {
           vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
@@ -99,12 +101,12 @@ export default function Notifications() {
             <MdOutlineIosShare className="w-10 h-10 mx-auto" />
           </h1>
           <h1 className="text-center text-lg font-bold">Setup Notifications</h1>
-          <p className="text-sm">Allow WordDuel to send you notifications.</p>
+          <p className="text-sm">Allow WordDuel to send younotifications.</p>
           <Button onClick={() => requestPermission()}>
             Request Permission
           </Button>
           <p className="overflow-x-scroll">{token}</p>
-          <p></p>
+          <p className="overflow-x-scroll">{isFCMSupported ? 'yes' : 'no'}</p>
         </div>
       )}
     </div>
