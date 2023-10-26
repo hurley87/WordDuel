@@ -1,19 +1,11 @@
 import { useEffect, useState } from 'react';
-import useFCMToken from './useFCMToken';
 import { messaging } from '@/lib/firebase';
-import { MessagePayload, onMessage, isSupported } from 'firebase/messaging';
+import { MessagePayload, onMessage } from 'firebase/messaging';
 
 const useFCM = () => {
-  const fcmToken = useFCMToken();
   const [messages, setMessages] = useState<MessagePayload[]>([]);
 
   useEffect(() => {
-    async function checkSupported() {
-      const supported = await isSupported();
-      console.log('isSupported');
-      console.log(supported);
-    }
-    checkSupported();
     if ('serviceWorker' in navigator) {
       const fcmmessaging = messaging();
 
@@ -22,9 +14,9 @@ const useFCM = () => {
       });
       return () => unsubscribe();
     }
-  }, [fcmToken]);
+  }, []);
 
-  return { fcmToken, messages };
+  return { messages };
 };
 
 export default useFCM;

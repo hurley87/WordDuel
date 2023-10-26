@@ -24,37 +24,7 @@ function DownloadDialog() {
       }
     }
   }, []);
-
-  function requestPermission() {
-    console.log('Requesting permission...');
-    Notification.requestPermission().then((permission) => {
-      if (permission === 'granted') {
-        console.log('Notification permission granted.');
-        // TODO(developer): Retrieve a registration token for use with FCM.
-        // In many cases once an app has been granted notification permission,
-        // it should update its UI reflecting this.
-      } else {
-        console.log('Unable to get permission to notify.');
-      }
-    });
-  }
-
-  return isPWA ? (
-    !isSupported ? (
-      <div className="block md:hidden fixed top-0 bottom inset-0 z-50 bg-white/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 dark:bg-slate-950/80">
-        <div className=" py-20 text-center block md:hidden fixed left-4 rounded-md right-4 top-32 grid gap-4 border border-slate-200 bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg md:w-full dark:border-slate-800 dark:bg-slate-950">
-          <h1>
-            <MdOutlineIosShare className="w-10 h-10 mx-auto" />
-          </h1>
-          <h1 className="text-center text-lg font-bold">Setup Notifications</h1>
-          <p className="text-sm">All WordDuel to send you notifications.</p>
-          <Button onClick={() => requestPermission()}>
-            Request Permission
-          </Button>
-        </div>
-      </div>
-    ) : null
-  ) : isReady ? (
+  return isPWA ? null : isReady ? (
     <div className="block md:hidden fixed top-0 bottom inset-0 z-50 bg-white/80 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 dark:bg-slate-950/80">
       <div className=" py-20 text-center block md:hidden fixed left-4 rounded-md right-4 top-32 grid gap-4 border border-slate-200 bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg md:w-full dark:border-slate-800 dark:bg-slate-950">
         <h1>
