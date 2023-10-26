@@ -18,8 +18,9 @@ export default function Notifications() {
   const address = wallet?.address as string;
   const [tokenExists, setTokenExists] = useState(true);
   const [token, setToken] = useState('');
-  const [isFCMSupported, setIOsFCMSupported] = useState(true);
+  const [isFCMSupported, setIOsFCMSupported] = useState(false);
   const [fcmToken, setFcmToken] = useState('');
+  const [permis, setPermis] = useState('');
 
   console.log(messages);
 
@@ -53,6 +54,7 @@ export default function Notifications() {
   async function requestPermission() {
     console.log('Requesting permission...');
     Notification.requestPermission().then(async (permission) => {
+      setPermis(permission);
       if (permission === 'granted') {
         console.log('Notification permission granted.');
         const isFCMSupported = await isSupported();
@@ -112,6 +114,7 @@ export default function Notifications() {
           <p className="overflow-x-scroll">{token}</p>
           <p className="overflow-x-scroll">{isFCMSupported ? 'yes' : 'no'}</p>
           <p className="overflow-x-scroll">{fcmToken}</p>
+          <p className="overflow-x-scroll">{permis}</p>
         </div>
       )}
     </div>
