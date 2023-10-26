@@ -19,6 +19,7 @@ export default function Notifications() {
   const [tokenExists, setTokenExists] = useState(true);
   const [token, setToken] = useState('');
   const [isFCMSupported, setIOsFCMSupported] = useState(true);
+  const [fcmToken, setFcmToken] = useState('');
 
   console.log(messages);
 
@@ -61,6 +62,8 @@ export default function Notifications() {
         const fcmToken = await getToken(messaging(), {
           vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
         });
+
+        setFcmToken(fcmToken);
 
         if (fcmToken && wallet?.address)
           await createSub(
@@ -105,8 +108,10 @@ export default function Notifications() {
           <Button onClick={() => requestPermission()}>
             Request Permission
           </Button>
+          <p className="overflow-x-scroll">{address}</p>
           <p className="overflow-x-scroll">{token}</p>
           <p className="overflow-x-scroll">{isFCMSupported ? 'yes' : 'no'}</p>
+          <p className="overflow-x-scroll">{fcmToken}</p>
         </div>
       )}
     </div>
