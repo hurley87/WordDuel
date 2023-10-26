@@ -19,6 +19,7 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useWallets } from '@privy-io/react-auth';
 import { formatAddress } from '@/lib/utils';
 import { baseGoerli, base } from 'wagmi/chains';
+import { sendNotification } from '@/lib/notification';
 
 export const DuelGamePlayFree = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
@@ -32,6 +33,7 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
   const embeddedWallet = wallets.find(
     (wallet) => wallet.walletClientType === 'privy'
   );
+  const address = wallet?.address as `0x${string}`;
 
   const setGame = useCallback(
     async (targetWord, duelWords) => {
@@ -216,7 +218,7 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
         description: `All the glory is yours!`,
       });
       va.track('PracticeWin', {
-        address: wallet?.address as `0x${string}`,
+        address,
       });
     } else {
       if (isLastRow) {
@@ -226,7 +228,7 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
           variant: 'destructive',
         });
         va.track('PracticeLoss', {
-          address: wallet?.address as `0x${string}`,
+          address,
         });
       } else {
         toast({
@@ -246,10 +248,25 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
     wallets[0]?.switchChain(chainId);
     if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
 
+    const notificaitonAddress =
+      duel.challenger === address ? duel.opponent : duel.challenger;
+
+    await sendNotification(
+      notificaitonAddress,
+      {
+        title: `Practise #${duel.id.toString()}`,
+        body: `It's your turn.`,
+      },
+      {
+        duelId: duel.id.toString(),
+        duelType: 'practice',
+      }
+    );
+
     await makeMove(provider, duel.id.toString(), word);
 
     va.track('PracticeMove', {
-      address: wallet?.address as `0x${string}`,
+      address,
     });
 
     return {

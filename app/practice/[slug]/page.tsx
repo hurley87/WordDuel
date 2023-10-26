@@ -12,6 +12,11 @@ import { DuelCreatedOpponentFree } from '@/components/duel-created-opponent-free
 import { DuelFinishedFree } from '@/components/duel-finished-free';
 import { DuelGamePlayFree } from '@/components/duel-gameplay-free';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/button';
+import { Icons } from '@/components/icons';
+import Layout from '@/components/layout';
 
 export default function Page({ params }: { params: { slug: string } }) {
   const { wallet, ready } = usePrivyWagmi();
@@ -41,21 +46,45 @@ export default function Page({ params }: { params: { slug: string } }) {
     }
   }, [isLoading, duel, router]);
 
-  if (!wallet) return <GetStarted />;
+  if (!wallet)
+    return (
+      <Layout title="Get Started">
+        <GetStarted />
+      </Layout>
+    );
 
-  if (!ready) return <Loading />;
+  if (!ready)
+    return (
+      <Layout title="Get Started">
+        <Loading />
+      </Layout>
+    );
 
   return (
-    <div className="mx-auto flex flex-col justify-center space-y-0 max-w-md  pt-11">
-      {isCreated && isChallenger && <DuelCreatedChallengerFree duel={duel} />}
-      {isCreated && !isChallenger && <DuelCreatedOpponentFree duel={duel} />}
-      {isCancelled && <DuelCancelled />}
-      {wallet && isFinished && (
-        <DuelFinishedFree duel={duel} yourTurn={yourTurn} />
-      )}
-      {wallet && isAccepted && (
-        <DuelGamePlayFree duel={duel} yourTurn={yourTurn} />
-      )}
+    <div className="w-screen flex-col">
+      <Link
+        href="/"
+        className={cn(
+          buttonVariants({ variant: 'ghost' }),
+          'absolute left-4 top-4 md:left-8 md:top-8'
+        )}
+      >
+        <>
+          <Icons.chevronLeft className="mr-2 h-4 w-4" />
+          Back
+        </>
+      </Link>
+      <div className="flex flex-col gap-2 max-w-lg mx-auto px-2 pt-28">
+        {isCreated && isChallenger && <DuelCreatedChallengerFree duel={duel} />}
+        {isCreated && !isChallenger && <DuelCreatedOpponentFree duel={duel} />}
+        {isCancelled && <DuelCancelled />}
+        {wallet && isFinished && (
+          <DuelFinishedFree duel={duel} yourTurn={yourTurn} />
+        )}
+        {wallet && isAccepted && (
+          <DuelGamePlayFree duel={duel} yourTurn={yourTurn} />
+        )}
+      </div>
     </div>
   );
 }

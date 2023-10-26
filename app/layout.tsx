@@ -7,8 +7,9 @@ import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Analytics } from '@/components/analytics';
 import Privy from '@/components/privy';
-import Header from '@/components/header';
 import SwitchNetwork from '@/components/switch-network';
+import Meta from '@/components/meta';
+import DownloadDialog from '@/components/download-dialog';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -61,13 +62,13 @@ export const metadata = {
     shortcut: '/favicon-16x16.png',
     apple: '/apple-touch-icon.png',
   },
-  manifest: `https://www.wordduel.xyz/site.webmanifest`,
+  manifest: `/manifest.json`,
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
+      <Meta />
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased overflow-y-hidden overflow-x-hidden',
@@ -77,13 +78,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Privy>
-            <SwitchNetwork>
-              <Header />
-              <div className="h-screen overflow-y-hidden">{children}</div>
-            </SwitchNetwork>
+            <SwitchNetwork>{children}</SwitchNetwork>
           </Privy>
           <Analytics />
           <Toaster />
+          <DownloadDialog />
         </ThemeProvider>
       </body>
     </html>

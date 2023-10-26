@@ -1,30 +1,64 @@
 'use client';
 
-import Link from 'next/link';
-
-import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
-import { Icons } from '@/components/icons';
 import FAQ from '@/components/faq';
+import Layout from '@/components/layout';
 
 export default function FAQPage() {
   return (
-    <div className="container w-screen flex-col">
-      <Link
-        href="/"
-        className={cn(
-          buttonVariants({ variant: 'ghost' }),
-          'absolute left-4 top-4 md:left-8 md:top-8'
-        )}
-      >
-        <>
-          <Icons.chevronLeft className="mr-2 h-4 w-4" />
-          Back
-        </>
-      </Link>
-      <div className="flex flex-col gap-2 max-w-lg mx-auto px-2 pt-28">
-        <FAQ />
+    <Layout title="How To Play">
+      <FAQ />
+      <div className="text-left p-2">
+        <p>You and your opponent take turns guessing the right word.</p>
+        <ul className="list-disc pt-4 list-inside">
+          <li>Each guess must be a valid 5-letter word.</li>
+          <li>Letter colors will give you hints.</li>
+        </ul>
+        <div className="flex flex-col gap-4 py-4 block">
+          <p className="font-bold">Examples</p>
+          <div className="flex gap-1 text-lg">
+            <div className="border-2 border-green-500 py-1 px-2 bg-green-500 text-white">
+              W
+            </div>
+            <div className="border-2 border-accent py-1 px-2">E</div>
+            <div className="border-2 border-accent py-1 px-2">A</div>
+            <div className="border-2 border-accent py-1 px-2">R</div>
+            <div className="border-2 border-accent py-1 px-2">Y</div>
+          </div>
+          <p>
+            <b>W</b> is in the word and in the correct spot.
+          </p>
+          <div className="flex gap-1 text-lg">
+            <div className="border-2 border-accent py-1 px-2">P</div>
+            <div className="border-2 border-yellow-500 bg-yellow-500 text-white py-1 px-2">
+              I
+            </div>
+            <div className="border-2 border-accent py-1 px-2">L</div>
+            <div className="border-2 border-accent py-1 px-2">L</div>
+            <div className="border-2 border-accent py-1 px-2">S</div>
+          </div>
+          <p>
+            <b>I</b> is in the word but in the wrong spot.
+          </p>
+          <div className="flex gap-1 text-lg">
+            <div className="border-2 border-accent py-1 px-2">V</div>
+            <div className="border-2 border-accent py-1 px-2">A</div>
+            <div className="border-2 border-accent py-1 px-2">G</div>
+            <div className="border-2 border-gray-500 bg-gray-500 text-white py-1 px-2">
+              U
+            </div>
+            <div className="border-2 border-accent py-1 px-2">E</div>
+          </div>
+          <p>
+            <b>U</b> is not in the word in any spot.
+          </p>
+        </div>
+        <p>
+          Whover guesses the right word first wins the the game. If you play for
+          money, each player transfers ETH into a pot for each guess. The winner
+          is transferred all the ETH. If the game is a draw, the pot is split
+          evenly.
+        </p>
       </div>
-    </div>
+    </Layout>
   );
 }

@@ -16,6 +16,7 @@ import { useSubscribe } from '@/hooks/useSubscribe';
 import va from '@vercel/analytics';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { formatAddress } from '@/lib/utils';
+import { sendNotification } from '@/lib/notification';
 
 export const DuelGamePlay = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
@@ -25,6 +26,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
   const [isGameSet, setIsGameSet] = useState(false);
   const { wallet } = usePrivyWagmi();
   const { isLoading, write } = useWrite('makeMove');
+  const address = wallet?.address as `0x${string}`;
 
   const setGame = useCallback(
     async (targetWord, duelWords) => {
@@ -187,14 +189,29 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
 
     if (won) word = duel.targetWord;
 
+    const notificaitonAddress =
+      duel.challenger === address ? duel.opponent : duel.challenger;
+
+    await sendNotification(
+      notificaitonAddress,
+      {
+        title: `Duel #${duel.id.toString()}`,
+        body: `It's your turn.`,
+      },
+      {
+        duelId: duel.id.toString(),
+        duelType: 'duel',
+      }
+    );
+
     await write({
       args: [duel.id.toString(), word],
-      from: wallet?.address as `0x${string}`,
+      from: address,
       value: duel.moveAmount,
     });
 
     va.track('DuelMove', {
-      address: wallet?.address as `0x${string}`,
+      address,
     });
   }
 

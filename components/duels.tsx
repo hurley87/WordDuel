@@ -19,31 +19,31 @@ function Duels() {
   });
 
   return (
-    <div className="mx-auto w-full max-w-md shadow-inner md:shadow-accent">
+    <div className="w-full">
       <Tabs defaultValue="practice" className="w-full">
-        <TabsList className="fixed top-11 left-0 right-0 mx-auto max-w-md rounded-none">
+        <TabsList className="w-full rounded-none">
           <TabsTrigger className="w-full" value="practice">
-            Practice for Free 🐔
+            Practice for Free
           </TabsTrigger>
           <TabsTrigger className="w-full" value="ranked">
-            Play for ETH 🤑
+            Play for ETH
           </TabsTrigger>
         </TabsList>
-        <TabsContent className="max-w-md mx-auto" value="practice">
-          <div className="fixed bottom-0 left-0 right-0 mx-auto max-w-md w-full">
+        <TabsContent value="practice">
+          <div className="mx-auto max-w-lg w-full absolute bottom-14">
             <PracticeDuelCreate />
           </div>
-          <div className="flex flex-col gap-0 pt-20 pb-32 h-screen overflow-auto">
+          <div className="flex flex-col gap-0 h-screen overflow-auto">
             {freeduels?.length > 0 && (
               <DuelsList duelslist={freeduels} route="practice" />
             )}
           </div>
         </TabsContent>
         <TabsContent value="ranked">
-          <div className="fixed bottom-0 left-0 right-0  mx-auto max-w-md w-full">
+          <div className="mx-auto max-w-lg w-full absolute bottom-14">
             <DuelCreate />
           </div>
-          <div className="flex flex-col gap-0 pt-20 pb-32 h-screen overflow-auto max-w-md mx-auto">
+          <div className="h-screen overflow-auto max-w-lg mx-auto">
             {duels?.length > 0 && <DuelsList duelslist={duels} route="duel" />}
           </div>
         </TabsContent>

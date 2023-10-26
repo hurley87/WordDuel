@@ -10,15 +10,20 @@ function SwitchNetwork({ children }) {
   const { wallets } = useWallets();
 
   useEffect(() => {
-    switchToCorrectNetwork();
     async function switchToCorrectNetwork() {
       const embeddedWallet = wallets.find(
         (wallet) => wallet.walletClientType === 'privy'
       );
       const chainId =
         process.env.NODE_ENV === 'production' ? base.id : baseGoerli.id;
-      await embeddedWallet?.switchChain(chainId);
+
+      if (embeddedWallet) {
+        await embeddedWallet?.switchChain(chainId);
+      } else {
+        await wallets[0]?.switchChain(chainId);
+      }
     }
+    switchToCorrectNetwork();
   }, [wallets]);
 
   return <>{children}</>;

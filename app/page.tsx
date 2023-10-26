@@ -1,6 +1,7 @@
 'use client';
 
 import Duels from '@/components/duels';
+import Layout from '@/components/layout';
 import Loading from '@/components/loading';
 import { usePrivy } from '@privy-io/react-auth';
 
@@ -12,8 +13,8 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col max-w-lg mx-auto">
+    <Layout title="WordDuel">
       <Duels />
-    </div>
+    </Layout>
   );
 }
