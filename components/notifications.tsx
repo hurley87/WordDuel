@@ -17,6 +17,7 @@ export default function Notifications() {
   const { wallet } = usePrivyWagmi();
   const address = wallet?.address as string;
   const [tokenExists, setTokenExists] = useState(true);
+  const [token, setToken] = useState('');
 
   console.log(messages);
 
@@ -37,6 +38,8 @@ export default function Notifications() {
           const token = docSnap.data()?.token;
 
           console.log(token);
+
+          setToken(token);
         } else {
           setTokenExists(false);
         }
@@ -51,6 +54,7 @@ export default function Notifications() {
       if (permission === 'granted') {
         console.log('Notification permission granted.');
         const isFCMSupported = await isSupported();
+        console.log(isFCMSupported);
         if (!isFCMSupported) return;
         const fcmToken = await getToken(messaging(), {
           vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
@@ -89,14 +93,19 @@ export default function Notifications() {
           </Link>
         );
       })}
-      <div className=" py-20 text-center rounded-md right-4 top-32 grid gap-4 border border-slate-200 bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg md:w-full dark:border-slate-800 dark:bg-slate-950">
-        <h1>
-          <MdOutlineIosShare className="w-10 h-10 mx-auto" />
-        </h1>
-        <h1 className="text-center text-lg font-bold">Setup Notifications</h1>
-        <p className="text-sm">All WordDuel to send you notifications.</p>
-        <Button onClick={() => requestPermission()}>Request Permission</Button>
-      </div>
+      {messages.length === 0 && (
+        <div className=" py-20 text-center rounded-md right-4 top-32 grid gap-4 border border-slate-200 bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg md:w-full dark:border-slate-800 dark:bg-slate-950">
+          <h1>
+            <MdOutlineIosShare className="w-10 h-10 mx-auto" />
+          </h1>
+          <h1 className="text-center text-lg font-bold">Setup Notifications</h1>
+          <p className="text-sm">All WordDuel to send you notifications.</p>
+          <Button onClick={() => requestPermission()}>
+            Request Permission
+          </Button>
+          <p className="overflow-x-scroll">{token}</p>
+        </div>
+      )}
     </div>
   );
 }
