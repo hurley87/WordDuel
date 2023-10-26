@@ -24,6 +24,8 @@ export default function Notifications() {
 
   console.log(wallet);
 
+  console.log(tokenExists);
+
   useEffect(() => {
     async function goodTimes() {
       console.log('wllet', address);
@@ -87,18 +89,14 @@ export default function Notifications() {
           </Link>
         );
       })}
-      {!tokenExists && (
-        <div className=" py-20 text-center rounded-md right-4 top-32 grid gap-4 border border-slate-200 bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg md:w-full dark:border-slate-800 dark:bg-slate-950">
-          <h1>
-            <MdOutlineIosShare className="w-10 h-10 mx-auto" />
-          </h1>
-          <h1 className="text-center text-lg font-bold">Setup Notifications</h1>
-          <p className="text-sm">All WordDuel to send you notifications.</p>
-          <Button onClick={() => requestPermission()}>
-            Request Permission
-          </Button>
-        </div>
-      )}
+      <div className=" py-20 text-center rounded-md right-4 top-32 grid gap-4 border border-slate-200 bg-white p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg md:w-full dark:border-slate-800 dark:bg-slate-950">
+        <h1>
+          <MdOutlineIosShare className="w-10 h-10 mx-auto" />
+        </h1>
+        <h1 className="text-center text-lg font-bold">Setup Notifications</h1>
+        <p className="text-sm">All WordDuel to send you notifications.</p>
+        <Button onClick={() => requestPermission()}>Request Permission</Button>
+      </div>
     </div>
   );
 }
