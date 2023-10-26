@@ -1,5 +1,6 @@
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/db';
+import { toast } from '@/components/ui/use-toast';
 
 export async function sendNotification(address: string, msg: any, data: any) {
   try {
@@ -24,7 +25,11 @@ export async function sendNotification(address: string, msg: any, data: any) {
       console.log('No such document!');
     }
   } catch (e) {
-    console.log('getFCMToken error', e);
-    return undefined;
+    const description = e?.message || 'Please try again.';
+    return toast({
+      title: 'Token Error',
+      description,
+      variant: 'destructive',
+    });
   }
 }

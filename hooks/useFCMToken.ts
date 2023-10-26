@@ -22,17 +22,13 @@ const useFCMToken = () => {
             vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
           });
 
-          try {
-            if (fcmToken && wallet?.address)
-              await createSub(
-                {
-                  token: fcmToken,
-                },
-                wallet?.address
-              );
-          } catch (e) {
-            console.log(e);
-          }
+          if (fcmToken && wallet?.address)
+            await createSub(
+              {
+                token: fcmToken,
+              },
+              wallet?.address
+            );
 
           setFcmToken(fcmToken);
         }

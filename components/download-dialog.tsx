@@ -10,7 +10,6 @@ function DownloadDialog() {
   useEffect(() => {
     const browser = detect();
     const isPWA = window.matchMedia('(display-mode: standalone)').matches;
-    console.log('isPWA', isPWA);
     setIsPWA(isPWA);
     if (browser) {
       if (parseInt(browser?.version || '0') >= 16) {

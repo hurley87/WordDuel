@@ -21,7 +21,6 @@ export async function POST(req: Request) {
 
     return new NextResponse(JSON.stringify({ username }));
   } catch (error) {
-    console.log(error);
     return new NextResponse(JSON.stringify({ error }));
   }
 }
