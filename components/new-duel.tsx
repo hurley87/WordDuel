@@ -32,7 +32,6 @@ export function NewDuel() {
     eventName: 'DuelCreated',
     listener(logs: any) {
       const duelId = logs[0]?.args?.id?.toString();
-      console.log('duelId', duelId);
       setIsLoading(false);
       if (!duelId)
         return toast({
