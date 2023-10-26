@@ -12,6 +12,7 @@ export default function Notifications() {
       {messages.map((message) => {
         return (
           <Link
+            key={message?.data?.duelId}
             href={`/${message?.data?.duelType}/${message?.data?.duelId}`}
             className="w-full"
           >
