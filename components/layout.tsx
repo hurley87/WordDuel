@@ -27,8 +27,8 @@ function Layout({ children, title }) {
       <div className="h-full pt-10 pb-28 w-full max-w-lg mx-auto shadow-inner md:shadow-accent">
         {children}
       </div>
-      <div className="h-14 fixed bottom-0 right-0 left-0 max-w-lg mx-auto bg-slate-800">
-        <div className="flex flex-row justify-evenly pt-3.5">
+      <div className="h-28 md:h-14 fixed bottom-0 right-0 left-0 max-w-lg mx-auto bg-slate-800">
+        <div className="flex flex-row justify-evenly pt-4 md:pt-3.5">
           <Link href="/">
             {pathname === '/' ? (
               <RiSwordFill className="h-6 w-6" />
