@@ -10,6 +10,10 @@ function DownloadDialog() {
   useEffect(() => {
     const browser = detect();
     const isPWA = window.matchMedia('(display-mode: standalone)').matches;
+    const notificationsAllowed =
+      navigator.serviceWorker && window.PushManager && window.Notification;
+    console.log('notificationsAllowed');
+    console.log(notificationsAllowed);
     setIsPWA(isPWA);
     if (browser) {
       if (parseInt(browser?.version || '0') >= 16) {
