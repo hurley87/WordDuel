@@ -7,15 +7,18 @@ const useNotificationPermissionStatus = () => {
     useState<NotificationPermission>('default');
 
   useEffect(() => {
-    const handler = () => setPermission(Notification.permission);
-    handler();
-    Notification.requestPermission().then(handler);
+    const notif = window?.Notification;
+    if (notif) {
+      const handler = () => setPermission(notif.permission);
+      handler();
+      notif.requestPermission().then(handler);
 
-    navigator.permissions
-      .query({ name: 'notifications' })
-      .then((notificationPerm) => {
-        notificationPerm.onchange = handler;
-      });
+      navigator.permissions
+        .query({ name: 'notifications' })
+        .then((notificationPerm) => {
+          notificationPerm.onchange = handler;
+        });
+    }
   }, []);
 
   return permission;
