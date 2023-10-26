@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
       },
       data,
     };
+    console.log(message);
 
     await getMessaging().send(message);
   } catch (e) {
