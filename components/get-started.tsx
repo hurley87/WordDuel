@@ -4,11 +4,9 @@ import { useRouter } from 'next/navigation';
 
 export default function GetStarted() {
   const { login } = usePrivy();
-  const router = useRouter();
 
   async function handleLogin() {
     login();
-    router.push('/profile');
   }
 
   return (
