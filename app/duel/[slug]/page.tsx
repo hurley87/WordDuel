@@ -20,7 +20,8 @@ import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/icons';
-import { auth } from 'firebase-admin';
+import Layout from '@/components/layout';
+import Image from 'next/image';
 
 export default function Page({ params }: { params: { slug: string } }) {
   const { user, ready, authenticated } = usePrivy();
@@ -59,7 +60,24 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   if (!ready) return <Loading />;
 
-  if (!authenticated) return <GetStarted />;
+  if (!authenticated)
+    return (
+      <Layout title="Get Started">
+        <div className="flex flex-col gap-4 pt-20 max-w-sm mx-auto">
+          <Image
+            src="/logo.png"
+            alt="logo"
+            height="100"
+            width="100"
+            className="mx-auto rounded-md"
+          />
+          <p className="text-center">
+            Create your wallet and guess a 5-letter word.
+          </p>
+          <GetStarted />
+        </div>
+      </Layout>
+    );
 
   return (
     <div className="w-screen flex-col">
