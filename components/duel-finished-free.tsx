@@ -4,6 +4,7 @@ import Grid from './wordle/grid';
 import { Button } from './ui/button';
 import Link from 'next/link';
 import { formatAddress } from '@/lib/utils';
+import Loading from './loading';
 
 export const DuelFinishedFree = ({ duel, yourTurn }) => {
   const emptyGrid = makeEmptyGrid();
@@ -11,6 +12,7 @@ export const DuelFinishedFree = ({ duel, yourTurn }) => {
   const [isGameSet, setIsGameSet] = useState(false);
   const [winnerExists, setWinnerExists] = useState(false);
   const [secret, setSecret] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const setGame = useCallback(
     async (targetWord, duelWords) => {
@@ -38,6 +40,7 @@ export const DuelFinishedFree = ({ duel, yourTurn }) => {
       setGrid(newGrid);
       setIsGameSet(true);
       setWinnerExists(secret === lastWord);
+      setLoading(false);
     },
     [emptyGrid]
   );
@@ -51,7 +54,9 @@ export const DuelFinishedFree = ({ duel, yourTurn }) => {
   } won`;
   if (!winnerExists) message = `Ended in a tie`;
 
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <div className="flex flex-col gap-2 text-center pt-10">
       <h1 className="font-black uppercase">{secret}</h1>
       <p className="font-light pb-2">{message}</p>

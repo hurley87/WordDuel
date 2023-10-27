@@ -56,9 +56,9 @@ export default function Page({ params }: { params: { slug: string } }) {
     }
   }, [isLoading, duel, router]);
 
-  if (!wallet) return <GetStarted />;
-
   if (!ready) return <Loading />;
+
+  if (ready && !wallet) return <GetStarted />;
 
   return (
     <div className="w-screen flex-col">

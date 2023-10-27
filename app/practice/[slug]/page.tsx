@@ -47,7 +47,14 @@ export default function Page({ params }: { params: { slug: string } }) {
     }
   }, [isLoading, duel, router]);
 
-  if (!wallet)
+  if (!ready)
+    return (
+      <Layout title="Get Started">
+        <Loading />
+      </Layout>
+    );
+
+  if (ready && !wallet)
     return (
       <Layout title="Get Started">
         <div className="flex flex-col gap-4 pt-20 max-w-sm mx-auto">
@@ -63,13 +70,6 @@ export default function Page({ params }: { params: { slug: string } }) {
           </p>
           <GetStarted />
         </div>
-      </Layout>
-    );
-
-  if (!ready)
-    return (
-      <Layout title="Get Started">
-        <Loading />
       </Layout>
     );
 
