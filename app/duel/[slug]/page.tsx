@@ -20,10 +20,11 @@ import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Icons } from '@/components/icons';
+import { auth } from 'firebase-admin';
 
 export default function Page({ params }: { params: { slug: string } }) {
-  const { user } = usePrivy();
-  const { wallet, ready } = usePrivyWagmi();
+  const { user, ready, authenticated } = usePrivy();
+  const { wallet } = usePrivyWagmi();
   const { data } = useBalance({
     address: wallet?.address as `0x${string}`,
   });
@@ -58,7 +59,7 @@ export default function Page({ params }: { params: { slug: string } }) {
 
   if (!ready) return <Loading />;
 
-  if (ready && !wallet) return <GetStarted />;
+  if (!authenticated) return <GetStarted />;
 
   return (
     <div className="w-screen flex-col">

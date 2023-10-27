@@ -18,9 +18,11 @@ import { buttonVariants } from '@/components/ui/button';
 import { Icons } from '@/components/icons';
 import Layout from '@/components/layout';
 import Image from 'next/image';
+import { usePrivy } from '@privy-io/react-auth';
 
 export default function Page({ params }: { params: { slug: string } }) {
-  const { wallet, ready } = usePrivyWagmi();
+  const { login, ready, authenticated } = usePrivy();
+  const { wallet } = usePrivyWagmi();
   const { data: duel, isLoading } = useFreeRead({
     functionName: 'getDuel',
     watch: true,
@@ -54,7 +56,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       </Layout>
     );
 
-  if (ready && !wallet)
+  if (!authenticated)
     return (
       <Layout title="Get Started">
         <div className="flex flex-col gap-4 pt-20 max-w-sm mx-auto">
