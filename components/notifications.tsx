@@ -40,8 +40,6 @@ export default function Notifications() {
           console.log('Document data:', docSnap.data());
           const token = docSnap.data()?.token;
 
-          console.log(token);
-
           setToken(token);
         } else {
           setTokenExists(false);
@@ -58,7 +56,6 @@ export default function Notifications() {
       if (permission === 'granted') {
         console.log('Notification permission granted.');
         const isFCMSupported = await isSupported();
-        console.log(isFCMSupported);
         setIOsFCMSupported(isFCMSupported);
         if (!isFCMSupported) return;
         const fcmToken = await getToken(messaging(), {
