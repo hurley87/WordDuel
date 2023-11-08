@@ -1,6 +1,5 @@
 'use client';
 
-import useFCM from '@/hooks/useFCM';
 import '@/styles/globals.css';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -9,15 +8,12 @@ import {
   RiSwordLine,
   RiUserLine,
   RiUserFill,
-  RiNotification3Line,
-  RiNotification3Fill,
   RiQuestionLine,
   RiQuestionFill,
 } from 'react-icons/ri';
 
 function Layout({ children, title }) {
   const pathname = usePathname();
-  const { messages } = useFCM();
 
   return (
     <div className="flex flex-col h-screen w-screen relative">
@@ -41,16 +37,6 @@ function Layout({ children, title }) {
               <RiUserFill className="h-6 w-6" />
             ) : (
               <RiUserLine className="h-6 w-6" />
-            )}
-          </Link>
-          <Link href="/notifications" className="relative h-6 w-6">
-            {pathname === '/notifications' ? (
-              <RiNotification3Fill className="h-6 w-6" />
-            ) : (
-              <RiNotification3Line className="h-6 w-6" />
-            )}
-            {messages?.length > 0 && (
-              <div className="absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full"></div>
             )}
           </Link>
           <Link href="/faq">

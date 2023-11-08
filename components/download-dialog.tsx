@@ -3,8 +3,7 @@
 import React, { useEffect } from 'react';
 import { detect } from 'detect-browser';
 import { MdOutlineIosShare } from 'react-icons/md';
-// import { isSupported } from 'firebase/messaging';
-// import { Button } from './ui/button';
+import { Button } from './ui/button';
 
 function DownloadDialog() {
   const [isReady, setIsReady] = React.useState(false);
@@ -12,10 +11,6 @@ function DownloadDialog() {
   useEffect(() => {
     const browser = detect();
     const isPWA = window.matchMedia('(display-mode: standalone)').matches;
-    const notificationsAllowed =
-      navigator.serviceWorker && window.PushManager && window.Notification;
-    console.log('notificationsAllowed');
-    console.log(notificationsAllowed);
     setIsPWA(isPWA);
     if (browser) {
       console.log(browser);
@@ -39,6 +34,7 @@ function DownloadDialog() {
           <b>Add to Home Screen</b> in the options. Then open the WordDuel app
           on your home screen.
         </p>
+        <Button onClick={() => setIsPWA(true)}>Dismiss</Button>
       </div>
     </div>
   ) : (
@@ -55,6 +51,7 @@ function DownloadDialog() {
           Visit Settings to update your device to the latest version of iOS and
           come back to install the app.
         </p>
+        <Button onClick={() => setIsPWA(true)}>Dismiss</Button>
       </div>
     </div>
   );
