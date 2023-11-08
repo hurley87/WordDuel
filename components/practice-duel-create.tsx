@@ -11,7 +11,7 @@ import { generateWord } from '@/lib/wordle';
 import { createDuel } from '@/lib/gelato';
 import va from '@vercel/analytics';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { baseGoerli, base } from 'wagmi/chains';
 import GetStarted from './get-started';
@@ -21,19 +21,10 @@ export function PracticeDuelCreate() {
   const { wallet } = usePrivyWagmi();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
-  const [word, setWord] = useState<string>('');
   const { wallets } = useWallets();
   const embeddedWallet = wallets.find(
     (wallet) => wallet.walletClientType === 'privy'
   );
-
-  useEffect(() => {
-    async function getWord() {
-      const word = await generateWord();
-      setWord(word);
-    }
-    getWord();
-  }, []);
 
   useFreeSubscribe({
     eventName: 'DuelCreated',
@@ -59,6 +50,8 @@ export function PracticeDuelCreate() {
       let provider = await wallets[0]?.getEthersProvider();
       wallets[0]?.switchChain(chainId);
       if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
+
+      const word = await generateWord();
 
       await createDuel(provider, word);
 

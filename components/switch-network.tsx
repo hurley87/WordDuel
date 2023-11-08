@@ -23,16 +23,11 @@ function SwitchNetwork({ children }) {
 
   async function handleSwitchNetwork() {
     setIsLoading(true);
-    const embeddedWallet = wallets.find(
-      (wallet) => wallet.walletClientType === 'privy'
-    );
 
     try {
-      if (embeddedWallet) {
-        await embeddedWallet?.switchChain(chainId);
-      } else {
-        await wallets[0]?.switchChain(chainId);
-      }
+      wallets.forEach(async (wallet) => {
+        await wallet.switchChain(chainId);
+      });
     } catch (e) {
       const description = e?.message || 'Something went wrong.';
       setIsLoading(false);
