@@ -2230,6 +2230,7 @@ export const words = [
   'value',
   'valve',
   'vault',
+  'vague',
   'vegan',
   'velar',
   'venom',
