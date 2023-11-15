@@ -165,7 +165,7 @@ function convertNumberToWord(number: number) {
 }
 
 export function convertGridToPrompt(newGrid: any) {
-  let prompt = '';
+  let prompt = 'Return a 5 letter word that fits this criteria:\n';
   for (let i = 0; i < newGrid.length; i++) {
     const row = newGrid[i];
     let word = '';
@@ -194,6 +194,7 @@ export function convertGridToPrompt(newGrid: any) {
     if (word !== '') prompt += `${word} is not the word\n`;
   }
   prompt += '\nReturn just one word.\n';
+  console.log(prompt);
   return prompt;
 }
 
