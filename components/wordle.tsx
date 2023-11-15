@@ -13,8 +13,12 @@ import {
 import { flatten } from 'ramda';
 import { toast } from '@/components/ui/use-toast';
 import { Button } from './ui/button';
+import { usePrivyWagmi } from '@privy-io/wagmi-connector';
+import va from '@vercel/analytics';
 
 export default function Wordle() {
+  const { wallet } = usePrivyWagmi();
+  const address = wallet?.address as `0x${string}`;
   const emptyGrid = makeEmptyGrid();
   const [grid, setGrid] = useState(emptyGrid);
   const [cursor, setCursor] = useState({ y: 0, x: 0 });
@@ -136,6 +140,9 @@ export default function Wordle() {
         title: 'Congratulations!',
         description: `${secret} is the correct word.`,
       });
+      va.track('HumanWins', {
+        address,
+      });
       setGameOver(true);
     } else {
       if (isLastRow) {
@@ -144,7 +151,9 @@ export default function Wordle() {
           description: 'Please try again.',
           variant: 'destructive',
         });
-        // resetGame();
+        va.track('ChatGPTWins', {
+          address,
+        });
         setGameOver(true);
       }
 
@@ -184,6 +193,9 @@ export default function Wordle() {
           description: 'Please try again.',
           variant: 'destructive',
         });
+        va.track('ChatGPTWins', {
+          address,
+        });
         setGameOver(true);
       } else {
         if (attempts === 5) {
@@ -191,6 +203,9 @@ export default function Wordle() {
             title: 'Game is a tie',
             description: `The word was ${secret}.`,
             variant: 'destructive',
+          });
+          va.track('TieGame', {
+            address,
           });
           setGameOver(true);
         }
