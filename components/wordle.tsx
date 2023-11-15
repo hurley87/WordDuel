@@ -252,7 +252,6 @@ export default function Wordle() {
           Play again
         </Button>
       )}
-
       <Grid data={grid} />
       <Keyboard
         usedKeys={usedKeys}
