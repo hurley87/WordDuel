@@ -9,6 +9,7 @@ import {
   convertGridToPrompt,
   getSecretWord,
   chatGPTGuess,
+  words,
 } from '@/lib/wordle';
 import { flatten } from 'ramda';
 import { toast } from '@/components/ui/use-toast';
@@ -108,8 +109,7 @@ export default function Wordle() {
     }
 
     try {
-      const result = { valid: true };
-      if (!result.valid) {
+      if (!words.includes(guessWord)) {
         toast({
           title: 'Invalid guess.',
           description: 'Please try again.',
