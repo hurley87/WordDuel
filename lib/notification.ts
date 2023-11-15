@@ -25,7 +25,7 @@ export async function sendNotification(address: string, msg: any, data: any) {
       console.log('No such document!');
     }
   } catch (e) {
-    const description = e?.message || 'Please try again.';
+    const description = (e as Error)?.message || 'Please try again.';
     return toast({
       title: 'Token Error',
       description,

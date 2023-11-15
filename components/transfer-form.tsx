@@ -49,7 +49,7 @@ export function TransferForm() {
       setTo('');
       setAmount('');
     } catch (e) {
-      const description = e?.message || 'Please try again.';
+      const description = (e as Error)?.message || 'Please try again.';
       return toast({
         title: 'Something went wrong.',
         description,

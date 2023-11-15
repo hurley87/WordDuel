@@ -29,7 +29,7 @@ function SwitchNetwork({ children }) {
         await wallet.switchChain(chainId);
       });
     } catch (e) {
-      const description = e?.message || 'Something went wrong.';
+      const description = (e as Error)?.message || 'Something went wrong.';
       setIsLoading(false);
       toast({
         title: 'Error switching network.',

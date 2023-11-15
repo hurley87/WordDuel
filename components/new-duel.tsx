@@ -65,7 +65,7 @@ export function NewDuel() {
         address: wallet?.address as `0x${string}`,
       });
     } catch (e) {
-      const description = e?.message || 'Please try again.';
+      const description = (e as Error)?.message || 'Please try again.';
       return toast({
         title: 'Something went wrong.',
         description,

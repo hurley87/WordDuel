@@ -60,7 +60,7 @@ export function PracticeDuelCreate() {
       });
     } catch (e) {
       setIsLoading(false);
-      const description = e?.message || 'Please try again.';
+      const description = (e as Error)?.message || 'Please try again.';
       return toast({
         title: 'Something went wrong.',
         description,

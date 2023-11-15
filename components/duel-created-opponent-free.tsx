@@ -74,7 +74,7 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
         address: wallet?.address as `0x${string}`,
       });
     } catch (e) {
-      const description = e?.message || e;
+      const description = (e as Error)?.message || 'Please try again.';
       return toast({
         title: 'There was a problem creating your duel.',
         description,

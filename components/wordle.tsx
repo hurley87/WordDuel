@@ -127,17 +127,20 @@ export default function Wordle() {
       for (let j = 0; j < row.length; j++) {
         const tile = row[j];
         if (tile.variant === 'correct') {
-          prompt += `The ${convertNumberToWord(j)} letter is ${
-            tile.children
-          }.\n`;
+          const correctPrompt = `${tile.children} is the ${convertNumberToWord(
+            j + 1
+          )} letter.\n`;
+          if (!prompt.includes(correctPrompt)) prompt += correctPrompt;
         }
         if (tile.variant === 'absent') {
-          prompt += `${tile.children} is not in the word.\n`;
+          const absentPrompt = `${tile.children} is not in the word.\n`;
+          if (!prompt.includes(absentPrompt)) prompt += absentPrompt;
         }
         if (tile.variant === 'present') {
-          prompt += `${
+          const presentPrompt = `${
             tile.children
           } is in the word but not the ${convertNumberToWord(j)} letter.\n`;
+          if (!prompt.includes(presentPrompt)) prompt += presentPrompt;
         }
         if (tile.children !== '') {
           word += tile.children;
