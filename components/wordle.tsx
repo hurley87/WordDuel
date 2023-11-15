@@ -92,6 +92,9 @@ export default function Wordle() {
   }
 
   async function guess() {
+    va.track('Guess', {
+      address,
+    });
     if (cursor.x !== grid[0].length - 1) {
       return { status: 'playing' };
     }
@@ -227,6 +230,9 @@ export default function Wordle() {
     setSecret(secret);
     setIsLoading(false);
     setGameOver(false);
+    va.track('ResetGame', {
+      address,
+    });
   }
 
   const usedKeys: any = [];
