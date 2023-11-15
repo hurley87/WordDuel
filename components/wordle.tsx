@@ -93,6 +93,7 @@ export default function Wordle() {
   }
 
   async function guess() {
+    setIsLoading(true);
     va.track('Guess', {
       address,
     });
@@ -214,6 +215,8 @@ export default function Wordle() {
         }
       }
     }
+
+    setIsLoading(false);
 
     return {
       status: !isLastRow && !won ? 'playing' : won ? 'win' : 'loss',

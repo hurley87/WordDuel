@@ -230,7 +230,7 @@ export async function chatGPTGuess(prompt: string) {
     word += chunkValue.toLowerCase();
   }
 
-  return word;
+  return word.slice(0, 4);
 }
 
 export async function getSecretWord() {
@@ -1059,7 +1059,6 @@ export const words = [
   'halve',
   'happy',
   'hardy',
-  'harry',
   'harsh',
   'haste',
   'hasty',
