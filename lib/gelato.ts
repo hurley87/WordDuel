@@ -43,7 +43,7 @@ export async function makeMove(provider: any, duelId: string, word: string) {
   return gelatoRequest(provider, data, user);
 }
 
-async function gelatoRequest(provider, data, user) {
+async function gelatoRequest(provider: any, data: any, user: any) {
   const request: any = {
     chainId: (await provider.getNetwork()).chainId,
     target,
