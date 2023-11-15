@@ -5,7 +5,12 @@ import { Button } from './ui/button';
 import Link from 'next/link';
 import { formatAddress } from '@/lib/utils';
 
-export const DuelFinished = ({ duel, yourTurn }) => {
+type Props = {
+  duel: any;
+  yourTurn: boolean;
+};
+
+export const DuelFinished = ({ duel, yourTurn }: Props) => {
   const emptyGrid = makeEmptyGrid();
   const [grid, setGrid] = useState(emptyGrid);
   const [isGameSet, setIsGameSet] = useState(false);
@@ -13,7 +18,7 @@ export const DuelFinished = ({ duel, yourTurn }) => {
   const [secret, setSecret] = useState('');
 
   const setGame = useCallback(
-    async (targetWord, duelWords) => {
+    async (targetWord: any, duelWords: any) => {
       const secret = await decryptWord(targetWord);
       const words = await decryptWords(duelWords);
       const lastWord = words[words.length - 1];

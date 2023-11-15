@@ -9,7 +9,6 @@ import { parseEther } from 'viem';
 import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
 import { useRead } from '@/hooks/useRead';
 import { formatAddress } from '@/lib/utils';
-import { sendNotification } from '@/lib/notification';
 
 export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   const { wallet } = usePrivyWagmi();
@@ -50,23 +49,11 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
         value: parseEther(amount.toString()),
       });
 
-      await sendNotification(
-        duel.challenger,
-        {
-          title: `Game #${duel.id.toString()}`,
-          body: `Someone has joined your game.`,
-        },
-        {
-          duelId: duel.id.toString(),
-          duelType: 'duel',
-        }
-      );
-
       va.track('AcceptDuel', {
         address: wallet?.address as `0x${string}`,
       });
     } catch (e) {
-      const description = (e as Error)?.message || e;
+      const description = (e as Error)?.message || 'Please try again.';
       return toast({
         title: 'There was a problem creating your duel.',
         description,

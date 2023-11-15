@@ -6,7 +6,19 @@ import Link from 'next/link';
 import { formatAddress } from '@/lib/utils';
 import Loading from './loading';
 
-export const DuelFinishedFree = ({ duel, yourTurn }) => {
+type Duel = {
+  id: string;
+  targetWord: string;
+  words: string[][];
+  currentPlayer: string;
+};
+
+type Props = {
+  duel: Duel;
+  yourTurn: boolean;
+};
+
+export const DuelFinishedFree = ({ duel, yourTurn }: Props) => {
   const emptyGrid = makeEmptyGrid();
   const [grid, setGrid] = useState(emptyGrid);
   const [isGameSet, setIsGameSet] = useState(false);
@@ -15,7 +27,7 @@ export const DuelFinishedFree = ({ duel, yourTurn }) => {
   const [loading, setLoading] = useState(true);
 
   const setGame = useCallback(
-    async (targetWord, duelWords) => {
+    async (targetWord: any, duelWords: any) => {
       const secret = await decryptWord(targetWord);
       const words = await decryptWords(duelWords);
       const lastWord = words[words.length - 1];

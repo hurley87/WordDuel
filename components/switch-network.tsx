@@ -10,7 +10,11 @@ import { Icons } from './icons';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { toast } from './ui/use-toast';
 
-function SwitchNetwork({ children }) {
+type SwitchNetworkProps = {
+  children: React.ReactNode;
+};
+
+function SwitchNetwork({ children }: SwitchNetworkProps) {
   const { wallets } = useWallets();
   const { wallet: w, ready } = usePrivyWagmi();
   const [isLoading, setIsLoading] = useState(false);

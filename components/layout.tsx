@@ -12,7 +12,12 @@ import {
   RiQuestionFill,
 } from 'react-icons/ri';
 
-function Layout({ children, title }) {
+type LayoutProps = {
+  children: React.ReactNode;
+  title: string;
+};
+
+function Layout({ children, title }: LayoutProps) {
   const pathname = usePathname();
 
   return (

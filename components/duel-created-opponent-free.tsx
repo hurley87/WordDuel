@@ -11,7 +11,6 @@ import { baseGoerli, base } from 'wagmi/chains';
 import { Card, CardDescription, CardFooter, CardHeader } from './ui/card';
 import { formatAddress } from '@/lib/utils';
 import { useFreeRead } from '@/hooks/useFreeRead';
-import { sendNotification } from '@/lib/notification';
 
 export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
   const { wallet } = usePrivyWagmi();
@@ -57,18 +56,6 @@ export const DuelCreatedOpponentFree = ({ duel }: { duel: any }) => {
       wallets[0]?.switchChain(chainId);
       if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
       await acceptDuel(provider, duel?.id?.toString());
-
-      await sendNotification(
-        duel.challenger,
-        {
-          title: `Practice #${duel.id.toString()}`,
-          body: `Someone has joined your practice.`,
-        },
-        {
-          duelId: duel.id.toString(),
-          duelType: 'practice',
-        }
-      );
 
       va.track('AcceptPractice', {
         address: wallet?.address as `0x${string}`,

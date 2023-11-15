@@ -16,9 +16,13 @@ import { useSubscribe } from '@/hooks/useSubscribe';
 import va from '@vercel/analytics';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { formatAddress } from '@/lib/utils';
-import { sendNotification } from '@/lib/notification';
 
-export const DuelGamePlay = ({ duel, yourTurn }) => {
+type Props = {
+  duel: any;
+  yourTurn: boolean;
+};
+
+export const DuelGamePlay = ({ duel, yourTurn }: Props) => {
   const emptyGrid = makeEmptyGrid();
   const [grid, setGrid] = useState(emptyGrid);
   const [cursor, setCursor] = useState({ y: 0, x: 0 });
@@ -29,13 +33,13 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
   const address = wallet?.address as `0x${string}`;
 
   const setGame = useCallback(
-    async (targetWord, duelWords) => {
+    async (targetWord: string, duelWords: any) => {
       const secret = await decryptWord(targetWord);
       const words = await decryptWords(duelWords);
       const newGrid = emptyGrid;
 
       // function to count letters in a string
-      function countLetters(str, letter) {
+      function countLetters(str: string, letter: string) {
         let letterCount = 0;
         for (let position = 0; position < str.length; position++) {
           if (str.charAt(position) == letter) {
@@ -143,7 +147,7 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
     }
   }
 
-  async function encryptWord(guessWord) {
+  async function encryptWord(guessWord: string) {
     const res = await fetch('/api/encrypt', {
       method: 'POST',
       headers: {
@@ -188,21 +192,6 @@ export const DuelGamePlay = ({ duel, yourTurn }) => {
     let word = await encryptWord(guessWord);
 
     if (won) word = duel.targetWord;
-
-    const notificaitonAddress =
-      duel.challenger === address ? duel.opponent : duel.challenger;
-
-    await sendNotification(
-      notificaitonAddress,
-      {
-        title: `Duel #${duel.id.toString()}`,
-        body: `It's your turn.`,
-      },
-      {
-        duelId: duel.id.toString(),
-        duelType: 'duel',
-      }
-    );
 
     await write({
       args: [duel.id.toString(), word],

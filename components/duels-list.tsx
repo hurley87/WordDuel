@@ -3,7 +3,12 @@
 import '@/styles/globals.css';
 import { Duel } from './duel';
 
-function DuelsList({ duelslist, route }) {
+type Props = {
+  duelslist: any;
+  route: string;
+};
+
+function DuelsList({ duelslist, route }: Props) {
   return (
     <div className="flex flex-col gap-0">
       {duelslist
@@ -11,7 +16,7 @@ function DuelsList({ duelslist, route }) {
           duel.id = parseInt(duel.id.toString());
           return duel;
         })
-        .sort(({ id: a }, { id: b }) => b - a)
+        .sort((a: { id: number }, b: { id: number }) => b.id - a.id)
         .map((duel: any) => (
           <Duel key={parseInt(duel.id)} route={route} duel={duel} />
         ))}

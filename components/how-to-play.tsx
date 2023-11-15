@@ -11,9 +11,14 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button } from './ui/button';
+import { usePrivy } from '@privy-io/react-auth';
 
-function HowToPlay({ children, setShowGame, showGame }) {
-  console.log('showGame', showGame);
+type HowToPlayProps = {
+  children: React.ReactNode;
+};
+
+function HowToPlay({ children }: HowToPlayProps) {
+  const { user, login } = usePrivy();
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -74,9 +79,9 @@ function HowToPlay({ children, setShowGame, showGame }) {
             split evenly.
           </p>
         </div>
-        {!showGame && (
+        {!user && (
           <DialogFooter>
-            <Button className="w-full" onClick={() => setShowGame(true)}>
+            <Button onClick={login} className="w-full">
               Play WordDuel
             </Button>
           </DialogFooter>

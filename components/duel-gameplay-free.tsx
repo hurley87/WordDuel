@@ -19,9 +19,13 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useWallets } from '@privy-io/react-auth';
 import { formatAddress } from '@/lib/utils';
 import { baseGoerli, base } from 'wagmi/chains';
-import { sendNotification } from '@/lib/notification';
 
-export const DuelGamePlayFree = ({ duel, yourTurn }) => {
+type Props = {
+  duel: any;
+  yourTurn: boolean;
+};
+
+export const DuelGamePlayFree = ({ duel, yourTurn }: Props) => {
   const emptyGrid = makeEmptyGrid();
   const [grid, setGrid] = useState(emptyGrid);
   const [cursor, setCursor] = useState({ y: 0, x: 0 });
@@ -36,13 +40,13 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
   const address = wallet?.address as `0x${string}`;
 
   const setGame = useCallback(
-    async (targetWord, duelWords) => {
+    async (targetWord: any, duelWords: any) => {
       const secret = await decryptWord(targetWord);
       const words = await decryptWords(duelWords);
       const newGrid = emptyGrid;
 
       // function to count letters in a string
-      function countLetters(str, letter) {
+      function countLetters(str: string, letter: string) {
         let letterCount = 0;
         for (let position = 0; position < str.length; position++) {
           if (str.charAt(position) == letter) {
@@ -152,7 +156,7 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
     }
   }
 
-  async function encryptWord(guessWord) {
+  async function encryptWord(guessWord: string) {
     const res = await fetch('/api/encrypt', {
       method: 'POST',
       headers: {
@@ -247,21 +251,6 @@ export const DuelGamePlayFree = ({ duel, yourTurn }) => {
     let provider = await wallets[0]?.getEthersProvider();
     wallets[0]?.switchChain(chainId);
     if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
-
-    const notificaitonAddress =
-      duel.challenger === address ? duel.opponent : duel.challenger;
-
-    await sendNotification(
-      notificaitonAddress,
-      {
-        title: `Practise #${duel.id.toString()}`,
-        body: `It's your turn.`,
-      },
-      {
-        duelId: duel.id.toString(),
-        duelType: 'practice',
-      }
-    );
 
     await makeMove(provider, duel.id.toString(), word);
 

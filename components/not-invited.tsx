@@ -1,6 +1,6 @@
 import { Card, CardDescription, CardHeader } from './ui/card';
 
-export default function NotInvited({ duel }) {
+export default function NotInvited({ duel }: any) {
   return (
     <Card>
       <CardHeader>

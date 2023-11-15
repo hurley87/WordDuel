@@ -34,7 +34,7 @@ function ProfileAccounts() {
     try {
       unlinkWallet(address);
     } catch (e) {
-      const description = e?.response?.data?.message || e.message;
+      const description = (e as Error)?.message || 'Please try again.';
       toast({
         title: `Something went wrong.`,
         description,
