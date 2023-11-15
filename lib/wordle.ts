@@ -164,7 +164,7 @@ function convertNumberToWord(number: number) {
   }
 }
 
-export function convertNewGridToPrompt(newGrid: any) {
+export function convertGridToPrompt(newGrid: any) {
   let prompt = '';
   for (let i = 0; i < newGrid.length; i++) {
     const row = newGrid[i];
@@ -195,6 +195,63 @@ export function convertNewGridToPrompt(newGrid: any) {
   }
   prompt += '\nReturn just one word.\n';
   return prompt;
+}
+
+export async function chatGPTGuess(prompt: string) {
+  const response = await fetch('/api/bot', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ prompt }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch');
+  }
+
+  const data = response.body;
+
+  if (!data) {
+    return;
+  }
+
+  const reader = data.getReader();
+  const decoder = new TextDecoder();
+  let done = false;
+
+  let word = '';
+
+  while (!done) {
+    const { value, done: doneReading } = await reader.read();
+    done = doneReading;
+    const chunkValue = decoder.decode(value);
+    word += chunkValue.toLowerCase();
+  }
+
+  return word;
+}
+
+export async function getSecretWord() {
+  const res = await fetch('/api/generate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({}),
+  });
+  const { ciphertext } = await res.json();
+  const result = await fetch('/api/decrypt', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      ciphertext,
+    }),
+  });
+  const { decryptedText } = await result.json();
+  return decryptedText;
 }
 
 export const words = [

@@ -6,10 +6,13 @@ import {
   getRowWord,
   getNextRow,
   findLastNonEmptyTile,
-  convertNewGridToPrompt,
+  convertGridToPrompt,
+  getSecretWord,
+  chatGPTGuess,
 } from '@/lib/wordle';
 import { flatten } from 'ramda';
 import { toast } from '@/components/ui/use-toast';
+import { Button } from './ui/button';
 
 export default function Wordle() {
   const emptyGrid = makeEmptyGrid();
@@ -17,6 +20,7 @@ export default function Wordle() {
   const [cursor, setCursor] = useState({ y: 0, x: 0 });
   const [isLoading, setIsLoading] = useState(false);
   const [secret, setSecret] = useState('');
+  const [gameOver, setGameOver] = useState(false);
 
   useEffect(() => {
     async function loadGame() {
@@ -27,28 +31,6 @@ export default function Wordle() {
     }
     loadGame();
   }, []);
-
-  async function getSecretWord() {
-    const res = await fetch('/api/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}),
-    });
-    const { ciphertext } = await res.json();
-    const result = await fetch('/api/decrypt', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ciphertext,
-      }),
-    });
-    const { decryptedText } = await result.json();
-    return decryptedText;
-  }
 
   function insert(key: string) {
     const newGrid = grid;
@@ -151,9 +133,10 @@ export default function Wordle() {
 
     if (won) {
       toast({
-        title: 'You won!',
-        description: 'Now challenge your friend to a duel.',
+        title: 'Congratulations!',
+        description: `${secret} is the correct word.`,
       });
+      setGameOver(true);
     } else {
       if (isLastRow) {
         toast({
@@ -161,41 +144,13 @@ export default function Wordle() {
           description: 'Please try again.',
           variant: 'destructive',
         });
-        resetGame();
+        // resetGame();
+        setGameOver(true);
       }
 
-      const prompt = convertNewGridToPrompt(newGrid);
+      const prompt = convertGridToPrompt(newGrid);
 
-      const answerResponse = await fetch('/api/bot', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt }),
-      });
-
-      if (!answerResponse.ok) {
-        console.log('ERRROR');
-      }
-
-      const data = answerResponse.body;
-
-      if (!data) {
-        return;
-      }
-
-      const reader = data.getReader();
-      const decoder = new TextDecoder();
-      let done = false;
-
-      let word = '';
-
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        done = doneReading;
-        const chunkValue = decoder.decode(value);
-        word += chunkValue.toLowerCase();
-      }
+      const word = (await chatGPTGuess(prompt)) as string;
 
       for (let j = 0; j < word.length; j++) {
         const letter = word[j];
@@ -229,14 +184,15 @@ export default function Wordle() {
           description: 'Please try again.',
           variant: 'destructive',
         });
+        setGameOver(true);
       } else {
-        if (isLastRow) {
+        if (attempts === 5) {
           toast({
             title: 'Game is a tie',
-            description: 'Please try again.',
+            description: `The word was ${secret}.`,
             variant: 'destructive',
           });
-          resetGame();
+          setGameOver(true);
         }
       }
     }
@@ -255,6 +211,7 @@ export default function Wordle() {
     const secret = await getSecretWord();
     setSecret(secret);
     setIsLoading(false);
+    setGameOver(false);
   }
 
   const usedKeys: any = [];
@@ -266,6 +223,12 @@ export default function Wordle() {
 
   return (
     <main className="m-auto flex max-w-lg flex-1 flex-col gap-4 justify-between px-1 py-4 md:py-0">
+      {gameOver && (
+        <Button className="max-w-xs mx-auto" onClick={resetGame}>
+          Play again
+        </Button>
+      )}
+
       <Grid data={grid} />
       <Keyboard
         usedKeys={usedKeys}
