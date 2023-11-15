@@ -89,6 +89,21 @@ export default function Wordle() {
     setGrid([...newGrid]);
   }
 
+  function convertNumberToWord(number: number) {
+    switch (number) {
+      case 0:
+        return 'first';
+      case 1:
+        return 'second';
+      case 2:
+        return 'third';
+      case 3:
+        return 'fourth';
+      case 4:
+        return 'fifth';
+    }
+  }
+
   async function handleKeyPress(key: string) {
     if (!isMappableKey(key)) {
       insert(key);
@@ -102,6 +117,36 @@ export default function Wordle() {
         await guess();
         break;
     }
+  }
+
+  function convertNewGridToPrompt(newGrid: any) {
+    let prompt = '';
+    for (let i = 0; i < newGrid.length; i++) {
+      const row = newGrid[i];
+      let word = '';
+      for (let j = 0; j < row.length; j++) {
+        const tile = row[j];
+        if (tile.variant === 'correct') {
+          prompt += `The ${convertNumberToWord(j)} letter is ${
+            tile.children
+          }.\n`;
+        }
+        if (tile.variant === 'absent') {
+          prompt += `${tile.children} is not in the word.\n`;
+        }
+        if (tile.variant === 'present') {
+          prompt += `${
+            tile.children
+          } is in the word but not the ${convertNumberToWord(j)} letter.\n`;
+        }
+        if (tile.children !== '') {
+          word += tile.children;
+        }
+      }
+      if (word !== '') prompt += `${word} is not the word\n`;
+    }
+    prompt += '\nReturn just one word.\n';
+    return prompt;
   }
 
   async function guess() {
@@ -161,6 +206,82 @@ export default function Wordle() {
           variant: 'destructive',
         });
         resetGame();
+      }
+
+      const prompt = convertNewGridToPrompt(newGrid);
+
+      const answerResponse = await fetch('/api/bot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt }),
+      });
+
+      if (!answerResponse.ok) {
+        console.log('ERRROR');
+      }
+
+      const data = answerResponse.body;
+
+      if (!data) {
+        return;
+      }
+
+      const reader = data.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+
+      let word = '';
+
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        done = doneReading;
+        const chunkValue = decoder.decode(value);
+        word += chunkValue.toLowerCase();
+      }
+
+      for (let j = 0; j < word.length; j++) {
+        const letter = word[j];
+
+        let variant = 'absent' as 'present' | 'empty' | 'correct' | 'absent';
+        if (secret.includes(letter)) {
+          variant = 'present';
+        }
+        if (secret[j] === letter) variant = 'correct';
+        newGrid[attempts][j] = {
+          cursor: { y: attempts, x: j },
+          children: word[j],
+          variant,
+        };
+      }
+
+      setGrid([...newGrid]);
+      if (!isLastRow) {
+        const newCursor = {
+          y: cursor.y + 2,
+          x: 0,
+        };
+        setCursor(newCursor);
+      }
+
+      const won = secret === word;
+
+      if (won) {
+        toast({
+          title: 'You lost.',
+          description: 'Please try again.',
+          variant: 'destructive',
+        });
+      } else {
+        if (isLastRow) {
+          toast({
+            title: 'Game is a tie',
+            description: 'Please try again.',
+            variant: 'destructive',
+          });
+          resetGame();
+        }
       }
     }
 

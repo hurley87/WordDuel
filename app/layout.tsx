@@ -7,7 +7,6 @@ import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Analytics } from '@/components/analytics';
 import Privy from '@/components/privy';
-import Meta from '@/components/meta';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -37,10 +36,6 @@ export const metadata = {
     },
   ],
   creator: 'davidhurley87',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -55,18 +50,11 @@ export const metadata = {
     description: 'Play Wordle against your friends for ETH',
     creator: '@davidhurley87',
   },
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon-16x16.png',
-    apple: '/apple-touch-icon.png',
-  },
-  manifest: `/manifest.json`,
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <Meta />
+    <html lang="en">
       <body
         className={cn(
           'min-h-screen bg-background font-sans antialiased overflow-y-hidden overflow-x-hidden',

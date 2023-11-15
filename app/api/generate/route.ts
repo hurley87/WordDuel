@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
-import CryptoJS from 'crypto-js';
+
 import { words } from '@/lib/wordle';
+import CryptoJS from 'crypto-js';
 
 export const runtime = 'nodejs';
 
@@ -10,7 +11,7 @@ export async function POST() {
 
     const ciphertext = CryptoJS.AES.encrypt(
       randomWord,
-      process.env.SECRET_KEY
+      process.env.SECRET_KEY as string
     ).toString();
 
     return new NextResponse(JSON.stringify({ ciphertext }));

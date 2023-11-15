@@ -13,7 +13,7 @@ export async function generateWord() {
   return data.ciphertext;
 }
 
-export async function decryptWord(ciphertext) {
+export async function decryptWord(ciphertext: string) {
   const result = await fetch('/api/decrypt', {
     method: 'POST',
     headers: {
@@ -27,7 +27,7 @@ export async function decryptWord(ciphertext) {
   return decryptedText;
 }
 
-export async function decryptWords(words) {
+export async function decryptWords(words: string) {
   const wordArr = words.split(',');
   wordArr.shift();
   for (let i = 0; i < wordArr.length; i++) {
@@ -891,7 +891,6 @@ export const words = [
   'goody',
   'gooey',
   'goofy',
-  'goomy',
   'goose',
   'gotta',
   'gouda',
@@ -2358,7 +2357,6 @@ export const words = [
   'ached',
   'acted',
   'added',
-  'addin',
   'adhoc',
   'adlib',
   'afore',

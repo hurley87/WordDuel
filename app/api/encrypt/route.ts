@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
     const ciphertext = CryptoJS.AES.encrypt(
       guessWord,
-      process.env.SECRET_KEY
+      process.env.SECRET_KEY as string
     ).toString();
 
     return new NextResponse(JSON.stringify({ ciphertext }));
