@@ -6,6 +6,7 @@ import {
   getRowWord,
   getNextRow,
   findLastNonEmptyTile,
+  convertNewGridToPrompt,
 } from '@/lib/wordle';
 import { flatten } from 'ramda';
 import { toast } from '@/components/ui/use-toast';
@@ -89,21 +90,6 @@ export default function Wordle() {
     setGrid([...newGrid]);
   }
 
-  function convertNumberToWord(number: number) {
-    switch (number) {
-      case 0:
-        return 'first';
-      case 1:
-        return 'second';
-      case 2:
-        return 'third';
-      case 3:
-        return 'fourth';
-      case 4:
-        return 'fifth';
-    }
-  }
-
   async function handleKeyPress(key: string) {
     if (!isMappableKey(key)) {
       insert(key);
@@ -117,39 +103,6 @@ export default function Wordle() {
         await guess();
         break;
     }
-  }
-
-  function convertNewGridToPrompt(newGrid: any) {
-    let prompt = '';
-    for (let i = 0; i < newGrid.length; i++) {
-      const row = newGrid[i];
-      let word = '';
-      for (let j = 0; j < row.length; j++) {
-        const tile = row[j];
-        if (tile.variant === 'correct') {
-          const correctPrompt = `${tile.children} is the ${convertNumberToWord(
-            j + 1
-          )} letter.\n`;
-          if (!prompt.includes(correctPrompt)) prompt += correctPrompt;
-        }
-        if (tile.variant === 'absent') {
-          const absentPrompt = `${tile.children} is not in the word.\n`;
-          if (!prompt.includes(absentPrompt)) prompt += absentPrompt;
-        }
-        if (tile.variant === 'present') {
-          const presentPrompt = `${
-            tile.children
-          } is in the word but not the ${convertNumberToWord(j)} letter.\n`;
-          if (!prompt.includes(presentPrompt)) prompt += presentPrompt;
-        }
-        if (tile.children !== '') {
-          word += tile.children;
-        }
-      }
-      if (word !== '') prompt += `${word} is not the word\n`;
-    }
-    prompt += '\nReturn just one word.\n';
-    return prompt;
   }
 
   async function guess() {
