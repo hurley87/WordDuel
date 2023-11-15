@@ -116,6 +116,7 @@ export default function Wordle() {
           description: 'Please try again.',
           variant: 'destructive',
         });
+        setIsLoading(false);
         return {
           status: 'playing',
         };
