@@ -36,7 +36,7 @@ export default function WordDuel() {
             height={80}
           />
           <h1 className="font-black text-2xl">WordDuel</h1>
-          <h3 className="text-lg md:text-2xl">Are you smarter than ChatGPT?</h3>
+          <h3 className="text-lg md:text-xl">Are you smarter than ChatGPT?</h3>
           <div className="flex flex-row gap-4 w-full">
             <HowToPlay>
               <Button className="w-full" variant="outline">
