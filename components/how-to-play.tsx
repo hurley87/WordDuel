@@ -28,7 +28,7 @@ function HowToPlay({ children }: HowToPlayProps) {
           <DialogDescription>Are you smarter than ChatGPT?</DialogDescription>
         </DialogHeader>
         <div className="text-left text-sm p-2">
-          <p>You and your opponent take turns guessing the right word.</p>
+          <p>You and ChatGPT take turns guessing the right word.</p>
           <ul className="list-disc pt-4 list-inside">
             <li>Each guess must be a valid 5-letter word.</li>
             <li>Letter colors will give you hints.</li>
@@ -73,10 +73,9 @@ function HowToPlay({ children }: HowToPlayProps) {
             </p>
           </div>
           <p>
-            Whover guesses the right word first wins the the game. If you play
-            for money, each player transfers ETH into a pot for each guess. The
-            winner is transferred all the ETH. If the game is a draw, the pot is
-            split evenly.
+            Whover guesses the right word first wins the the game. ChatGPT
+            actually kind of sucks at this game, so you should be able to win
+            pretty easily.
           </p>
         </div>
         {!user && (

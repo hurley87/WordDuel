@@ -10,7 +10,6 @@ function Results() {
     queryFn: getResults,
   });
   const [results, setResults] = useState(queryResults);
-  console.log(results);
 
   useEffect(() => {
     setResults(queryResults);
@@ -24,9 +23,7 @@ function Results() {
         },
         (payload) => {
           const newPayload = payload?.new;
-          console.log(newPayload);
           const updatedPayload = [...(queryResults || []), newPayload];
-          console.log(updatedPayload);
           setResults(updatedPayload);
         }
       )
