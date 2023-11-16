@@ -1926,7 +1926,6 @@ export const words = [
   'start',
   'stash',
   'state',
-  'stave',
   'stead',
   'steak',
   'steal',
