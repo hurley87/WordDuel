@@ -16,6 +16,8 @@ import { toast } from '@/components/ui/use-toast';
 import { Button } from './ui/button';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import va from '@vercel/analytics';
+import { createResult } from '@/lib/db';
+import Results from './results';
 
 export default function Wordle() {
   const { wallet } = usePrivyWagmi();
@@ -148,6 +150,10 @@ export default function Wordle() {
       va.track('HumanWins', {
         address,
       });
+      await createResult({
+        address,
+        result: 'win',
+      });
       setGameOver(true);
     } else {
       if (isLastRow) {
@@ -155,6 +161,10 @@ export default function Wordle() {
           title: 'You lost.',
           description: 'Please try again.',
           variant: 'destructive',
+        });
+        await createResult({
+          address,
+          result: 'loss',
         });
         va.track('ChatGPTWins', {
           address,
@@ -198,6 +208,10 @@ export default function Wordle() {
           description: 'Please try again.',
           variant: 'destructive',
         });
+        await createResult({
+          address,
+          result: 'loss',
+        });
         va.track('ChatGPTWins', {
           address,
         });
@@ -208,6 +222,10 @@ export default function Wordle() {
             title: 'Game is a tie',
             description: `The word was ${secret}.`,
             variant: 'destructive',
+          });
+          await createResult({
+            address,
+            result: 'tie',
           });
           va.track('TieGame', {
             address,
@@ -259,6 +277,7 @@ export default function Wordle() {
         disabled={isLoading}
         onKeyPress={handleKeyPress}
       />
+      <Results />
     </main>
   );
 }
