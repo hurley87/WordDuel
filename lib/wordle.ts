@@ -165,35 +165,39 @@ function convertNumberToWord(number: number) {
 }
 
 export function convertGridToPrompt(newGrid: any) {
-  let prompt = 'Return a 5 letter word that fits this criteria:\n';
+  let prompt =
+    'You are a Wordle expert. Guess a 5-letter word. Follow these instructions and pick a word that fits this criteria:\n';
   for (let i = 0; i < newGrid.length; i++) {
     const row = newGrid[i];
     let word = '';
+    let hints = [];
+
     for (let j = 0; j < row.length; j++) {
       const tile = row[j];
+      const letter = tile.children.trim().toUpperCase();
       if (tile.variant === 'correct') {
-        const correctPrompt = `${tile.children} is the ${convertNumberToWord(
-          j + 1
+        const correctPrompt = `${letter} is the ${convertNumberToWord(
+          j
         )} letter.\n`;
-        if (!prompt.includes(correctPrompt)) prompt += correctPrompt;
+        if (!prompt.includes(correctPrompt)) hints.push(correctPrompt);
       }
       if (tile.variant === 'absent') {
-        const absentPrompt = `${tile.children} is not in the word.\n`;
-        if (!prompt.includes(absentPrompt)) prompt += absentPrompt;
+        const absentPrompt = `${letter} is not in the word.\n`;
+        if (!prompt.includes(absentPrompt)) hints.push(absentPrompt);
       }
       if (tile.variant === 'present') {
-        const presentPrompt = `${
-          tile.children
-        } is in the word but not the ${convertNumberToWord(j)} letter.\n`;
-        if (!prompt.includes(presentPrompt)) prompt += presentPrompt;
+        const presentPrompt = `${letter} is in the word but not the ${convertNumberToWord(
+          j
+        )} letter.\n`;
+        if (!prompt.includes(presentPrompt)) hints.push(presentPrompt);
       }
-      if (tile.children !== '') {
-        word += tile.children;
-      }
+      if (letter !== '') word += letter;
     }
-    if (word !== '') prompt += `${word} is not the word\n`;
+    if (word !== '')
+      prompt += `\n${word} is not the word but:\n${hints.join('')}`;
   }
-  prompt += '\nReturn just one word.\n';
+  prompt +=
+    '\nOnly return one 5 letter word. Just the 5 letters and nothing else.\n';
   console.log(prompt);
   return prompt;
 }
@@ -454,21 +458,17 @@ export const words = [
   'brick',
   'bride',
   'brief',
-  'brill',
   'bring',
   'brink',
   'brisk',
   'broad',
-  'broch',
   'brock',
   'broil',
   'broke',
   'brown',
-  'bruin',
   'brunt',
   'brush',
   'brute',
-  'bucko',
   'budge',
   'build',
   'bulge',
@@ -476,8 +476,6 @@ export const words = [
   'bully',
   'bumpy',
   'bunch',
-  'burka',
-  'burly',
   'burst',
   'bushy',
   'butch',
@@ -855,7 +853,6 @@ export const words = [
   'foggy',
   'fogle',
   'foist',
-  'fondu',
   'footy',
   'foray',
   'force',
@@ -976,7 +973,6 @@ export const words = [
   'greek',
   'green',
   'grief',
-  'griff',
   'grift',
   'grill',
   'grind',
@@ -2127,7 +2123,6 @@ export const words = [
   'tummy',
   'tunic',
   'turbo',
-  'turfy',
   'turnt',
   'tutor',
   'tweak',
@@ -2352,12 +2347,6 @@ export const words = [
   'coded',
   'color',
   'covid',
-  'cries',
-  'cried',
-  'cubed',
-  'cuing',
-  'cured',
-  'cuter',
   'cutey',
   'cyber',
   'dared',

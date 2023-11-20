@@ -94,8 +94,8 @@ function Header() {
                     </p>
                   </div>
                   <p>
-                    Whover guesses the right word first wins the the game. If
-                    you play for money, each player transfers ETH into a pot for
+                    Whover guesses the right word first wins the game. If you
+                    play for money, each player transfers ETH into a pot for
                     each guess. The winner is transferred all the ETH. If the
                     game is a draw, the pot is split evenly.
                   </p>

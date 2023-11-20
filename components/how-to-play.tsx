@@ -72,11 +72,7 @@ function HowToPlay({ children }: HowToPlayProps) {
               <b>U</b> is not in the word in any spot.
             </p>
           </div>
-          <p>
-            Whover guesses the right word first wins the the game. ChatGPT
-            actually kind of sucks at this game, so you should be able to win
-            pretty easily.
-          </p>
+          <p>Whover guesses the right word first wins the game.</p>
         </div>
         {!user && (
           <DialogFooter>

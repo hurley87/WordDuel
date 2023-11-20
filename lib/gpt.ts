@@ -19,8 +19,7 @@ export const OpenAIStream = async (prompt: string, apiKey: string) => {
       messages: [
         {
           role: 'system',
-          content:
-            'You are a Wordle expert. You will be given hints and asked to guess a 5 letter word. Only reply with 5 letter words.',
+          content: `You are a Wordle expert. Your job is to guess an existing 5-letter word.`,
         },
         {
           role: 'user',

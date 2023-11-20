@@ -18,12 +18,10 @@ export default function WordDuel() {
     <div className="flex h-screen px-2">
       {user ? (
         <>
-          <div className="absolute top-0 right-0 left-0 p-4 w-full flex justify-between">
-            <h1 className="font-black text-xl">WordDuel</h1>
-            <HowToPlay>
-              <Icons.help className="h-7 w-7 cursor-pointer" />
-            </HowToPlay>
-          </div>
+          <h1 className="font-black absolute top-5 left-5">WordDuel</h1>
+          <HowToPlay>
+            <Icons.help className="h-5 w-5 cursor-pointer absolute bottom-5 right-5" />
+          </HowToPlay>
           <Wordle />
         </>
       ) : (
