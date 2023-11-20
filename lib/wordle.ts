@@ -1771,7 +1771,6 @@ export const words = [
   'shrew',
   'shrub',
   'shrug',
-  'sided',
   'sieve',
   'sight',
   'sigma',

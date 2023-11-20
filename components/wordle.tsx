@@ -100,12 +100,14 @@ export default function Wordle() {
       address,
     });
     if (cursor.x !== grid[0].length - 1) {
+      setIsLoading(false);
       return { status: 'playing' };
     }
 
     const guessWord = getRowWord(grid[cursor.y]);
 
     if (guessWord.length !== 5) {
+      setIsLoading(false);
       return {
         status: 'playing',
       };
