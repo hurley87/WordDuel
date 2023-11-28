@@ -8,19 +8,20 @@ import { PrivyProvider } from '@privy-io/react-auth';
 import { PrivyWagmiConnector } from '@privy-io/wagmi-connector';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useState } from 'react';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 
 const http = process.env.NEXT_PUBLIC_RPC_URL as string;
 const chainId = process.env.NODE_ENV === 'production' ? base : baseGoerli;
-const apiKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string;
 
-console.log('apiKey');
-console.log(apiKey);
-
-const configureChainsConfig = configureChains(
-  [baseGoerli],
-  [alchemyProvider({ apiKey }), publicProvider()]
+const configureChainsConfig: any = configureChains(
+  [chainId],
+  [
+    jsonRpcProvider({
+      rpc: () => ({
+        http,
+      }),
+    }),
+  ]
 );
 
 function Privy({ children }: { children: React.ReactNode }) {
