@@ -26,10 +26,7 @@ export default function WordDuelCreateDuel({ level, address }: any) {
       address,
     };
     const { data: game } = await createDuel(duel).select();
-    console.log('game');
-    console.log(game);
     const gameId = game?.[0]?.id;
-    console.log(gameId);
     router.push(`/game/${gameId}`);
   }
 

@@ -25,7 +25,7 @@ export default function SetupPage() {
   });
   const { wallet } = usePrivyWagmi();
   const [isApproving, setIsApproving] = useState<boolean>(false);
-  const { write: approve } = useAIWrite('approveToken');
+  const { write: approve } = useXPWrite('approve');
   const aiContractAddress = process.env
     .NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS as `0x${string}`;
 
@@ -43,20 +43,9 @@ export default function SetupPage() {
 
   async function approveXP() {
     setIsApproving(true);
-    console.log('approve');
-    console.log(aiContractAddress);
-    console.log(makeBig(parseInt(amount)));
-    // const ethprovider = (await wallet?.getEthereumProvider()) as any;
-    // const provider = new ethers.providers.Web3Provider(ethprovider);
-    // let nonce = await provider.getTransactionCount(
-    //   '0x40bb5687B44EC303e5f5cee49FbB7c01699d6043'
-    // );
-    // 0x40bb5687B44EC303e5f5cee49FbB7c01699d6043
-    // console.log('nonce');
-    // console.log(nonce);
     try {
-      await approve({
-        args: [makeBig(parseInt(amount))],
+      approve({
+        args: [aiContractAddress, makeBig(parseInt(amount))],
         from: wallet?.address as `0x${string}`,
         // nonce: 58,
       });
@@ -65,9 +54,6 @@ export default function SetupPage() {
       setIsApproving(false);
     }
   }
-
-  console.log('balance');
-  console.log(balance);
 
   function handleTransfer() {
     try {

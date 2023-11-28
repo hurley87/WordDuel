@@ -28,8 +28,8 @@ export default function StakeXP({ xp }: { xp: number }) {
       <div className="flex flex-col gap-2">
         <h2 className="text-xl font-black">Stake Your $XP</h2>
         <p className="text-sm">
-          You'll have to stake 2 $XP to play. If you lose the game you'll lose 2
-          $XP. If you win you'll earn 2 $XP.
+          You'll have to stake 2 $XP to play. If you lose the game you'll lose
+          those tokens. If you win you'll earn 2 $XP.
         </p>
       </div>
       <Button disabled={isApproving} onClick={approveXP} size="lg">

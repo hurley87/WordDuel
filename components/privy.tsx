@@ -27,7 +27,21 @@ const configureChainsConfig: any = configureChains(
 function Privy({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
   return (
-    <PrivyProvider appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}>
+    <PrivyProvider
+      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID as string}
+      config={{
+        embeddedWallets: {
+          createOnLogin: 'users-without-wallets',
+          requireUserPasswordOnCreate: false,
+        },
+        appearance: {
+          theme: '#030711',
+          accentColor: '#94A3B8',
+          logo: 'https://www.wordduel.xyz/logo.png',
+          showWalletLoginFirst: false,
+        },
+      }}
+    >
       <PrivyWagmiConnector wagmiChainsConfig={configureChainsConfig}>
         <QueryClientProvider client={queryClient}>
           {children}
