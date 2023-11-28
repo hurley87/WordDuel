@@ -56,9 +56,6 @@ export default function WordDuel() {
   });
   const baseETH = parseFloat(balance?.formatted || '0');
 
-  console.log('reward');
-  console.log(reward);
-
   if (isLoading) return <Loading />;
 
   return (
