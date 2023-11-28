@@ -37,9 +37,6 @@ export default function WordDuel() {
     queryFn: () => getUserDuels(address),
   });
 
-  console.log('queryDuels');
-  console.log(queryDuels);
-
   const newGames = queryDuels?.filter((duel: any) => duel.is_over === false);
   const newGame = newGames?.[0];
   const rewards = queryDuels?.filter(
