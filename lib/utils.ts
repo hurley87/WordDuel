@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
+import { ethers } from 'ethers';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -33,3 +34,12 @@ export async function getTwitterUsername(address: string) {
   const data = await res.json();
   return data.username;
 }
+``;
+export const makeBig = (value: number) => {
+  const valueString = value.toString();
+  return ethers.utils.parseUnits(valueString);
+};
+
+export const makeSmall = (value: any) => {
+  return parseInt(value) / 10 ** 18;
+};

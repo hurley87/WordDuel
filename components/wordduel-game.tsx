@@ -19,7 +19,7 @@ import va from '@vercel/analytics';
 import { createResult } from '@/lib/db';
 import Results from './results';
 
-export default function Wordle() {
+export default function WordDuelGame({ duel }: any) {
   const { wallet } = usePrivyWagmi();
   const address = wallet?.address as `0x${string}`;
   const emptyGrid = makeEmptyGrid();
@@ -267,7 +267,7 @@ export default function Wordle() {
   }
 
   return (
-    <main className="m-auto flex max-w-lg flex-1 flex-col gap-4 justify-between px-1 py-4 md:py-0">
+    <main className="mx-auto flex max-w-md flex-1 flex-col gap-0 justify-between px-1 py-4 md:py-0">
       {gameOver && (
         <Button className="max-w-xs mx-auto" onClick={resetGame}>
           Play again

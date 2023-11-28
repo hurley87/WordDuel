@@ -30,7 +30,7 @@ function Duels() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="practice">
-          <div className="mx-auto max-w-lg w-full fixed bottom-20 md:bottom-14">
+          <div className="mx-auto max-w-md w-full fixed bottom-20 md:bottom-14">
             <PracticeDuelCreate />
           </div>
           <div className="flex flex-col gap-0 h-screen overflow-auto">
@@ -40,10 +40,10 @@ function Duels() {
           </div>
         </TabsContent>
         <TabsContent value="ranked">
-          <div className="mx-auto max-w-lg w-full fixed bottom-20 md:bottom-14">
+          <div className="mx-auto max-w-md w-full fixed bottom-20 md:bottom-14">
             <DuelCreate />
           </div>
-          <div className="h-screen overflow-auto max-w-lg mx-auto">
+          <div className="h-screen overflow-auto max-w-md mx-auto">
             {duels?.length > 0 && <DuelsList duelslist={duels} route="duel" />}
           </div>
         </TabsContent>

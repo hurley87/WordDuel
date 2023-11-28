@@ -532,7 +532,7 @@ export const words = [
   'choir',
   'choke',
   'chore',
-  'chubb',
+  'chump',
   'chuck',
   'chunk',
   'churn',

@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Analytics } from '@/components/analytics';
 import Privy from '@/components/privy';
+import SwitchNetwork from '@/components/switch-network';
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -63,7 +64,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Privy>{children}</Privy>
+          <Privy>
+            <SwitchNetwork>{children}</SwitchNetwork>
+          </Privy>
           <Analytics />
           <Toaster />
         </ThemeProvider>

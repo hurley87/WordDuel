@@ -1,6 +1,5 @@
 'use client';
 
-import GetStarted from '@/components/get-started';
 import Layout from '@/components/layout';
 import Logout from '@/components/logout';
 import ProfileAccounts from '@/components/profile-accounts';

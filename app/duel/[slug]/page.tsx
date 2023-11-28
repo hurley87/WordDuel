@@ -93,7 +93,7 @@ export default function Page({ params }: { params: { slug: string } }) {
           Back
         </>
       </Link>
-      <div className="flex flex-col gap-2 max-w-lg mx-auto px-2 pt-28">
+      <div className="flex flex-col gap-2 max-w-md mx-auto px-2 pt-28">
         {tooPoor && (
           <div className="flex flex-col gap-2 pt-10">
             <div className="mx-auto">

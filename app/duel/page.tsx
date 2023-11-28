@@ -18,7 +18,7 @@ export default function NewDuelPage() {
 
   if (!isLoading && balance === 0)
     return (
-      <div className="mx-auto flex flex-col justify-center space-y-6 max-w-lg py-24">
+      <div className="mx-auto flex flex-col justify-center space-y-6 max-w-md py-24">
         <GetETH />
       </div>
     );
@@ -37,7 +37,7 @@ export default function NewDuelPage() {
           Back
         </>
       </Link>
-      <div className="mx-auto flex w-full flex-col justify-center space-y-4 max-w-lg py-20">
+      <div className="mx-auto flex w-full flex-col justify-center space-y-4 max-w-md py-20">
         <div className="flex flex-col space-y-2">
           <p className="text-sm text-muted-foreground">
             Create a duel where you and an opponent take turns guessing a

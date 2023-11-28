@@ -18,17 +18,22 @@ type HowToPlayProps = {
 };
 
 function HowToPlay({ children }: HowToPlayProps) {
-  const { user, login } = usePrivy();
+  const { user, login, logout } = usePrivy();
+  const address = user?.wallet?.address as `0x${string}`;
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>How to play</DialogTitle>
-          <DialogDescription>Are you smarter than ChatGPT?</DialogDescription>
+          <DialogTitle>WordDuel</DialogTitle>
+          {address && <DialogDescription>Address: {address}</DialogDescription>}
         </DialogHeader>
-        <div className="text-left text-sm p-2">
-          <p>You and ChatGPT take turns guessing the right word.</p>
+        <div className="text-left text-sm">
+          <p>
+            You and WordleGPT, an AI agent built to play Wordle, take turns
+            guessing the right word.
+          </p>
           <ul className="list-disc pt-4 list-inside">
             <li>Each guess must be a valid 5-letter word.</li>
             <li>Letter colors will give you hints.</li>
@@ -72,15 +77,23 @@ function HowToPlay({ children }: HowToPlayProps) {
               <b>U</b> is not in the word in any spot.
             </p>
           </div>
-          <p>Whover guesses the right word first wins the game.</p>
+          <p>
+            Whover guesses the right word first wins the game. If you win,
+            you'll earn $XP tokens. Email dh@wordduel.xyz if you have any
+            questions.
+          </p>
         </div>
-        {!user && (
-          <DialogFooter>
+        <DialogFooter>
+          {!user ? (
             <Button onClick={login} className="w-full">
               Play WordDuel
             </Button>
-          </DialogFooter>
-        )}
+          ) : (
+            <Button onClick={logout} className="w-full">
+              Logout
+            </Button>
+          )}
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

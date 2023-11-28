@@ -5,12 +5,14 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const base = process.env.ETHERSCAN_API_KEY as string;
+const baseGoerli = process.env.ETHERSCAN_API_KEY_GOERLI as string;
 
 const config: any = {
   solidity: '0.8.19',
   etherscan: {
     apiKey: {
       base,
+      baseGoerli,
     },
   },
   networks: {

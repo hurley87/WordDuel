@@ -4,7 +4,7 @@ import { DuelTwitterShare } from './duel-twitter-share';
 
 export const DuelCreatedChallenger = ({ duel }: { duel: any }) => {
   return (
-    <div className="flex flex-col gap-0 max-w-lg mx-auto">
+    <div className="flex flex-col gap-0 max-w-md mx-auto">
       <DuelCopyLink duelId={duel?.id} path="duel" />
       <DuelTwitterShare duelId={duel?.id} path="duel" />
       <DuelCancel duelId={duel?.id} />

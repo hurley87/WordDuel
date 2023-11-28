@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 import {
     ERC2771Context,
     Context
-} from "@openzeppelin/contracts/metatx/ERC2771Context.sol";
+} from "../node_modules/@openzeppelin/contracts/metatx/ERC2771Context.sol";
 
 contract OpenFreeDuels is ERC2771Context, Ownable {
     

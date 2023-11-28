@@ -21,7 +21,7 @@ export default function NewPage() {
           Back
         </>
       </Link>
-      <div className="flex flex-col gap-2 max-w-lg mx-auto px-2 pt-28">
+      <div className="flex flex-col gap-2 max-w-md mx-auto px-2 pt-28">
         <NewDuel />
       </div>
     </div>

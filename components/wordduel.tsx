@@ -1,62 +1,87 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import Link from 'next/link';
-import Wordle from '@/components/wordle';
-import HowToPlay from '@/components/how-to-play';
-import { Icons } from '@/components/icons';
 import { usePrivy } from '@privy-io/react-auth';
 import Loading from './loading';
+import { usePrivyWagmi } from '@privy-io/wagmi-connector';
+import { useXPRead } from '@/hooks/useXPRead';
+import GetETH from './get-eth';
+import { useBalance } from 'wagmi';
+import GetStarted from './get-started';
+import WordDuelCreateDuel from './wordduel-create-duel';
+import { useAIRead } from '@/hooks/useAIRead';
+import StakeXP from './stake-xp';
+import ClaimXP from './claim-xp';
+import { useQuery } from '@tanstack/react-query';
+import { getUserDuels } from '@/lib/db';
+import BuyXP from './buy-xp';
+import WordDuelPlayDuel from './wordduel-play-duel';
 
 export default function WordDuel() {
-  const { user, login, ready } = usePrivy();
+  const { user } = usePrivy();
+  const { wallet: activeWallet } = usePrivyWagmi();
+  const address = activeWallet?.address as `0x${string}`;
+  const aiContractAddress = process.env
+    .NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS as `0x${string}`;
+  const { data: xpAllowance } = useXPRead({
+    functionName: 'allowance',
+    args: [address, aiContractAddress],
+  });
+  const allowance = parseInt(xpAllowance || '0') / 10 ** 18;
+  const { data: xpBalance } = useXPRead({
+    functionName: 'balanceOf',
+    args: [address],
+  });
+  const XP = parseInt(xpBalance || '0') / 10 ** 18;
+  const { data: queryDuels, isLoading } = useQuery({
+    queryKey: ['duels', address],
+    queryFn: () => getUserDuels(address),
+  });
 
-  if (!ready) return <Loading />;
+  console.log('queryDuels');
+  console.log(queryDuels);
+
+  const newGames = queryDuels?.filter((duel: any) => duel.is_over === false);
+  const newGame = newGames?.[0];
+  const rewards = queryDuels?.filter(
+    (duel: any) =>
+      duel.is_over === true &&
+      duel.is_winner === true &&
+      duel.has_claimed === false
+  );
+  const reward = rewards?.[0];
+  const level = queryDuels?.length || 0;
+  const { data: hasMinted } = useAIRead({
+    functionName: 'claimedReward',
+    args: [address],
+  });
+  const { data: balance } = useBalance({
+    address,
+  });
+  const baseETH = parseFloat(balance?.formatted || '0');
+
+  console.log('reward');
+  console.log(reward);
+
+  if (isLoading) return <Loading />;
 
   return (
-    <div className="flex h-screen px-2">
-      {user ? (
-        <>
-          <h1 className="font-black absolute top-5 left-5">WordDuel</h1>
-          <HowToPlay>
-            <Icons.help className="h-5 w-5 cursor-pointer absolute bottom-5 right-5" />
-          </HowToPlay>
-          <Wordle />
-        </>
-      ) : (
-        <div className="m-auto flex flex-col gap-4 text-center w-full px-4 max-w-md">
-          <Image
-            className="rounded-lg mx-auto mb-2 shadow-sm shadow-white"
-            alt="Word Duel logo"
-            src="/logo.png"
-            width={80}
-            height={80}
-          />
-          <h1 className="font-black text-2xl">WordDuel</h1>
-          <h3 className="text-lg md:text-xl">Are you smarter than ChatGPT?</h3>
-          <div className="flex flex-row gap-4 w-full">
-            <HowToPlay>
-              <Button className="w-full" variant="outline">
-                How to play
-              </Button>
-            </HowToPlay>
-            <Button onClick={login} className="w-full">
-              Play
-            </Button>
-          </div>
-          <p className="text-sm pt-20">
-            Created by{' '}
-            <Link
-              target="_blank"
-              className="underline"
-              href="https://twitter.com/davidhurley87"
-            >
-              David Hurley
-            </Link>
-          </p>
-        </div>
+    <>
+      {user && baseETH > 0 && hasMinted && allowance >= 2 && !newGame && (
+        <WordDuelCreateDuel address={address} level={level} />
       )}
-    </div>
+      {user && baseETH > 0 && hasMinted && newGame && (
+        <WordDuelPlayDuel gameId={newGame.id} level={level} />
+      )}
+      {user && baseETH > 0 && hasMinted && reward && (
+        <WordDuelPlayDuel gameId={reward.id} level={level} />
+      )}
+      {user && baseETH > 0 && hasMinted && XP === 0 && !newGame && !reward && (
+        <BuyXP />
+      )}
+      {user && allowance < 2 && hasMinted && XP > 0 && <StakeXP xp={XP} />}
+      {user && baseETH > 0 && !hasMinted && <ClaimXP />}
+      {user && baseETH === 0 && <GetETH />}
+      {!user && <GetStarted />}
+    </>
   );
 }

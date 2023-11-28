@@ -63,7 +63,7 @@ export const DuelCreatedOpponent = ({ duel }: { duel: any }) => {
   }
 
   return (
-    <div className="flex flex-col gap-0 max-w-lg mx-auto">
+    <div className="flex flex-col gap-0 max-w-md mx-auto">
       <Card>
         <CardHeader>
           <CardDescription>

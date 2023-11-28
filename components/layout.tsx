@@ -22,13 +22,13 @@ function Layout({ children, title }: LayoutProps) {
 
   return (
     <div className="flex flex-col h-screen w-screen relative">
-      <div className="h-10 fixed top-0 right-0 left-0 max-w-lg mx-auto bg-slate-800">
+      <div className="h-10 fixed top-0 right-0 left-0 max-w-md mx-auto bg-slate-800">
         <h1 className="text-center font-black pt-2.5">{title}</h1>
       </div>
-      <div className="h-full pt-10 pb-40 w-full max-w-lg mx-auto shadow-inner md:shadow-accent overflow-scroll">
+      <div className="h-full pt-10 pb-40 w-full max-w-md mx-auto shadow-inner md:shadow-accent overflow-scroll">
         {children}
       </div>
-      <div className="h-20 md:h-14 fixed bottom-0 right-0 left-0 max-w-lg mx-auto bg-slate-800">
+      <div className="h-20 md:h-14 fixed bottom-0 right-0 left-0 max-w-md mx-auto bg-slate-800">
         <div className="flex flex-row justify-evenly pt-3.5">
           <Link href="/">
             {pathname === '/' ? (
