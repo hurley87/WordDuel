@@ -47,7 +47,7 @@ export default function GetETH({ children }: { children?: any }) {
       body,
     });
     toast({
-      title: 'You ETH is on the way!',
+      title: 'Your ETH is on the way!',
       description: 'Check your email for instructions.',
     });
     setIsSending(false);

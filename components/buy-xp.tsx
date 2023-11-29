@@ -22,13 +22,13 @@ export default function BuyXP() {
 
   async function handleBuyTokens() {
     setIsSending(true);
-    await buyTokens({
+    buyTokens({
       args: [],
       from: address,
       value: ethers.utils.parseEther('0.02'),
     });
     toast({
-      title: 'You ETH is on the way!',
+      title: 'Your ETH is on the way!',
       description: 'Check your email for instructions.',
     });
     setIsSending(false);
