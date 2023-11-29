@@ -5,10 +5,10 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useState } from 'react';
 import { Button } from './ui/button';
 import { useAIWrite } from '@/hooks/useAIWrite';
-import { ethers } from 'ethers';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import Link from 'next/link';
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
+import { parseEther } from 'viem';
 
 export default function BuyXP() {
   const { wallet } = usePrivyWagmi();
@@ -21,6 +21,8 @@ export default function BuyXP() {
   const baseETH = parseFloat(balance?.formatted || '0');
 
   console.log({ baseETH });
+  console.log({ address });
+  console.log({ eth: parseEther('0.01') });
 
   async function handleBuyTokens() {
     setIsSending(true);
@@ -28,7 +30,7 @@ export default function BuyXP() {
       buyTokens({
         args: [],
         from: address,
-        value: ethers.utils.parseEther('0.02'),
+        value: parseEther('0.01'),
       });
       toast({
         title: 'Your ETH is on the way!',
