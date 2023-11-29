@@ -25,7 +25,8 @@ export default function GetStarted({ children }: { children?: any }) {
           />
           <h1 className="font-black text-2xl">WordDuel</h1>
           <h3 className="text-sm md:text-md">
-            Guess the right word before WordleGPT and earn $XP
+            An onchain game that lets you compete against an AI built to beat
+            humans in Wordle. Earn $XP and level up if you win.
           </h3>
           <div className="flex flex-row gap-4 w-full">
             <HowToPlay>
