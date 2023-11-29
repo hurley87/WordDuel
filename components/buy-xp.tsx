@@ -22,16 +22,26 @@ export default function BuyXP() {
 
   async function handleBuyTokens() {
     setIsSending(true);
-    buyTokens({
-      args: [],
-      from: address,
-      value: ethers.utils.parseEther('0.02'),
-    });
-    toast({
-      title: 'Your ETH is on the way!',
-      description: 'Check your email for instructions.',
-    });
-    setIsSending(false);
+    try {
+      buyTokens({
+        args: [],
+        from: address,
+        value: ethers.utils.parseEther('0.02'),
+      });
+      toast({
+        title: 'Your ETH is on the way!',
+        description: 'Check your email for instructions.',
+      });
+      setIsSending(false);
+    } catch (error) {
+      const description = (error as Error)?.message || 'Please try again.';
+      toast({
+        title: 'Error',
+        description,
+        variant: 'destructive',
+      });
+      setIsSending(false);
+    }
   }
 
   function handleCopyToClipBoard() {
