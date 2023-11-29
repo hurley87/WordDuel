@@ -40,7 +40,7 @@ function HowToProfile({ children }: HowToProfileProps) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Your profile</DialogTitle>
+          <DialogTitle>Your Profile</DialogTitle>
         </DialogHeader>
         <div className="text-left flex flex-col gap-4 text-sm py-6">
           <div>

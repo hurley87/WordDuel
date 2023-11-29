@@ -52,7 +52,7 @@ export default function WordDuelLayout({
           </HowToPlay>
           <HowToProfile>
             <Badge>
-              {numWithCommas(XP)} $XP | Lvl {level}
+              Lvl {level} | {numWithCommas(XP)} $XP
             </Badge>
           </HowToProfile>
         </div>

@@ -24,8 +24,8 @@ export default function GetStarted({ children }: { children?: any }) {
             height={80}
           />
           <h1 className="font-black text-2xl">WordDuel</h1>
-          <h3 className="text-lg md:text-xl">
-            Guess the right word and earn $XP
+          <h3 className="text-sm md:text-md">
+            Guess the right word before WordleGPT and earn $XP
           </h3>
           <div className="flex flex-row gap-4 w-full">
             <HowToPlay>

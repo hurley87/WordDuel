@@ -6,6 +6,7 @@ import {
   decryptWords,
   convertGridToPrompt,
   chatGPTGuess,
+  getNextRow,
 } from '@/lib/wordle';
 import { useEffect, useState, useCallback } from 'react';
 import Keyboard, { isMappableKey } from './wordle/keyboard';
@@ -218,7 +219,11 @@ const WordDuelGamePlay = ({ duel }: Props) => {
       description: `Now it's ChatGPT's turn.`,
     });
 
-    const prompt = convertGridToPrompt(grid);
+    const newGrid = grid;
+
+    newGrid[cursor.y] = getNextRow(newGrid[cursor.y], secret);
+
+    const prompt = convertGridToPrompt(newGrid);
 
     try {
       const aiWord = (await chatGPTGuess(prompt)) as string;

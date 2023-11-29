@@ -20,10 +20,6 @@ export default function BuyXP() {
   });
   const baseETH = parseFloat(balance?.formatted || '0');
 
-  console.log({ baseETH });
-  console.log({ address });
-  console.log({ eth: parseEther('0.02') });
-
   async function handleBuyTokens() {
     setIsSending(true);
     try {

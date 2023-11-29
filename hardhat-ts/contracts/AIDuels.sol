@@ -89,17 +89,14 @@ contract AIDuels is Ownable {
     }
 
     function buyTokens() public payable {
-        require(msg.value == 0.02 ether, "0.02 ether required");
+        require(msg.value == 0.02 ether, "Must send 0.02 ether");
+        require(XP.balanceOf(address(this)) >= amountToPlay, "Not enough tokens in reserve");
 
-        XP.transfer(msg.sender, 2 * 10**decimals);
+        bool tokensSent = XP.transfer(msg.sender, amountToPlay);
 
-        payable(address(this)).transfer(msg.value);
+        require(tokensSent, "Token transfer failed!");
 
         emit BuyTokens(msg.sender, msg.value);
-    }
-
-    function withdrawEther() public onlyOwner {
-        payable(owner()).transfer(address(this).balance);
     }
 
     function getDuelsCount() public view returns (uint256) {

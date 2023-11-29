@@ -29,7 +29,15 @@ function HowToPlay({ children }: HowToPlayProps) {
         <DialogHeader>
           <DialogTitle>WordDuel</DialogTitle>
           <DialogDescription>
-            {gameXP} $XP tokens are in the{' '}
+            {gameXP}{' '}
+            <Link
+              className="underline"
+              target="_blank"
+              href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${process.env.NEXT_PUBLIC_XP_CONTRACT_ADDRESS}`}
+            >
+              $XP tokens
+            </Link>{' '}
+            are in the{' '}
             <Link
               className="underline"
               target="_blank"
