@@ -22,7 +22,7 @@ export default function BuyXP() {
 
   console.log({ baseETH });
   console.log({ address });
-  console.log({ eth: parseEther('0.01') });
+  console.log({ eth: parseEther('0.02') });
 
   async function handleBuyTokens() {
     setIsSending(true);
@@ -30,7 +30,7 @@ export default function BuyXP() {
       buyTokens({
         args: [],
         from: address,
-        value: parseEther('0.01'),
+        value: parseEther('0.02'),
       });
       toast({
         title: 'Your ETH is on the way!',
