@@ -36,9 +36,7 @@ export default function SetupPage() {
         args: [makeBig(5)],
         from: wallet?.address,
       });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch {}
   }
 
   async function approveXP() {
@@ -47,10 +45,14 @@ export default function SetupPage() {
       approve({
         args: [aiContractAddress, makeBig(parseInt(amount))],
         from: wallet?.address as `0x${string}`,
-        // nonce: 58,
       });
     } catch (error) {
-      console.log(error);
+      const description = (error as Error)?.message || 'Please try again.';
+      toast({
+        title: 'Something went wrong.',
+        description,
+        variant: 'destructive',
+      });
       setIsApproving(false);
     }
   }

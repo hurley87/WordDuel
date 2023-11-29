@@ -1,17 +1,16 @@
-import { useContractRead } from 'wagmi';
+import { useContractEvent } from 'wagmi';
 import XP from '@/hooks/abis/XP.json';
 
-export const useXPRead = ({ functionName, args }: any) => {
+export const useXPSubscribe = ({ eventName, listener }: any) => {
   const chainId = parseInt(process.env.NEXT_PUBLIC_DUELS_CHAIN_ID as string);
   const address = process.env.NEXT_PUBLIC_XP_CONTRACT_ADDRESS as `0x${string}`;
   const abi = XP.abi;
 
-  return useContractRead({
+  return useContractEvent({
     chainId,
-    functionName,
+    eventName,
     address,
-    watch: true,
     abi,
-    args,
-  }) as any;
+    listener: listener as (...args: unknown[]) => void,
+  });
 };

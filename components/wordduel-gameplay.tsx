@@ -20,6 +20,7 @@ import { Button } from './ui/button';
 import { Icons } from './icons';
 import { useAIWrite } from '@/hooks/useAIWrite';
 import Link from 'next/link';
+import { useAISubscribe } from '@/hooks/useAISubscribe';
 
 type Props = {
   duel: any;
@@ -44,6 +45,7 @@ const WordDuelGamePlay = ({ duel }: Props) => {
   const setGame = useCallback(
     async (targetWord: string, duelWords: any) => {
       const secret = await decryptWord(targetWord);
+      console.log(secret);
       const words = await decryptWords(duelWords);
       const newGrid = emptyGrid;
 
@@ -168,7 +170,6 @@ const WordDuelGamePlay = ({ duel }: Props) => {
     }
 
     const guessWord = getRowWord(grid[cursor.y]);
-    console.log('guessWord', guessWord);
 
     if (guessWord.length !== 5) {
       setIsLoading(false);
@@ -212,51 +213,81 @@ const WordDuelGamePlay = ({ duel }: Props) => {
       return;
     }
 
+    toast({
+      title: `${guessWord} was not the word.`,
+      description: `Now it's ChatGPT's turn.`,
+    });
+
     const prompt = convertGridToPrompt(grid);
 
-    const aiWord = (await chatGPTGuess(prompt)) as string;
-    let encryptedAiWord = await encryptWord(aiWord);
+    try {
+      const aiWord = (await chatGPTGuess(prompt)) as string;
+      let encryptedAiWord = await encryptWord(aiWord);
 
-    const aiWon = secret === aiWord;
-    let encryptedWord = await encryptWord(guessWord);
+      const aiWon = secret === aiWord;
+      let encryptedWord = await encryptWord(guessWord);
 
-    if (aiWon) {
-      const newDuel = {
-        ...duel,
-        is_over: true,
-        is_winner: false,
-      };
-      await updateDuel(newDuel);
-      setIsLoading(false);
-      setIsGameOver(true);
+      if (aiWon) {
+        const newDuel = {
+          ...duel,
+          is_over: true,
+        };
+        await updateDuel(newDuel);
+        setIsLoading(false);
+        setIsGameOver(true);
+
+        toast({
+          title: 'You lost!',
+          description: `The AI guessed the word "${aiWord}"`,
+        });
+        return;
+      }
 
       toast({
-        title: 'You lost!',
-        description: `The AI guessed the word "${aiWord}"`,
+        title: `ChatGPT guessed "${aiWord}"`,
+        description: `Now it's your turn.`,
       });
-      return;
-    }
 
-    try {
-      const updatedDuelWords =
-        duelWords + ',' + encryptedWord + ',' + encryptedAiWord;
-      setDuelWords(updatedDuelWords);
+      try {
+        const updatedDuelWords =
+          duelWords + ',' + encryptedWord + ',' + encryptedAiWord;
+        setDuelWords(updatedDuelWords);
 
-      const newDuel = {
-        ...duel,
-        words: updatedDuelWords,
-      };
-      console.log('newDuel', newDuel);
-      await updateDuel(newDuel);
+        // count words in updatedDuelWords
+        const count = updatedDuelWords.split(',').length;
 
-      setGame(duel.secret_word, updatedDuelWords);
+        if (count === 7) {
+          const newDuel = {
+            ...duel,
+            words: updatedDuelWords,
+            is_over: true,
+          };
+          await updateDuel(newDuel);
 
-      setIsLoading(false);
+          setIsGameOver(true);
+        } else {
+          const newDuel = {
+            ...duel,
+            words: updatedDuelWords,
+          };
+          await updateDuel(newDuel);
+          setGame(duel.secret_word, updatedDuelWords);
+        }
+
+        setIsLoading(false);
+      } catch (error) {
+        const description = (error as Error)?.message || 'Please try again.';
+        toast({
+          title: 'Error',
+          description,
+          variant: 'destructive',
+        });
+      }
     } catch (error) {
-      console.log(error);
+      const description = (error as Error)?.message || 'Please try again.';
       toast({
         title: 'Error',
-        description: 'Something went wrong.',
+        description,
         variant: 'destructive',
       });
     }
@@ -266,24 +297,45 @@ const WordDuelGamePlay = ({ duel }: Props) => {
     });
   }
 
+  async function handleUpdateaDuel() {
+    const newDuel = {
+      ...duel,
+      has_claimed: true,
+      is_over: true,
+      is_winner: true,
+    };
+    await updateDuel(newDuel);
+  }
+
+  useAISubscribe({
+    eventName: 'DuelFinished',
+    listener(logs: any) {
+      const winner = logs[0]?.args?.winner;
+      const id = logs[0]?.args?.id;
+      if (parseInt(id) === duel.game_id && winner === address) {
+        setIsClaiming(false);
+        setIsRewardClaimed(true);
+        handleUpdateaDuel();
+        toast({
+          title: 'Reward claimed!',
+          description: 'You can now play again.',
+        });
+      }
+    },
+  });
+
   async function handleClaimReward() {
     setIsClaiming(true);
     try {
       await finishDuel({
         args: [duel.game_id.toString()],
       });
-      setIsClaiming(false);
-      setIsRewardClaimed(true);
-      toast({
-        title: 'Reward claimed!',
-        description: 'You can now play again.',
-      });
     } catch (error) {
-      console.log(error);
+      const description = (error as Error)?.message || 'Please try again.';
       setIsClaiming(false);
       toast({
         title: 'Error',
-        description: 'Something went wrong.',
+        description,
         variant: 'destructive',
       });
     }
@@ -300,13 +352,17 @@ const WordDuelGamePlay = ({ duel }: Props) => {
     <>
       {isGameOver && !isWinner && !isRewardClaimed && (
         <div className="flex flex-col max-w-md mx-auto gap-4 py-48 px-8 text-center">
-          <Icons.wallet className="h-8 w-8 mx-auto" />
+          <Icons.swords className="h-8 w-8 mx-auto" />
           <div className="flex flex-col gap-2">
             <h2 className="text-xl font-black">You Lost</h2>
-            <p className="text-sm">You can always try again.</p>
+            <p className="text-sm">
+              The word was "{secret}". Better luck next time.
+            </p>
           </div>
-          <Link href="/">
-            <Button size="lg">Back</Button>
+          <Link className="w-full" href="/">
+            <Button className="w-full" size="lg">
+              Back
+            </Button>
           </Link>
         </div>
       )}
@@ -315,7 +371,7 @@ const WordDuelGamePlay = ({ duel }: Props) => {
           <Icons.wallet className="h-8 w-8 mx-auto" />
           <div className="flex flex-col gap-2">
             <h2 className="text-xl font-black">You Won $XP</h2>
-            <p className="text-sm">Claim your reward of 2 $XP and continue.</p>
+            <p className="text-sm">Claim your reward of 2 $XP.</p>
           </div>
           <Button disabled={isClaiming} onClick={handleClaimReward} size="lg">
             {isClaiming ? (

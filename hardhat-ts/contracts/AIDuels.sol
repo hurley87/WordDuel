@@ -25,9 +25,11 @@ contract AIDuels is Ownable {
 
     mapping (address => bool) public hasClaimedReward;
 
-    event DuelCreated(uint256 id);
+    event DuelCreated(uint256 id, address player);
     event DuelFinished(uint256 id, address winner);
     event RewardClaimed(address winner);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+    event BuyTokens(address indexed buyer, uint256 value);
 
     constructor(address _tokenAddress) {
         XP = IERC20(_tokenAddress);
@@ -49,10 +51,10 @@ contract AIDuels is Ownable {
 
         require(XP.transferFrom(msg.sender, address(this), amountToPlay), "Token transfer failed!");
 
-        emit DuelCreated(newDuel.id);
+        emit DuelCreated(newDuel.id, msg.sender);
     }
 
-    function finishDuel(uint256 _duelId) public onlyOwner {
+    function finishDuel(uint256 _duelId) public {
         require(_duelId < duels.length, 'Duel does not exist');
         require(duels[_duelId].player != address(0), "Player must not be the zero address");
         require(duels[_duelId].claimedWinnings != true, 'Winnings already claimed');
@@ -89,6 +91,7 @@ contract AIDuels is Ownable {
     function buyTokens() public payable {
         require(msg.value == 0.02 ether, "0.02 ether required");
         XP.transfer(msg.sender, 2 * 10**decimals);
+        emit BuyTokens(msg.sender, msg.value);
     }
 
     function getDuelsCount() public view returns (uint256) {
@@ -138,8 +141,10 @@ contract AIDuels is Ownable {
     }
 
 
-    function approveToken(uint256 _amount) public onlyOwner {
+    function approveToken(uint256 _amount) public {
+        require(_amount > 0, "Amount must be greater than 0");
         XP.approve(address(this), _amount);
+        emit Approval(msg.sender, address(this), _amount);
     }
 
     function fundGame(uint256 _amount) public onlyOwner {

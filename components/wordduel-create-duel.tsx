@@ -33,6 +33,8 @@ export default function WordDuelCreateDuel({ level, address }: any) {
   useAISubscribe({
     eventName: 'DuelCreated',
     listener(logs: any) {
+      const player = logs[0]?.args?.player;
+      if (player !== address) return;
       insertDuel(logs[0]?.args?.id);
       setIsCreating(false);
     },
@@ -51,10 +53,10 @@ export default function WordDuelCreateDuel({ level, address }: any) {
     <div className="flex flex-col max-w-md mx-auto gap-4 py-48 px-4 text-center">
       <Icons.swords className="h-8 w-8 mx-auto" />
       <div className="flex flex-col gap-2">
-        <h2 className="text-xl font-black">Start Level {level + 1}</h2>
+        <p className="text-xl font-black">Start Level {level + 1}</p>
         <p className="text-sm">
-          If you accept and win, you'll earn 2 $XP and get to the next level.
-          The higher the level the smarter the AI. Good luck!
+          If you win, you'll earn 2 $XP and get to the next level. The higher
+          the level the smarter the AI. Good luck!
         </p>
       </div>
       <Button onClick={handleCreateDuel} size="lg">

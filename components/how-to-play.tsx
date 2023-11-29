@@ -5,29 +5,39 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Button } from './ui/button';
-import { usePrivy } from '@privy-io/react-auth';
+import Link from 'next/link';
+import { useAIRead } from '@/hooks/useAIRead';
 
 type HowToPlayProps = {
   children: React.ReactNode;
 };
 
 function HowToPlay({ children }: HowToPlayProps) {
-  const { user, login, logout } = usePrivy();
-  const address = user?.wallet?.address as `0x${string}`;
-
+  const { data: gameBalance } = useAIRead({
+    functionName: 'getTokenBalanceContract',
+    args: [],
+  });
+  const gameXP = parseInt(gameBalance || '0') / 10 ** 18;
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>WordDuel</DialogTitle>
-          {address && <DialogDescription>Address: {address}</DialogDescription>}
+          <DialogDescription>
+            {gameXP} $XP tokens are in the{' '}
+            <Link
+              className="underline"
+              target="_blank"
+              href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${process.env.NEXT_PUBLIC_XP_CONTRACT_ADDRESS}`}
+            >
+              game contract
+            </Link>
+          </DialogDescription>
         </DialogHeader>
         <div className="text-left text-sm">
           <p>
@@ -83,17 +93,6 @@ function HowToPlay({ children }: HowToPlayProps) {
             questions.
           </p>
         </div>
-        <DialogFooter>
-          {!user ? (
-            <Button onClick={login} className="w-full">
-              Play WordDuel
-            </Button>
-          ) : (
-            <Button onClick={logout} className="w-full">
-              Logout
-            </Button>
-          )}
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

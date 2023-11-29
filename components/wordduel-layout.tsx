@@ -9,7 +9,7 @@ import { Badge } from './ui/badge';
 import { useAIRead } from '@/hooks/useAIRead';
 import { useQuery } from '@tanstack/react-query';
 import { getUserDuels } from '@/lib/db';
-import { formatAddress } from '@/lib/utils';
+import HowToProfile from './how-to-profile';
 
 export default function WordDuelLayout({
   children,
@@ -34,7 +34,8 @@ export default function WordDuelLayout({
     queryKey: ['duels', address],
     queryFn: () => getUserDuels(address),
   });
-  const level = queryDuels?.length || 0;
+  const level =
+    queryDuels?.filter((duel) => duel.is_winner === true).length || 0;
 
   if (!ready) return <Loading />;
 
@@ -46,12 +47,14 @@ export default function WordDuelLayout({
     <>
       {user && (
         <div className="absolute top-4 left-4 right-4 flex justify-between">
-          <Badge>WordDuel | {numWithCommas(gameXP)} $XP</Badge>
           <HowToPlay>
-            <Badge>
-              {formatAddress(address)} | {numWithCommas(XP)} $XP | Lvl {level}
-            </Badge>
+            <Badge>WordDuel | {numWithCommas(gameXP)} $XP</Badge>
           </HowToPlay>
+          <HowToProfile>
+            <Badge>
+              {numWithCommas(XP)} $XP | Lvl {level}
+            </Badge>
+          </HowToProfile>
         </div>
       )}
       {children}
