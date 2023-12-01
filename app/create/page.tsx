@@ -31,6 +31,7 @@ export default function CreateDuelPage({}: any) {
     const { data: game } = await createDuel(duel).select();
     const gameId = game?.[0]?.id;
     router.push(`/game/${gameId}`);
+    setIsCreating(false);
   }
 
   useAISubscribe({
@@ -39,7 +40,6 @@ export default function CreateDuelPage({}: any) {
       const player = logs[0]?.args?.player;
       if (player !== address) return;
       insertDuel(logs[0]?.args?.id);
-      setIsCreating(false);
     },
   });
 
