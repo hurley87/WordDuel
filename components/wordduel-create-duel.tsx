@@ -44,6 +44,8 @@ export default function WordDuelCreateDuel({ level, address }: any) {
     setIsCreating(true);
     await write({
       args: [],
+      gas: 2100000,
+      gasPrice: 8000000000,
     });
   }
 

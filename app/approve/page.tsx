@@ -45,6 +45,8 @@ export default function ApproveXP() {
       await approve({
         args: [aiContractAddress, makeBig(2)],
         from: address,
+        gas: 2100000,
+        gasPrice: 8000000000,
       });
     } catch {
       setIsApproving(false);
