@@ -40,7 +40,6 @@ export default function SetupPage() {
   }
 
   async function approveXP() {
-    console.log('approve');
     setIsApproving(true);
     try {
       approve({

@@ -5,6 +5,7 @@ import { makeBig } from '@/lib/utils';
 import { Icons } from './icons';
 import { useXPRead } from '@/hooks/useXPRead';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
+import { useXPSubscribe } from '@/hooks/useXPSubscribe';
 
 export default function StakeXP({ children }: { children?: any }) {
   const { wallet: activeWallet } = usePrivyWagmi();
@@ -28,6 +29,15 @@ export default function StakeXP({ children }: { children?: any }) {
   useEffect(() => {
     setHasStaked(allowance < 2 && XP >= 2);
   }, [allowance, XP]);
+
+  useXPSubscribe({
+    eventName: 'Approval',
+    listener(logs: any) {
+      const owner = logs[0]?.args?.owner;
+      if (owner.toLowerCase() !== address.toLowerCase()) return;
+      setHasStaked(false);
+    },
+  });
 
   async function approveXP() {
     setIsApproving(true);
