@@ -395,8 +395,10 @@ const WordDuelGamePlay = ({ duel }: Props) => {
             <h2 className="text-xl font-black">Reward Claimed</h2>
             <p className="text-sm">Continue to the next level.</p>
           </div>
-          <Link href="/">
-            <Button size="lg">Continue</Button>
+          <Link className="w-full" href="/">
+            <Button className="w-full" size="lg">
+              Continue
+            </Button>
           </Link>
         </div>
       )}
