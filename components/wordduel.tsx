@@ -5,8 +5,6 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useXPRead } from '@/hooks/useXPRead';
 import GetETH from './get-eth';
 import GetStarted from './get-started';
-import WordDuelCreateDuel from './wordduel-create-duel';
-import StakeXP from './stake-xp';
 import ClaimXP from './claim-xp';
 import { useQuery } from '@tanstack/react-query';
 import { getUserDuels } from '@/lib/db';
@@ -14,6 +12,9 @@ import BuyXP from './buy-xp';
 import WordDuelPlayDuel from './wordduel-play-duel';
 import { useEffect, useState } from 'react';
 import { useAISubscribe } from '@/hooks/useAISubscribe';
+import Link from 'next/link';
+import { Button } from './ui/button';
+import { Icons } from './icons';
 
 export default function WordDuel() {
   const { wallet: activeWallet } = usePrivyWagmi();
@@ -58,14 +59,26 @@ export default function WordDuel() {
     <GetStarted>
       <GetETH>
         <ClaimXP>
-          <StakeXP>
-            {XP !== 0 && !newGame && (
-              <WordDuelCreateDuel address={address} level={level} />
-            )}
-            {newGame && <WordDuelPlayDuel gameId={newGame.id} level={level} />}
-            {reward && <WordDuelPlayDuel gameId={reward.id} level={level} />}
-            {XP === 0 && !newGame && !reward && <BuyXP />}
-          </StakeXP>
+          {XP !== 0 && !newGame && !reward && (
+            <div className="flex flex-col max-w-md mx-auto gap-4 py-48 px-4 text-center">
+              <Icons.swords className="h-8 w-8 mx-auto" />
+              <div className="flex flex-col gap-2">
+                <h2 className="text-xl font-black">Level {level}</h2>
+                <p className="text-sm">
+                  If you win, you'll earn 2 $XP and get to the next level. The
+                  higher the level, the smarter the AI. Good luck!
+                </p>
+              </div>
+              <Link className="w-full" href="/approve">
+                <Button className="w-full" size="lg">
+                  Create Duel
+                </Button>
+              </Link>
+            </div>
+          )}
+          {newGame && <WordDuelPlayDuel gameId={newGame.id} level={level} />}
+          {reward && <WordDuelPlayDuel gameId={reward.id} level={level} />}
+          {XP === 0 && !newGame && !reward && <BuyXP />}
         </ClaimXP>
       </GetETH>
     </GetStarted>
