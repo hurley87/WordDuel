@@ -59,7 +59,7 @@ export default function WordDuel() {
     <GetStarted>
       <GetETH>
         <ClaimXP>
-          {XP !== 0 && !newGame && !reward && (
+          {!newGame && !reward && (
             <div className="flex flex-col max-w-md mx-auto gap-4 py-48 px-4 text-center">
               <Icons.swords className="h-8 w-8 mx-auto" />
               <div className="flex flex-col gap-2">
@@ -78,7 +78,6 @@ export default function WordDuel() {
           )}
           {newGame && <WordDuelPlayDuel gameId={newGame.id} level={level} />}
           {reward && <WordDuelPlayDuel gameId={reward.id} level={level} />}
-          {XP === 0 && !newGame && !reward && <BuyXP />}
         </ClaimXP>
       </GetETH>
     </GetStarted>

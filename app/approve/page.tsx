@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useXPWrite } from '@/hooks/useXPWrite';
 import { makeBig } from '@/lib/utils';
@@ -9,10 +9,21 @@ import { useXPRead } from '@/hooks/useXPRead';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useXPSubscribe } from '@/hooks/useXPSubscribe';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function ApproveXP() {
   const { wallet: activeWallet } = usePrivyWagmi();
   const address = activeWallet?.address as `0x${string}`;
+  const { data: xpBalance } = useXPRead({
+    functionName: 'balanceOf',
+    args: [address],
+  });
+  const [XP, setXP] = useState<number>(0);
+
+  useEffect(() => {
+    setXP(parseInt(xpBalance || '0') / 10 ** 18);
+  }, [xpBalance]);
+
   const aiContractAddress = process.env
     .NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS as `0x${string}`;
   const [isApproving, setIsApproving] = useState<boolean>(false);
@@ -39,6 +50,24 @@ export default function ApproveXP() {
       setIsApproving(false);
     }
   }
+
+  if (XP === 0)
+    return (
+      <div className="flex flex-col max-w-md mx-auto gap-4 py-48 px-4 text-center">
+        <Icons.swords className="h-8 w-8 mx-auto" />
+        <div className="flex flex-col gap-2">
+          <p className="text-xl font-black">You have 0 $XP</p>
+          <p className="text-sm">
+            You'll need at least 2 $XP to play. Continue to buy some.
+          </p>
+        </div>
+        <Link className="w-full" href="/buy">
+          <Button className="w-full" size="lg">
+            Continue
+          </Button>
+        </Link>
+      </div>
+    );
 
   return (
     <div className="flex flex-col max-w-md mx-auto gap-4 py-48 px-8 text-center">
