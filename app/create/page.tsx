@@ -12,13 +12,15 @@ import { useAISubscribe } from '@/hooks/useAISubscribe';
 import { createDuel } from '@/lib/db';
 import { useRouter } from 'next/navigation';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
+import { useContractWrite } from 'wagmi';
 
 export default function CreateDuelPage({}: any) {
   const { wallet: activeWallet } = usePrivyWagmi();
   const address = activeWallet?.address as `0x${string}`;
   const { ready } = usePrivy();
   const [isCreating, setIsCreating] = useState<boolean>(false);
-  const { write } = useAIWrite('createDuel');
+  const config = useAIWrite('createDuel', []);
+  const { write } = useContractWrite(config);
   const router = useRouter();
 
   async function insertDuel(id: string) {
@@ -45,10 +47,7 @@ export default function CreateDuelPage({}: any) {
 
   async function handleCreateDuel() {
     setIsCreating(true);
-    await write({
-      args: [],
-      from: address,
-    });
+    write?.();
   }
 
   if (!ready) return <Loading />;

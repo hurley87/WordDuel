@@ -11,11 +11,15 @@ import { generateWord } from '@/lib/wordle';
 import { useAISubscribe } from '@/hooks/useAISubscribe';
 import { createDuel } from '@/lib/db';
 import { useRouter } from 'next/navigation';
+import { parseEther } from 'viem';
+import { useContractWrite } from 'wagmi';
 
 export default function WordDuelCreateDuel({ level, address }: any) {
   const { ready } = usePrivy();
   const [isCreating, setIsCreating] = useState<boolean>(false);
-  const { write } = useAIWrite('createDuel');
+  const config = useAIWrite('buyTokens', []);
+  const { write } = useContractWrite(config);
+
   const router = useRouter();
 
   async function insertDuel(id: string) {
@@ -42,11 +46,7 @@ export default function WordDuelCreateDuel({ level, address }: any) {
 
   async function handleCreateDuel() {
     setIsCreating(true);
-    await write({
-      args: [],
-      gas: 2100000,
-      gasPrice: 8000000000,
-    });
+    write?.();
   }
 
   if (!ready) return <Loading />;

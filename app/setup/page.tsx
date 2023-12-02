@@ -8,44 +8,44 @@ import { useAIRead } from '@/hooks/useAIRead';
 import { useAIWrite } from '@/hooks/useAIWrite';
 import { useXPWrite } from '@/hooks/useXPWrite';
 import { makeBig, makeSmall } from '@/lib/utils';
-import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { Label } from '@radix-ui/react-label';
 import { useState } from 'react';
 import { parseEther } from 'viem';
+import { useContractWrite } from 'wagmi';
 
 export default function SetupPage() {
   const [mintAmount, setMintAmount] = useState('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isMinting, setIsMinting] = useState<boolean>(false);
   const [amount, setAmount] = useState('');
-  const { write: mint } = useXPWrite('mint');
-  const { write: fundGame, isLoading } = useAIWrite('fundGame');
+  const config = useXPWrite('mint', [makeBig(5)]);
+  const { write: mint } = useContractWrite(config);
+  const config2 = useAIWrite('fundGame', [parseEther(amount)]);
+  const { write: fundGame } = useContractWrite(config2);
   const { data: balance } = useAIRead({
     functionName: 'getTokenBalanceContract',
     args: [],
   });
-  const { wallet } = usePrivyWagmi();
   const [isApproving, setIsApproving] = useState<boolean>(false);
-  const { write: approve } = useXPWrite('approve');
   const aiContractAddress = process.env
     .NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS as `0x${string}`;
+  const config3 = useXPWrite('approve', [
+    aiContractAddress,
+    makeBig(parseInt(amount)),
+  ]);
+  const { write: approve } = useContractWrite(config3);
 
   async function mintXP() {
     setIsMinting(true);
     try {
-      mint({
-        args: [makeBig(5)],
-        from: wallet?.address,
-      });
+      mint?.();
     } catch {}
   }
 
   async function approveXP() {
     setIsApproving(true);
     try {
-      approve({
-        args: [aiContractAddress, makeBig(parseInt(amount))],
-        from: wallet?.address as `0x${string}`,
-      });
+      approve?.();
     } catch (error) {
       const description = (error as Error)?.message || 'Please try again.';
       toast({
@@ -58,11 +58,9 @@ export default function SetupPage() {
   }
 
   function handleTransfer() {
+    setIsLoading(true);
     try {
-      fundGame({
-        args: [parseEther(amount)],
-        from: wallet?.address as `0x${string}`,
-      });
+      fundGame?.();
 
       toast({
         title: 'Success',
@@ -157,7 +155,7 @@ export default function SetupPage() {
         </div>
         <Button
           className="w-full"
-          disabled={isLoading}
+          disabled={isApproving}
           onClick={handleTransfer}
           variant="outline"
         >

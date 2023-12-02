@@ -6,6 +6,7 @@ import { Icons } from './icons';
 import { useXPRead } from '@/hooks/useXPRead';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useXPSubscribe } from '@/hooks/useXPSubscribe';
+import { useContractWrite } from 'wagmi';
 
 export default function StakeXP({ children }: { children?: any }) {
   const { wallet: activeWallet } = usePrivyWagmi();
@@ -23,7 +24,8 @@ export default function StakeXP({ children }: { children?: any }) {
   });
   const XP = parseInt(xpBalance || '0') / 10 ** 18;
   const [isApproving, setIsApproving] = useState<boolean>(false);
-  const { write: approve } = useXPWrite('approve');
+  const config = useXPWrite('approve', [aiContractAddress, makeBig(2)]);
+  const { write: approve } = useContractWrite(config);
   const [hasStaked, setHasStaked] = useState<boolean>(true);
 
   useEffect(() => {
@@ -42,10 +44,7 @@ export default function StakeXP({ children }: { children?: any }) {
   async function approveXP() {
     setIsApproving(true);
     try {
-      await approve({
-        args: [aiContractAddress, makeBig(2)],
-        from: address,
-      });
+      approve?.();
     } catch {
       setIsApproving(false);
     }

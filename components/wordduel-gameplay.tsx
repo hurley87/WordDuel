@@ -22,6 +22,7 @@ import { Icons } from './icons';
 import { useAIWrite } from '@/hooks/useAIWrite';
 import Link from 'next/link';
 import { useAISubscribe } from '@/hooks/useAISubscribe';
+import { useContractWrite } from 'wagmi';
 
 type Props = {
   duel: any;
@@ -39,7 +40,8 @@ const WordDuelGamePlay = ({ duel }: Props) => {
   const [isRewardClaimed, setIsRewardClaimed] = useState(duel?.has_claimed);
   const [duelWords, setDuelWords] = useState(duel?.words);
   const [isClaiming, setIsClaiming] = useState(false);
-  const { write: finishDuel } = useAIWrite('finishDuel');
+  const config = useAIWrite('finishDuel', [duel.game_id.toString()]);
+  const { write: finishDuel } = useContractWrite(config);
   const { wallet } = usePrivyWagmi();
   const address = wallet?.address as `0x${string}`;
 
@@ -331,9 +333,7 @@ const WordDuelGamePlay = ({ duel }: Props) => {
   async function handleClaimReward() {
     setIsClaiming(true);
     try {
-      await finishDuel({
-        args: [duel.game_id.toString()],
-      });
+      finishDuel?.();
     } catch (error) {
       const description = (error as Error)?.message || 'Please try again.';
       setIsClaiming(false);

@@ -1,5 +1,5 @@
 import { Icons } from './icons';
-import { useBalance } from 'wagmi';
+import { useBalance, useContractWrite } from 'wagmi';
 import { toast } from './ui/use-toast';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useState } from 'react';
@@ -14,20 +14,22 @@ export default function BuyXP() {
   const { wallet } = usePrivyWagmi();
   const address = wallet?.address as `0x${string}`;
   const [isSending, setIsSending] = useState(false);
-  const { write: buyTokens } = useAIWrite('buyTokens');
+
   const { data: balance } = useBalance({
     address,
   });
   const baseETH = parseFloat(balance?.formatted || '0');
+  const config = useAIWrite('buyTokens', []);
+  const value = parseEther('0.02') as any;
+  const { write: buyTokens } = useContractWrite({
+    ...config,
+    value,
+  });
 
   async function handleBuyTokens() {
     setIsSending(true);
     try {
-      buyTokens({
-        args: [],
-        from: address,
-        value: parseEther('0.02'),
-      });
+      buyTokens?.();
       toast({
         title: 'Your ETH is on the way!',
         description: 'Check your email for instructions.',

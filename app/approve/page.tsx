@@ -10,6 +10,7 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useXPSubscribe } from '@/hooks/useXPSubscribe';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useContractWrite } from 'wagmi';
 
 export default function ApproveXP() {
   const { wallet: activeWallet } = usePrivyWagmi();
@@ -27,7 +28,8 @@ export default function ApproveXP() {
   const aiContractAddress = process.env
     .NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS as `0x${string}`;
   const [isApproving, setIsApproving] = useState<boolean>(false);
-  const { write: approve } = useXPWrite('approve');
+  const config = useXPWrite('approve', [aiContractAddress, makeBig(2)]);
+  const { write: approve } = useContractWrite(config);
   const router = useRouter();
 
   useXPSubscribe({
@@ -42,12 +44,7 @@ export default function ApproveXP() {
   async function approveXP() {
     setIsApproving(true);
     try {
-      await approve({
-        args: [aiContractAddress, makeBig(2)],
-        from: address,
-        gas: 2100000,
-        gasPrice: 8000000000,
-      });
+      approve?.();
     } catch {
       setIsApproving(false);
     }

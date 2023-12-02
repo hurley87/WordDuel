@@ -8,9 +8,11 @@ import Link from 'next/link';
 import { useAIRead } from '@/hooks/useAIRead';
 import { useAISubscribe } from '@/hooks/useAISubscribe';
 import Loading from './loading';
+import { useContractWrite } from 'wagmi';
 
 export default function ClaimXP({ children }: { children?: any }) {
-  const { write: claimReward } = useAIWrite('claimReward');
+  const config = useAIWrite('claimReward', []);
+  const { write: claimReward } = useContractWrite(config);
   const { wallet: activeWallet } = usePrivyWagmi();
   const address = activeWallet?.address as `0x${string}`;
   const [isClaiming, setIsClaiming] = useState<boolean>(false);
@@ -35,10 +37,7 @@ export default function ClaimXP({ children }: { children?: any }) {
   function claim() {
     setIsClaiming(true);
     try {
-      claimReward({
-        args: [],
-        from: address,
-      });
+      claimReward?.();
     } catch (error) {
       const description = (error as Error)?.message || 'Please try again.';
       setIsClaiming(false);
