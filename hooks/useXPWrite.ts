@@ -14,6 +14,9 @@ export const useXPWrite = (functionName: any, args: any) => {
     abi,
     functionName,
     chainId,
+    onError: (error: any) => {
+      console.log(error);
+    },
   });
 
   return config;

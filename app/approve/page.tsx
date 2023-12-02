@@ -45,7 +45,8 @@ export default function ApproveXP() {
     setIsApproving(true);
     try {
       approve?.();
-    } catch {
+    } catch (e) {
+      console.log(e);
       setIsApproving(false);
     }
   }
