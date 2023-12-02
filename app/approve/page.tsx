@@ -11,6 +11,7 @@ import { useXPSubscribe } from '@/hooks/useXPSubscribe';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useContractWrite } from 'wagmi';
+import { ethers } from 'ethers';
 
 export default function ApproveXP() {
   const { wallet: activeWallet } = usePrivyWagmi();
@@ -28,7 +29,8 @@ export default function ApproveXP() {
   const aiContractAddress = process.env
     .NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS as `0x${string}`;
   const [isApproving, setIsApproving] = useState<boolean>(false);
-  const tokenAmount = makeBig(2);
+  const tokenAmount = ethers.utils.parseUnits('2');
+  console.log(tokenAmount.toString());
   const config = useXPWrite('approve', [aiContractAddress, tokenAmount]);
   const { write: approve } = useContractWrite(config);
   const router = useRouter();
