@@ -28,7 +28,8 @@ export default function ApproveXP() {
   const aiContractAddress = process.env
     .NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS as `0x${string}`;
   const [isApproving, setIsApproving] = useState<boolean>(false);
-  const config = useXPWrite('approve', [aiContractAddress, makeBig(2)]);
+  const tokenAmount = makeBig(2);
+  const config = useXPWrite('approve', [aiContractAddress, tokenAmount]);
   const { write: approve } = useContractWrite(config);
   const router = useRouter();
 

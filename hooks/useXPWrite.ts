@@ -8,6 +8,8 @@ export const useXPWrite = (functionName: any, args: any) => {
   const chainId =
     process.env.NODE_ENV === 'production' ? base.id : baseGoerli.id;
 
+  console.log('useXPWrite', { functionName, args, address, abi, chainId });
+
   const { config } = usePrepareContractWrite({
     args,
     address,
