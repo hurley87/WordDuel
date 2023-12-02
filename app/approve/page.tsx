@@ -41,7 +41,13 @@ export default function ApproveXP() {
     address: aiContractAddress,
     functionName: 'approve',
     abi,
-    args: [aiContractAddress, 2 * 10 ** 18],
+    args: [
+      aiContractAddress,
+      2 * 10 ** 18,
+      {
+        gasLimit: 1300000,
+      },
+    ],
     onSuccess(data) {
       console.log('SUCCESSS', data);
     },
