@@ -1,26 +1,34 @@
 'use client';
 
 import { Icons } from '@/components/icons';
-import { useBalance, useContractWrite } from 'wagmi';
+import { useBalance, useContractWrite, usePrepareContractWrite } from 'wagmi';
 import { toast } from '@/components/ui/use-toast';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useAIWrite } from '@/hooks/useAIWrite';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import Link from 'next/link';
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 import { parseEther } from 'viem';
 import { useAISubscribe } from '@/hooks/useAISubscribe';
 import { useRouter } from 'next/navigation';
+import AI from '@/hooks/abis/AIDuels.json';
 
 export default function BuyXPPage() {
   const { wallet } = usePrivyWagmi();
   const address = wallet?.address as `0x${string}`;
   const [isSending, setIsSending] = useState(false);
-  const config = useAIWrite('buyTokens', []);
   const value = parseEther('0.02') as any;
-  const { write: buyTokens } = useContractWrite({ ...config, value });
+  const aiAddress = process.env
+    .NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS as `0x${string}`;
+  const abi = AI.abi;
+  const { config: buyTokenConfig } = usePrepareContractWrite({
+    address: aiAddress,
+    functionName: 'buyTokens',
+    abi,
+    value,
+  });
+  const { write: buyTokens } = useContractWrite(buyTokenConfig);
   const { data: balance } = useBalance({
     address,
   });
@@ -31,11 +39,6 @@ export default function BuyXPPage() {
     setIsSending(true);
     try {
       buyTokens?.();
-      toast({
-        title: 'Your ETH is on the way!',
-        description: 'Check your email for instructions.',
-      });
-      setIsSending(false);
     } catch (error) {
       const description = (error as Error)?.message || 'Please try again.';
       toast({

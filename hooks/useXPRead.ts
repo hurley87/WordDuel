@@ -10,7 +10,6 @@ export const useXPRead = ({ functionName, args }: any) => {
     chainId,
     functionName,
     address,
-    watch: true,
     abi,
     args,
   }) as any;
