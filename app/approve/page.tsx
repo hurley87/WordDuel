@@ -16,6 +16,7 @@ import {
 import { ethers } from 'ethers';
 import XPABI from '@/hooks/abis/XP.json';
 import { toast } from '@/components/ui/use-toast';
+import { makeBig } from '@/lib/utils';
 
 export default function ApproveXP() {
   const { wallet: activeWallet } = usePrivyWagmi();
@@ -41,13 +42,8 @@ export default function ApproveXP() {
     address: aiContractAddress,
     functionName: 'approve',
     abi,
-    args: [
-      aiContractAddress,
-      2 * 10 ** 18,
-      {
-        gasLimit: 1300000,
-      },
-    ],
+    gas: BigInt(1300000),
+    args: [aiContractAddress, 2 * 10 ** 18],
     onSuccess(data) {
       console.log('SUCCESSS', data);
     },
