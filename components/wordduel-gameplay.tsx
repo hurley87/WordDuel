@@ -42,7 +42,6 @@ const WordDuelGamePlay = ({ duel }: Props) => {
   const setGame = useCallback(
     async (targetWord: string, duelWords: any) => {
       const secret = await decryptWord(targetWord);
-      console.log(secret);
       const words = await decryptWords(duelWords);
       const newGrid = emptyGrid;
 
