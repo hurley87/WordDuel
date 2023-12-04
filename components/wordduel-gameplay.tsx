@@ -20,9 +20,6 @@ import { updateDuel } from '@/lib/db';
 import { Button } from './ui/button';
 import { Icons } from './icons';
 import Link from 'next/link';
-import { useAISubscribe } from '@/hooks/useAISubscribe';
-import { base, baseGoerli } from 'viem/chains';
-import { useWallets } from '@privy-io/react-auth';
 import WordDuelClaim from './wordduel-claim';
 
 type Props = {
@@ -38,12 +35,9 @@ const WordDuelGamePlay = ({ duel }: Props) => {
   const [isGameSet, setIsGameSet] = useState(false);
   const [isGameOver, setIsGameOver] = useState(duel?.is_over);
   const [isWinner, setIsWinner] = useState(duel?.is_winner);
-  const [isRewardClaimed, setIsRewardClaimed] = useState(duel?.has_claimed);
   const [duelWords, setDuelWords] = useState(duel?.words);
-  const [isClaiming, setIsClaiming] = useState(false);
   const { wallet } = usePrivyWagmi();
   const address = wallet?.address as `0x${string}`;
-  const wallets = useWallets();
 
   const setGame = useCallback(
     async (targetWord: string, duelWords: any) => {
@@ -314,23 +308,6 @@ const WordDuelGamePlay = ({ duel }: Props) => {
     await updateDuel(newDuel);
   }
 
-  useAISubscribe({
-    eventName: 'DuelFinished',
-    listener(logs: any) {
-      const winner = logs[0]?.args?.winner;
-      const id = logs[0]?.args?.id;
-      if (parseInt(id) === duel.game_id && winner === address) {
-        setIsClaiming(false);
-        setIsRewardClaimed(true);
-        handleUpdateaDuel();
-        toast({
-          title: 'Reward claimed!',
-          description: 'You can now play again.',
-        });
-      }
-    },
-  });
-
   const usedKeys: any = [];
   const allKeys = flatten(grid);
   for (const i in allKeys) {
@@ -340,7 +317,7 @@ const WordDuelGamePlay = ({ duel }: Props) => {
 
   return (
     <>
-      {isGameOver && !isWinner && !isRewardClaimed && (
+      {isGameOver && !isWinner && !duel?.has_claimed && (
         <div className="flex flex-col max-w-md mx-auto gap-4 py-48 px-8 text-center">
           <Icons.swords className="h-8 w-8 mx-auto" />
           <div className="flex flex-col gap-2">
@@ -356,11 +333,11 @@ const WordDuelGamePlay = ({ duel }: Props) => {
           </Link>
         </div>
       )}
-      {isGameOver && isWinner && !isRewardClaimed && (
+      {isGameOver && isWinner && !duel?.has_claimed && (
         <WordDuelClaim duelId={duel.game_id} />
       )}
 
-      {isGameOver && isRewardClaimed && (
+      {isGameOver && duel?.has_claimed && (
         <div className="flex flex-col max-w-md mx-auto gap-4 py-48 px-8 text-center">
           <Icons.wallet className="h-8 w-8 mx-auto" />
           <div className="flex flex-col gap-2">

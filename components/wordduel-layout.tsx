@@ -39,7 +39,7 @@ export default function WordDuelLayout({
           <HowToPlay>
             <Badge>WordDuel | {gameBalance.toFixed(2)} ETH</Badge>
           </HowToPlay>
-          <HowToProfile>
+          <HowToProfile balance={balance.toFixed(2)}>
             <Badge>
               {formatAddress(address)} | {balance.toFixed(2)} ETH
             </Badge>

@@ -14,13 +14,13 @@ import { usePrivy } from '@privy-io/react-auth';
 import { getUserDuels } from '@/lib/db';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useXPRead } from '@/hooks/useXPRead';
 
 type HowToProfileProps = {
   children: React.ReactNode;
+  balance: string;
 };
 
-function HowToProfile({ children }: HowToProfileProps) {
+function HowToProfile({ balance, children }: HowToProfileProps) {
   const { user, login, logout } = usePrivy();
   const address = user?.wallet?.address as `0x${string}`;
   const { data: queryDuels } = useQuery({
@@ -29,11 +29,6 @@ function HowToProfile({ children }: HowToProfileProps) {
   });
   const level =
     queryDuels?.filter((duel) => duel.is_winner === true).length || 0;
-  const { data: xpBalance } = useXPRead({
-    functionName: 'balanceOf',
-    args: [address],
-  });
-  const XP = parseInt(xpBalance || '0') / 10 ** 18;
 
   return (
     <Dialog>
@@ -50,7 +45,7 @@ function HowToProfile({ children }: HowToProfileProps) {
               <Link
                 className="underline"
                 target="_blank"
-                href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${process.env.NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS}`}
+                href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${address}`}
               >
                 Base
               </Link>
@@ -66,20 +61,9 @@ function HowToProfile({ children }: HowToProfileProps) {
             <p>{level}</p>
           </div>
           <div>
-            <p className="font-bold">$XP Tokens</p>
-            <p>{XP}</p>
+            <p className="font-bold">ETH</p>
+            <p>{balance}</p>
           </div>
-          <p>
-            View the $XP token contract on{' '}
-            <Link
-              className="underline"
-              target="_blank"
-              href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${process.env.NEXT_PUBLIC_XP_CONTRACT_ADDRESS}`}
-            >
-              Base
-            </Link>
-            .
-          </p>
         </div>
         <DialogFooter>
           {!user ? (
