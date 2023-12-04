@@ -44,8 +44,8 @@ export default function WordDuelClaim({
       console.log('tx', tx);
       await handleUpdateaDuel();
       toast({
-        title: 'Your reward is on the way!',
-        description: 'Check your email for instructions.',
+        title: 'Wooo!',
+        description: 'We just send 0.02 ETH to your wallet.',
       });
       router.push('/');
     } catch (error) {
