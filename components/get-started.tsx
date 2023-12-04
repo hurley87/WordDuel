@@ -25,8 +25,7 @@ export default function GetStarted({ children }: { children?: any }) {
           />
           <h1 className="font-black text-2xl">WordDuel</h1>
           <h3 className="text-sm md:text-md">
-            An onchain game that lets you compete against an AI built to beat
-            humans in Wordle. Earn $XP and level up if you win.
+            Guess the right word before ChatGPT and double your ETH.
           </h3>
           <div className="flex flex-row gap-4 w-full">
             <HowToPlay>

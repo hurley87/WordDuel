@@ -29,29 +29,11 @@ function HowToPlay({ children }: HowToPlayProps) {
         <DialogHeader>
           <DialogTitle>WordDuel</DialogTitle>
           <DialogDescription>
-            {gameXP}{' '}
-            <Link
-              className="underline"
-              target="_blank"
-              href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${process.env.NEXT_PUBLIC_XP_CONTRACT_ADDRESS}`}
-            >
-              $XP tokens
-            </Link>{' '}
-            are in the{' '}
-            <Link
-              className="underline"
-              target="_blank"
-              href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${process.env.NEXT_PUBLIC_XP_CONTRACT_ADDRESS}`}
-            >
-              game contract
-            </Link>
+            Guess the right word before ChatGPT and double your ETH.
           </DialogDescription>
         </DialogHeader>
         <div className="text-left text-sm">
-          <p>
-            You and WordleGPT, an AI agent built to play Wordle, take turns
-            guessing the right word.
-          </p>
+          <p>You and ChatGPT take turns guessing the right word.</p>
           <ul className="list-disc pt-4 list-inside">
             <li>Each guess must be a valid 5-letter word.</li>
             <li>Letter colors will give you hints.</li>
@@ -97,7 +79,7 @@ function HowToPlay({ children }: HowToPlayProps) {
           </div>
           <p>
             Whover guesses the right word first wins the game. If you win,
-            you'll earn $XP tokens. Email dh@wordduel.xyz if you have any
+            you'll earn 0.02 ETH. Email dh@wordduel.xyz if you have any
             questions.
           </p>
         </div>

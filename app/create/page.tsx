@@ -70,7 +70,7 @@ export default function CreateDuelPage({}: any) {
         ) : (
           <Icons.swords className="mr-2 h-4 w-4" />
         )}
-        Start
+        Start (0.01 ETH)
       </Button>
       <HowToPlay>
         <Button variant="outline" size="lg">
