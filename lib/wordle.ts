@@ -744,8 +744,6 @@ export const words = [
   'equip',
   'erase',
   'erect',
-  'erica',
-  'ernie',
   'erode',
   'error',
   'erupt',

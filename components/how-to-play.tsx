@@ -10,18 +10,12 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import Link from 'next/link';
-import { useAIRead } from '@/hooks/useAIRead';
 
 type HowToPlayProps = {
   children: React.ReactNode;
 };
 
 function HowToPlay({ children }: HowToPlayProps) {
-  const { data: gameBalance } = useAIRead({
-    functionName: 'getBalance',
-    args: [],
-  });
-  const gameXP = parseFloat(gameBalance || '0');
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -29,7 +23,15 @@ function HowToPlay({ children }: HowToPlayProps) {
         <DialogHeader>
           <DialogTitle>WordDuel</DialogTitle>
           <DialogDescription>
-            Guess the right word before ChatGPT and double your ETH.
+            Review WordDuel contract on{' '}
+            <Link
+              className="underline"
+              target="_blank"
+              href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${process.env.NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS}`}
+            >
+              Base
+            </Link>
+            .
           </DialogDescription>
         </DialogHeader>
         <div className="text-left text-sm">
