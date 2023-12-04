@@ -9,8 +9,15 @@ import { useRouter } from 'next/navigation';
 import AI from '@/hooks/abis/AIDuels.json';
 import { toast } from './ui/use-toast';
 import { ethers } from 'ethers';
+import { updateDuel } from '@/lib/db';
 
-export default function WordDuelClaim({ duelId }: { duelId: number }) {
+export default function WordDuelClaim({
+  duelId,
+  handleUpdateaDuel,
+}: {
+  duelId: number;
+  handleUpdateaDuel: any;
+}) {
   const { ready } = usePrivy();
   const [isClaiming, setIsClaiming] = useState(false);
 
@@ -35,6 +42,7 @@ export default function WordDuelClaim({ duelId }: { duelId: number }) {
       const tx = await contract.finishDuel(`${duelId}`);
       await tx.wait();
       console.log('tx', tx);
+      await handleUpdateaDuel();
       toast({
         title: 'Your reward is on the way!',
         description: 'Check your email for instructions.',

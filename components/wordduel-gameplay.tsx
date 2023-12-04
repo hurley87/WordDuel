@@ -334,7 +334,10 @@ const WordDuelGamePlay = ({ duel }: Props) => {
         </div>
       )}
       {isGameOver && isWinner && !duel?.has_claimed && (
-        <WordDuelClaim duelId={duel.game_id} />
+        <WordDuelClaim
+          duelId={duel.game_id}
+          handleUpdateaDuel={handleUpdateaDuel}
+        />
       )}
 
       {isGameOver && duel?.has_claimed && (
