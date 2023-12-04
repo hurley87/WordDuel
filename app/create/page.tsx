@@ -12,15 +12,14 @@ import { useAISubscribe } from '@/hooks/useAISubscribe';
 import { createDuel } from '@/lib/db';
 import { useRouter } from 'next/navigation';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
-import { useContractWrite } from 'wagmi';
+import { parseEther } from 'viem';
 
 export default function CreateDuelPage({}: any) {
   const { wallet: activeWallet } = usePrivyWagmi();
   const address = activeWallet?.address as `0x${string}`;
   const { ready } = usePrivy();
   const [isCreating, setIsCreating] = useState<boolean>(false);
-  const config = useAIWrite('createDuel', []);
-  const { write } = useContractWrite(config);
+  const { write } = useAIWrite('createDuel');
   const router = useRouter();
 
   async function insertDuel(id: string) {
@@ -33,7 +32,6 @@ export default function CreateDuelPage({}: any) {
     const { data: game } = await createDuel(duel).select();
     const gameId = game?.[0]?.id;
     router.push(`/game/${gameId}`);
-    setIsCreating(false);
   }
 
   useAISubscribe({
@@ -47,7 +45,11 @@ export default function CreateDuelPage({}: any) {
 
   async function handleCreateDuel() {
     setIsCreating(true);
-    write?.();
+    write?.({
+      args: [],
+      from: address,
+      value: parseEther('0.01'),
+    });
   }
 
   if (!ready) return <Loading />;
@@ -58,7 +60,7 @@ export default function CreateDuelPage({}: any) {
       <div className="flex flex-col gap-2">
         <p className="text-xl font-black">Start Level</p>
         <p className="text-sm">
-          If you win, you'll earn 2 $XP and get to the next level. The higher
+          If you win, you'll earn 0.02 ETH and get to the next level. The higher
           the level the smarter the AI. Good luck!
         </p>
       </div>

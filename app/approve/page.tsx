@@ -8,15 +8,11 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { useXPSubscribe } from '@/hooks/useXPSubscribe';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import {
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
-} from 'wagmi';
 import { ethers } from 'ethers';
 import XPABI from '@/hooks/abis/XP.json';
-import { toast } from '@/components/ui/use-toast';
-import { makeBig } from '@/lib/utils';
+import { useWallets } from '@privy-io/react-auth';
+import { base, baseGoerli } from 'viem/chains';
+import { gelatoRequest } from '@/lib/gelato';
 
 export default function ApproveXP() {
   const { wallet: activeWallet } = usePrivyWagmi();
@@ -27,6 +23,10 @@ export default function ApproveXP() {
     args: [address],
   });
   const [XP, setXP] = useState<number>(0);
+  const { wallets } = useWallets();
+  const embeddedWallet = wallets.find(
+    (wallet) => wallet?.walletClientType === 'privy'
+  );
 
   useEffect(() => {
     setXP(parseInt(xpBalance || '0') / 10 ** 18);
@@ -38,46 +38,8 @@ export default function ApproveXP() {
   const tokenAmount = ethers.utils.parseUnits('2');
   console.log(tokenAmount);
   const abi = XPABI.abi;
-  const { config: approveConfig } = usePrepareContractWrite({
-    address: aiContractAddress,
-    functionName: 'approve',
-    abi,
-    gas: BigInt(1300000),
-    args: [aiContractAddress, 2 * 10 ** 18],
-    onSuccess(data) {
-      console.log('SUCCESSS', data);
-    },
-    onError(error) {
-      const description = (error as Error)?.message || 'Please try again.';
-      setIsApproving(false);
-      toast({
-        title: 'Error',
-        description,
-        variant: 'destructive',
-      });
-    },
-  });
-  const {
-    write: approve,
-    data,
-    isLoading,
-    isSuccess,
-    isError,
-  } = useContractWrite(approveConfig);
-  const router = useRouter();
 
-  console.log('adresss', address);
-  console.log('data', data);
-  console.log('isLoading', isLoading);
-  console.log('isSuccess', isSuccess);
-  console.log('isError', isError);
-  const hash = data?.hash;
-  const waitForTransaction = useWaitForTransaction({
-    hash,
-    onSuccess(data) {
-      console.log('Success', data);
-    },
-  });
+  const router = useRouter();
 
   useXPSubscribe({
     eventName: 'Approval',
@@ -95,7 +57,26 @@ export default function ApproveXP() {
   async function approveXP() {
     setIsApproving(true);
     try {
-      approve?.();
+      const chainId =
+        process.env.NODE_ENV === 'production' ? base.id : baseGoerli.id;
+
+      let provider = (await wallets[0]?.getEthersProvider()) as any;
+      wallets[0]?.switchChain(chainId);
+      if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
+
+      const signer = provider.getSigner();
+      const target = process.env
+        .NEXT_PUBLIC_XP_CONTRACT_ADDRESS as `0x${string}`;
+      const contract = new ethers.Contract(target, abi, signer);
+
+      const { data } = await contract.populateTransaction.approve(
+        aiContractAddress,
+        tokenAmount
+      );
+
+      const user = await signer.getAddress();
+
+      await gelatoRequest(provider, data, user);
     } catch {
       setIsApproving(false);
     }

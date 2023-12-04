@@ -3,13 +3,11 @@
 import { usePrivy } from '@privy-io/react-auth';
 import Loading from './loading';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
-import { useXPRead } from '@/hooks/useXPRead';
 import HowToPlay from './how-to-play';
 import { Badge } from './ui/badge';
-import { useAIRead } from '@/hooks/useAIRead';
-import { useQuery } from '@tanstack/react-query';
-import { getUserDuels } from '@/lib/db';
 import HowToProfile from './how-to-profile';
+import { useBalance } from 'wagmi';
+import { formatAddress } from '@/lib/utils';
 
 export default function WordDuelLayout({
   children,
@@ -20,39 +18,30 @@ export default function WordDuelLayout({
   const { wallet: activeWallet } = usePrivyWagmi();
   const address = activeWallet?.address as `0x${string}`;
 
-  const { data: xpBalance } = useXPRead({
-    functionName: 'balanceOf',
-    args: [address],
+  const { data: userETH } = useBalance({
+    address,
   });
-  const { data: gameBalance } = useAIRead({
-    functionName: 'getTokenBalanceContract',
-    args: [],
+  const balance = parseFloat(userETH?.formatted || '0');
+  const gameContract = process.env
+    .NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS as `0x${string}`;
+  const { data: gameETH } = useBalance({
+    address: gameContract,
   });
-  const XP = parseInt(xpBalance || '0') / 10 ** 18;
-  const gameXP = parseInt(gameBalance || '0') / 10 ** 18;
-  const { data: queryDuels } = useQuery({
-    queryKey: ['duels', address],
-    queryFn: () => getUserDuels(address),
-  });
-  const level =
-    queryDuels?.filter((duel) => duel.is_winner === true).length || 0;
+
+  const gameBalance = parseFloat(gameETH?.formatted || '0');
 
   if (!ready) return <Loading />;
-
-  function numWithCommas(x: number) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
 
   return (
     <>
       {user && (
         <div className="absolute top-4 left-4 right-4 flex justify-between">
           <HowToPlay>
-            <Badge>WordDuel | {numWithCommas(gameXP)} $XP</Badge>
+            <Badge>WordDuel | {gameBalance.toFixed(2)} ETH</Badge>
           </HowToPlay>
           <HowToProfile>
             <Badge>
-              Lvl {level} | {numWithCommas(XP)} $XP
+              {formatAddress(address)} | {balance.toFixed(2)} ETH
             </Badge>
           </HowToProfile>
         </div>

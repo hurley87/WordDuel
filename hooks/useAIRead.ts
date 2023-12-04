@@ -1,5 +1,5 @@
 import { useContractRead } from 'wagmi';
-import AI from '@/hooks/abis/AIDuels.json';
+import AI from '@/hooks/abis/AIDuelsFree.json';
 
 export const useAIRead = ({ functionName, args }: any) => {
   const chainId = parseInt(process.env.NEXT_PUBLIC_DUELS_CHAIN_ID as string);

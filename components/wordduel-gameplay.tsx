@@ -19,10 +19,11 @@ import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { updateDuel } from '@/lib/db';
 import { Button } from './ui/button';
 import { Icons } from './icons';
-import { useAIWrite } from '@/hooks/useAIWrite';
 import Link from 'next/link';
 import { useAISubscribe } from '@/hooks/useAISubscribe';
-import { useContractWrite } from 'wagmi';
+import { base, baseGoerli } from 'viem/chains';
+import { useWallets } from '@privy-io/react-auth';
+import WordDuelClaim from './wordduel-claim';
 
 type Props = {
   duel: any;
@@ -40,14 +41,14 @@ const WordDuelGamePlay = ({ duel }: Props) => {
   const [isRewardClaimed, setIsRewardClaimed] = useState(duel?.has_claimed);
   const [duelWords, setDuelWords] = useState(duel?.words);
   const [isClaiming, setIsClaiming] = useState(false);
-  const config = useAIWrite('finishDuel', [duel.game_id.toString()]);
-  const { write: finishDuel } = useContractWrite(config);
   const { wallet } = usePrivyWagmi();
   const address = wallet?.address as `0x${string}`;
+  const wallets = useWallets();
 
   const setGame = useCallback(
     async (targetWord: string, duelWords: any) => {
       const secret = await decryptWord(targetWord);
+      console.log(secret);
       const words = await decryptWords(duelWords);
       const newGrid = emptyGrid;
 
@@ -330,21 +331,6 @@ const WordDuelGamePlay = ({ duel }: Props) => {
     },
   });
 
-  async function handleClaimReward() {
-    setIsClaiming(true);
-    try {
-      finishDuel?.();
-    } catch (error) {
-      const description = (error as Error)?.message || 'Please try again.';
-      setIsClaiming(false);
-      toast({
-        title: 'Error',
-        description,
-        variant: 'destructive',
-      });
-    }
-  }
-
   const usedKeys: any = [];
   const allKeys = flatten(grid);
   for (const i in allKeys) {
@@ -371,21 +357,7 @@ const WordDuelGamePlay = ({ duel }: Props) => {
         </div>
       )}
       {isGameOver && isWinner && !isRewardClaimed && (
-        <div className="flex flex-col max-w-md mx-auto gap-4 py-48 px-8 text-center">
-          <Icons.wallet className="h-8 w-8 mx-auto" />
-          <div className="flex flex-col gap-2">
-            <h2 className="text-xl font-black">You Won $XP</h2>
-            <p className="text-sm">Claim your reward of 2 $XP.</p>
-          </div>
-          <Button disabled={isClaiming} onClick={handleClaimReward} size="lg">
-            {isClaiming ? (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Icons.wallet className="mr-2 h-4 w-4" />
-            )}
-            Claim Your Reward
-          </Button>
-        </div>
+        <WordDuelClaim duelId={duel.game_id} />
       )}
 
       {isGameOver && isRewardClaimed && (

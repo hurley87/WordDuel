@@ -9,10 +9,11 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import Link from 'next/link';
 import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
-import { parseEther } from 'viem';
+import { parseEther, parseGwei } from 'viem';
 import { useAISubscribe } from '@/hooks/useAISubscribe';
 import { useRouter } from 'next/navigation';
 import AI from '@/hooks/abis/AIDuels.json';
+import { base, baseGoerli } from 'wagmi/chains';
 
 export default function BuyXPPage() {
   const { wallet } = usePrivyWagmi();
@@ -21,12 +22,27 @@ export default function BuyXPPage() {
   const value = parseEther('0.02') as any;
   const aiAddress = process.env
     .NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS as `0x${string}`;
+  const chainId =
+    process.env.NODE_ENV === 'production' ? base.id : (baseGoerli.id as any);
   const abi = AI.abi;
   const { config: buyTokenConfig } = usePrepareContractWrite({
     address: aiAddress,
     functionName: 'buyTokens',
     abi,
     value,
+    chainId,
+    gas: BigInt(5000000),
+    gasPrice: parseGwei('20'),
+    maxFeePerGas: parseGwei('20'),
+    onError(error) {
+      const description = (error as Error)?.message || 'Please try again.';
+      setIsSending(false);
+      toast({
+        title: 'Error',
+        description,
+        variant: 'destructive',
+      });
+    },
   });
   const { write: buyTokens } = useContractWrite(buyTokenConfig);
   const { data: balance } = useBalance({
@@ -38,8 +54,10 @@ export default function BuyXPPage() {
   async function handleBuyTokens() {
     setIsSending(true);
     try {
+      console.log('HELLO');
       buyTokens?.();
     } catch (error) {
+      console.log(error);
       const description = (error as Error)?.message || 'Please try again.';
       toast({
         title: 'Error',

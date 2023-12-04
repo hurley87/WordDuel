@@ -24,7 +24,7 @@ function HowToProfile({ children }: HowToProfileProps) {
   const { user, login, logout } = usePrivy();
   const address = user?.wallet?.address as `0x${string}`;
   const { data: queryDuels } = useQuery({
-    queryKey: ['duels', address],
+    queryKey: ['games', address],
     queryFn: () => getUserDuels(address),
   });
   const level =

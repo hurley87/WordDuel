@@ -18,10 +18,10 @@ type HowToPlayProps = {
 
 function HowToPlay({ children }: HowToPlayProps) {
   const { data: gameBalance } = useAIRead({
-    functionName: 'getTokenBalanceContract',
+    functionName: 'getBalance',
     args: [],
   });
-  const gameXP = parseInt(gameBalance || '0') / 10 ** 18;
+  const gameXP = parseFloat(gameBalance || '0');
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>

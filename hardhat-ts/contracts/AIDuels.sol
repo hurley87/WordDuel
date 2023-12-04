@@ -2,17 +2,11 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract AIDuels is Ownable {
     
-    enum DuelState { Created, Finished }
-
-    IERC20 public immutable XP;
-    uint constant decimals = 18;
-    uint amountToPlay = 2 * 10**decimals;
-    uint amountToWin = 4 * 10**decimals;
-    uint amountToClaim = 2 * 10**decimals;
+    uint amountToPlay = 0.01 ether;
+    uint amountToWin = 0.02 ether;
 
     struct Duel {
         uint id;
@@ -23,21 +17,11 @@ contract AIDuels is Ownable {
     
     Duel[] public duels;
 
-    mapping (address => bool) public hasClaimedReward;
-
     event DuelCreated(uint256 id, address player);
     event DuelFinished(uint256 id, address winner);
-    event RewardClaimed(address winner);
-    event Approval(address indexed owner, address indexed spender, uint256 value);
-    event BuyTokens(address indexed buyer, uint256 value);
-
-    constructor(address _tokenAddress) {
-        XP = IERC20(_tokenAddress);
-    }
 
     function createDuel() public payable {
-        require(XP.balanceOf(msg.sender) >= amountToPlay, 'Insufficient XP tokens');
-        require(XP.allowance(msg.sender, address(this)) >= amountToPlay, 'XP tokens must be approved');
+        require(msg.value == amountToPlay, "Must send 0.01 ether");
         require(msg.sender != address(0), "Sender must not be the zero address");
 
         Duel memory newDuel = Duel({
@@ -49,54 +33,21 @@ contract AIDuels is Ownable {
 
         duels.push(newDuel);
 
-        require(XP.transferFrom(msg.sender, address(this), amountToPlay), "Token transfer failed!");
-
         emit DuelCreated(newDuel.id, msg.sender);
     }
 
-    function finishDuel(uint256 _duelId) public {
+    function finishDuel(uint256 _duelId) public onlyOwner {
         require(_duelId < duels.length, 'Duel does not exist');
         require(duels[_duelId].player != address(0), "Player must not be the zero address");
         require(duels[_duelId].claimedWinnings != true, 'Winnings already claimed');
 
         Duel storage duel = duels[_duelId];
 
-        require(msg.sender == duel.player, 'Only player can finish duel');
-
-        bool tokensSent = XP.transfer(msg.sender, amountToWin);
-
-        require(tokensSent, "Token transfer failed!");
+        payable(duel.player).transfer(amountToWin);
 
         duel.claimedWinnings = true;
 
-        emit DuelFinished(_duelId, msg.sender);
-    }
-
-    function claimReward() public {
-        require(hasClaimedReward[msg.sender] != true, 'Reward already claimed');
-
-        bool tokensSent = XP.transfer(msg.sender, amountToClaim);
-
-        require(tokensSent, "Token transfer failed!");
-
-        hasClaimedReward[msg.sender] = true;
-
-        emit RewardClaimed(msg.sender);
-    }
-
-    function claimedReward(address _wallet) public view returns (bool) {
-        return hasClaimedReward[_wallet];
-    }
-
-    function buyTokens() public payable {
-        require(msg.value == 0.02 ether, "Must send 0.02 ether");
-        require(XP.balanceOf(address(this)) >= amountToPlay, "Not enough tokens in reserve");
-
-        bool tokensSent = XP.transfer(msg.sender, amountToPlay);
-
-        require(tokensSent, "Token transfer failed!");
-
-        emit BuyTokens(msg.sender, msg.value);
+        emit DuelFinished(_duelId, duel.player);
     }
 
     function getDuelsCount() public view returns (uint256) {
@@ -106,6 +57,10 @@ contract AIDuels is Ownable {
     function getDuel(uint256 _duelId) public view returns (Duel memory) {
         return duels[_duelId];
     }
+    
+    function getDuels() public view returns (Duel[] memory) {
+        return duels;
+    }
 
     function getBalance() public view returns (uint256) {
         return address(this).balance;
@@ -114,46 +69,6 @@ contract AIDuels is Ownable {
     function withdraw() public onlyOwner {
         payable(owner()).transfer(address(this).balance);
     }
-    
-    function getDuels() public view returns (Duel[] memory) {
-        return duels;
-    }
 
-    function getTokenBalance(address _wallet) public view returns (uint256) {
-        return XP.balanceOf(_wallet);
-    }
-
-    function getTokenAllowance(address _wallet) public view returns (uint256) {
-        return XP.allowance(_wallet, address(this));
-    }
-
-    function getTokenBalanceContract() public view returns (uint256) {
-        return XP.balanceOf(address(this));
-    }
-
-    function getTokenAllowanceContract() public view returns (uint256) {
-        return XP.allowance(address(this), address(this));
-    }
-
-    function withdrawToken() public onlyOwner {
-        XP.transfer(owner(), XP.balanceOf(address(this)));
-    }
-
-    function setupGame(uint256 _amountToPlay, uint256 _amountToWin, uint256 _amountToClaim) public onlyOwner {
-        amountToPlay = _amountToPlay;
-        amountToWin = _amountToWin;
-        amountToClaim = _amountToClaim;
-    }
-
-
-    function approveToken(uint256 _amount) public {
-        require(_amount > 0, "Amount must be greater than 0");
-        XP.approve(address(this), _amount);
-        emit Approval(msg.sender, address(this), _amount);
-    }
-
-    function fundGame(uint256 _amount) public onlyOwner {
-        bool sendTokens = XP.transferFrom(msg.sender, address(this), _amount);
-        require(sendTokens, "Token transfer failed!");
-    }
+    receive() external payable {}
 }

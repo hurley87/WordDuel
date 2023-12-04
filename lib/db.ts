@@ -10,7 +10,7 @@ export async function createResult(result: any) {
 }
 
 export function createDuel(duel: any) {
-  return client.from('duels').insert([duel]);
+  return client.from('games').insert([duel]);
 }
 
 export async function getResults() {
@@ -19,13 +19,13 @@ export async function getResults() {
 }
 
 export async function getDuels() {
-  const { data } = await client.from('duels').select('*');
+  const { data } = await client.from('games').select('*');
   return data;
 }
 
 export async function getDuel(id: number) {
   const { data } = await client
-    .from('duels')
+    .from('games')
     .select()
     .eq('id', id)
     .maybeSingle();
@@ -34,13 +34,13 @@ export async function getDuel(id: number) {
 
 export async function getUserDuels(address: string) {
   const { data } = await client
-    .from('duels')
+    .from('games')
     .select('*')
     .eq('address', address);
   return data;
 }
 
 export async function updateDuel(duel: any) {
-  const { data } = await client.from('duels').update(duel).eq('id', duel.id);
+  const { data } = await client.from('games').update(duel).eq('id', duel.id);
   return data;
 }

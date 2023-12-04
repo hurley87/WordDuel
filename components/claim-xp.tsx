@@ -3,16 +3,16 @@ import { Button } from './ui/button';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { Icons } from './icons';
 import { toast } from './ui/use-toast';
-import { useAIWrite } from '@/hooks/useAIWrite';
 import Link from 'next/link';
 import { useAIRead } from '@/hooks/useAIRead';
 import { useAISubscribe } from '@/hooks/useAISubscribe';
 import Loading from './loading';
-import { useContractWrite } from 'wagmi';
+import { base, baseGoerli } from 'viem/chains';
+import { useWallets } from '@privy-io/react-auth';
+import { claimReward } from '@/lib/gelato';
+import va from '@vercel/analytics';
 
 export default function ClaimXP({ children }: { children?: any }) {
-  const config = useAIWrite('claimReward', []);
-  const { write: claimReward } = useContractWrite(config);
   const { wallet: activeWallet } = usePrivyWagmi();
   const address = activeWallet?.address as `0x${string}`;
   const [isClaiming, setIsClaiming] = useState<boolean>(false);
@@ -21,6 +21,12 @@ export default function ClaimXP({ children }: { children?: any }) {
     args: [address],
   });
   const [hasClaimed, setHasClaimed] = useState<boolean>(false);
+  const { wallets } = useWallets();
+  const embeddedWallet = wallets.find(
+    (wallet) => activeWallet?.walletClientType === 'privy'
+  );
+
+  console.log('has_claimed', has_claimed);
 
   useEffect(() => {
     setHasClaimed(has_claimed);
@@ -34,10 +40,21 @@ export default function ClaimXP({ children }: { children?: any }) {
     },
   });
 
-  function claim() {
+  async function claim() {
     setIsClaiming(true);
     try {
-      claimReward?.();
+      const chainId =
+        process.env.NODE_ENV === 'production' ? base.id : baseGoerli.id;
+
+      let provider = (await wallets[0]?.getEthersProvider()) as any;
+      wallets[0]?.switchChain(chainId);
+      if (embeddedWallet) provider = await embeddedWallet?.getEthersProvider();
+
+      await claimReward(provider);
+
+      va.track('RewardClaimed', {
+        address,
+      });
     } catch (error) {
       const description = (error as Error)?.message || 'Please try again.';
       setIsClaiming(false);

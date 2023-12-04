@@ -1,17 +1,17 @@
-import { usePrepareContractWrite } from 'wagmi';
+import { useContractWrite } from 'wagmi';
 import AI from '@/hooks/abis/AIDuels.json';
 
-export const useAIWrite = (functionName: any, args: any) => {
+export const useAIWrite = (functionName: any) => {
   const address = process.env
     .NEXT_PUBLIC_AIDUEL_CONTRACT_ADDRESS as `0x${string}`;
   const abi = AI.abi;
 
-  const { config } = usePrepareContractWrite({
+  return useContractWrite({
     address,
     abi,
     functionName,
-    args,
-  });
-
-  return config;
+    onError(error) {
+      console.log('Error', error);
+    },
+  }) as any;
 };
