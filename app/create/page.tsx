@@ -13,6 +13,7 @@ import { createDuel } from '@/lib/db';
 import { useRouter } from 'next/navigation';
 import { usePrivyWagmi } from '@privy-io/wagmi-connector';
 import { parseEther } from 'viem';
+import WordDuelLayout from '@/components/wordduel-layout';
 
 export default function CreateDuelPage({}: any) {
   const { wallet: activeWallet } = usePrivyWagmi();
@@ -55,29 +56,31 @@ export default function CreateDuelPage({}: any) {
   if (!ready) return <Loading />;
 
   return (
-    <div className="flex flex-col max-w-md mx-auto gap-4 py-48 px-4 text-center">
-      <Icons.swords className="h-8 w-8 mx-auto" />
-      <div className="flex flex-col gap-2">
-        <p className="text-xl font-black">Start Level</p>
-        <p className="text-sm">
-          If you win, you'll earn 0.02 ETH and get to the next level. The higher
-          the level the smarter the AI. Good luck!
-        </p>
-      </div>
-      <Button onClick={handleCreateDuel} size="lg">
-        {isCreating ? (
-          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <Icons.swords className="mr-2 h-4 w-4" />
-        )}
-        Start (0.01 ETH)
-      </Button>
-      <HowToPlay>
-        <Button variant="outline" size="lg">
-          <Icons.help className="mr-2 h-4 w-4" />
-          How to Play
+    <WordDuelLayout>
+      <div className="flex flex-col max-w-md mx-auto gap-4 py-48 px-4 text-center">
+        <Icons.swords className="h-8 w-8 mx-auto" />
+        <div className="flex flex-col gap-2">
+          <p className="text-xl font-black">Start Level</p>
+          <p className="text-sm">
+            If you win, you'll earn 0.02 ETH and get to the next level. The
+            higher the level the smarter the AI. Good luck!
+          </p>
+        </div>
+        <Button onClick={handleCreateDuel} size="lg">
+          {isCreating ? (
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Icons.swords className="mr-2 h-4 w-4" />
+          )}
+          Start (0.01 ETH)
         </Button>
-      </HowToPlay>
-    </div>
+        <HowToPlay>
+          <Button variant="outline" size="lg">
+            <Icons.help className="mr-2 h-4 w-4" />
+            How to Play
+          </Button>
+        </HowToPlay>
+      </div>
+    </WordDuelLayout>
   );
 }
