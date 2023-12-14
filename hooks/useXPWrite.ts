@@ -12,8 +12,5 @@ export const useXPWrite = (functionName: any) => {
     address,
     abi,
     functionName,
-    onError(error) {
-      console.log('Error', error);
-    },
   }) as any;
 };

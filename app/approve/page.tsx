@@ -16,7 +16,6 @@ import { gelatoRequest } from '@/lib/gelato';
 
 export default function ApproveXP() {
   const { wallet: activeWallet } = usePrivyWagmi();
-  console.log('activeWallet', activeWallet);
   const address = activeWallet?.address as `0x${string}`;
   const { data: xpBalance } = useXPRead({
     functionName: 'balanceOf',
@@ -36,7 +35,7 @@ export default function ApproveXP() {
     .NEXT_PUBLIC_XP_CONTRACT_ADDRESS as `0x${string}`;
   const [isApproving, setIsApproving] = useState<boolean>(false);
   const tokenAmount = ethers.utils.parseUnits('2');
-  console.log(tokenAmount);
+
   const abi = XPABI.abi;
 
   const router = useRouter();
@@ -44,11 +43,7 @@ export default function ApproveXP() {
   useXPSubscribe({
     eventName: 'Approval',
     listener(logs: any) {
-      console.log(logs);
       const owner = logs[0]?.args?.owner as string;
-      console.log('owner', owner);
-      console.log('address', address);
-      console.log(owner.toLowerCase() !== address.toLowerCase());
       if (owner.toLowerCase() !== address.toLowerCase()) return;
       router.push('/create');
     },

@@ -23,10 +23,8 @@ export default function ClaimXP({ children }: { children?: any }) {
   const [hasClaimed, setHasClaimed] = useState<boolean>(false);
   const { wallets } = useWallets();
   const embeddedWallet = wallets.find(
-    (wallet) => activeWallet?.walletClientType === 'privy'
+    (wallet) => wallet?.walletClientType === 'privy'
   );
-
-  console.log('has_claimed', has_claimed);
 
   useEffect(() => {
     setHasClaimed(has_claimed);

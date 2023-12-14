@@ -63,10 +63,7 @@ export async function gelatoRequest(provider: any, data: any, user: any) {
     data,
     user,
   };
-  console.log('request', request);
   const response = await relay.sponsoredCallERC2771(request, provider, apiKey);
-
-  console.log(response);
 
   return response.taskId;
 }

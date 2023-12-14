@@ -26,7 +26,6 @@ export default function WordDuelClaim({
   async function handleClaimReward() {
     setIsClaiming(true);
     try {
-      console.log('claiming reward');
       const rpcUrl = process.env.NEXT_PUBLIC_RPC_URL;
       const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
       const privateKey = process.env.NEXT_PUBLIC_PRIVATE_WALLET_KEY as string;
@@ -41,7 +40,6 @@ export default function WordDuelClaim({
       );
       const tx = await contract.finishDuel(`${duelId}`);
       await tx.wait();
-      console.log('tx', tx);
       await handleUpdateaDuel();
       toast({
         title: 'Wooo!',
@@ -49,7 +47,6 @@ export default function WordDuelClaim({
       });
       router.push('/');
     } catch (error) {
-      console.log('error', error);
       const description = (error as Error)?.message || 'Please try again.';
       setIsClaiming(false);
       toast({

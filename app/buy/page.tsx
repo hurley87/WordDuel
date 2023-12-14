@@ -54,10 +54,8 @@ export default function BuyXPPage() {
   async function handleBuyTokens() {
     setIsSending(true);
     try {
-      console.log('HELLO');
       buyTokens?.();
     } catch (error) {
-      console.log(error);
       const description = (error as Error)?.message || 'Please try again.';
       toast({
         title: 'Error',
