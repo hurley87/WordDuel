@@ -8,12 +8,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { Button } from './ui/button';
 import { usePrivy } from '@privy-io/react-auth';
 import { getUserDuels } from '@/lib/db';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import { TransferForm } from './transfer-form';
 
 type HowToProfileProps = {
   children: React.ReactNode;
@@ -35,35 +37,30 @@ function HowToProfile({ balance, children }: HowToProfileProps) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Your Profile</DialogTitle>
+          <DialogTitle>Your Wallet</DialogTitle>
+          <DialogDescription>
+            <Link
+              className="underline"
+              target="_blank"
+              href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${address}`}
+            >
+              {address}
+            </Link>
+          </DialogDescription>
         </DialogHeader>
         <div className="text-left flex flex-col gap-4 text-sm py-6">
-          <div>
-            <p className="font-bold">Account</p>
-            <p>
-              View your account on{' '}
-              <Link
-                className="underline"
-                target="_blank"
-                href={`${process.env.NEXT_PUBLIC_BLOCK_EXPLORER}/address/${address}`}
-              >
-                Base
-              </Link>
-              .
-            </p>
+          <div className="flex justify-between">
+            <div>
+              <p className="font-bold">Level</p>
+              <p>{level}</p>
+            </div>
+            <div>
+              <p className="font-bold">ETH</p>
+              <p>{balance}</p>
+            </div>
           </div>
-          <div>
-            <p className="font-bold">Wallet Address</p>
-            <p>{address}</p>
-          </div>
-          <div>
-            <p className="font-bold">Level</p>
-            <p>{level}</p>
-          </div>
-          <div>
-            <p className="font-bold">ETH</p>
-            <p>{balance}</p>
-          </div>
+
+          <TransferForm />
         </div>
         <DialogFooter>
           {!user ? (
