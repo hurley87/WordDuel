@@ -53,7 +53,7 @@ export default function GetETH({ children }: { children?: any }) {
               >
                 here
               </Link>
-              .
+              . We recommend at least 0.021 ETH.
             </p>
           </div>
 
